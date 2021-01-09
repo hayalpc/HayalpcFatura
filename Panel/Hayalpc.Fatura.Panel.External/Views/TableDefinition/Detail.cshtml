@@ -1,0 +1,48 @@
+﻿@model TableDefinitionVM
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("General")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Id)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Id)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.ActionType)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.ActionType)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.ModelName)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.ModelName)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Description)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Description)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.RoleId1)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.RoleId1)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.RoleId2)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.RoleId2)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Status)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Status)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("Creation")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CreateTime)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.CreateTime)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CreateUserId)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.CreateUserId)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.UpdateTime)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.UpdateTime)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.UpdateUserId)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.UpdateUserId)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("Partials/_DetailActionButtons", Model.Id) 

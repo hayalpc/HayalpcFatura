@@ -1,0 +1,169 @@
+﻿@{ ViewData["Title"] = tr.Get("Homepage"); }
+
+<!-- Info boxes -->
+<div class="row">
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-info elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">@tr.Get("Traffic")</span>
+                <span class="info-box-number">
+                    0
+                    <small>₺</small>
+                </span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-user"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">@tr.Get("DistinctCount")</span>
+                <span class="info-box-number">0</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    <!-- fix for small devices only -->
+    <div class="clearfix hidden-md-up"></div>
+
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-chart-line"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">@tr.Get("OneOffTraffic")</span>
+                <span class="info-box-number">0</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-user-plus"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">@tr.Get("SubTraffic")</span>
+                <span class="info-box-number">0</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Report</h5>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p class="text-center">
+                            <strong></strong>
+                        </p>
+
+                        <div class="chart">
+                            <!-- Sales Chart Canvas -->
+                            <canvas id="salesChart" height="180" style="height: 180px;"></canvas>
+                        </div>
+                        <!-- /.chart-responsive -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-4">
+                        <p class="text-center">
+                            <strong>@tr.Get("Volume")</strong>
+                        </p>
+                        <div class="progress-group">
+                            Turkcell
+                            <span class="float-right"><b>90</b>/200</span>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar carrier-1" style="width: 45%"></div>
+                            </div>
+                        </div>
+                        <!-- /.progress-group -->
+
+                        <div class="progress-group">
+                            Turk Telekom
+                            <span class="float-right"><b>60</b>/200</span>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar carrier-2" style="width: 30%"></div>
+                            </div>
+                        </div>
+
+                        <!-- /.progress-group -->
+                        <div class="progress-group">
+                            Vodafone
+                            <span class="float-right"><b>50</b>/200</span>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar carrier-3" style="width: 25%"></div>
+                            </div>
+                        </div>
+                     
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- ./card-body -->
+
+        </div>
+        <!-- /.card -->
+    </div>
+    <div class="col-md-4">
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("CarrierUsage")</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="chart-responsive">
+                            <canvas id="pieChart" height="150"></canvas>
+                        </div>
+                        <!-- ./chart-responsive -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-4">
+                        <ul class="chart-legend clearfix">
+                            <li><i class="far fa-circle carrier-1"></i> Turkcell</li>
+                            <li><i class="far fa-circle carrier-2"></i> Turk Telekom</li>
+                            <li><i class="far fa-circle carrier-3"></i> Vodafone</li>
+                        </ul>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.card-body -->
+            
+        </div>
+        <!-- /.col -->
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/assets/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+    <script src="/assets/plugins/raphael/raphael.min.js"></script>
+    <!-- ChartJS -->
+    <script src="/assets/plugins/chart.js/Chart.min.js"></script>
+
+    <script src="/assets/js/pages/dashboard2.js"></script>
+}
+

@@ -1,0 +1,30 @@
+@{
+    Layout = null;
+    var successMsg = session.GetSuccessMessage(true);
+    var errorMsg = session.GetErrorMessage(true);
+    var infoMsg = session.GetInfoMessage(true);
+
+    if (successMsg != null)
+    {
+        <div class="alert alert-success" role="alert">
+            <button type="button" class="close" data-dismiss="alert"><i class="fa fa-times fa-sm"></i></button>
+            @tr.Get(successMsg.Message)
+        </div>
+    }
+
+    if (errorMsg != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="close" data-dismiss="alert"><i class="fa fa-times fa-sm"></i></button>
+            @tr.Get(errorMsg.Message)
+        </div>
+    }
+
+    if (infoMsg != null)
+    {
+        <div class="alert alert-info" role="alert">
+            <button type="button" class="close" data-dismiss="alert"><i class="fa fa-times fa-sm"></i></button>
+            @tr.Get(infoMsg.Message)
+        </div>
+    }
+}

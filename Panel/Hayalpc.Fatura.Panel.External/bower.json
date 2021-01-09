@@ -1,0 +1,21 @@
+{
+  "name": "Hayalpc.Fatura.Panel.External",
+  "homepage": "https://github.com/hayalpc/HayalpcDcb",
+  "authors": [
+    "Erdinc Karaman"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "devextreme": "^20.1.4",
+    "devextreme-aspnet-data": "^2.7.2"
+  }
+}

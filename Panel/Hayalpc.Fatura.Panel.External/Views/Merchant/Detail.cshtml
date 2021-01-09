@@ -1,0 +1,132 @@
+﻿@model MerchantVM
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("General")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Id)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Id)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Type)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Type)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Name)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Name)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.ActivityArea)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.ActivityArea)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CommercialTitle)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.CommercialTitle)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CommercialRegistryNo)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.CommercialRegistryNo)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.BusinessDesc)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.BusinessDesc)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.WebSite)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.WebSite)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Email)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Email)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.PrivateKey)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.PrivateKey)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Status)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Status)</dd>
+                </dl>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("Address")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CountryId)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.CountryId)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CityId)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.CityId)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.DistrictId)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.DistrictId)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Address)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Address)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("Contact")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.AuthorizedPersonName)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.AuthorizedPersonName)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.AuthorizedPersonPhone)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.AuthorizedPersonPhone)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.AuthorizedPersonEmail)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.AuthorizedPersonEmail)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.AuthorizedPersonTckn)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.AuthorizedPersonTckn)</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("Accounting")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.TaxNo)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.TaxNo)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.TaxOffice)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.TaxOffice)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.AccountName)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.AccountName)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Iban)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Iban)</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("Documents&Files")</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group row">
+                    @{
+                        if (Model.BlobFiles != null && Model.BlobFiles.Count > 0)
+                        {
+                            foreach (var file in Model.BlobFiles)
+                            {
+                                <div class="col-12">
+                                    <span><a href="/blobfile/get?guid=@file.Token" target="_blank">@file.Token - @file.Name</a></span>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <span>@tr.Get("ThereIsNoDocument")</span>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("Creation")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CreateTime)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.CreateTime)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CreateUserId)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.CreateUserId)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.UpdateTime)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.UpdateTime)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.UpdateUserId)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.UpdateUserId)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("Partials/_DetailActionButtons", Model.Id) 

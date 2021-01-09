@@ -1,0 +1,44 @@
+﻿<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                @(Html.DevExtreme().DataGrid<CategoryVM>()
+                .ID("CategoryVM-gridContainer")
+                .DataSource(d => d.WebApi().Controller("Category").LoadMethod("post").Key("id"))
+                //.DataSourceOptions(dso=>dso.Select("Id", "Name", "Type", "Email", "AuthorizedPersonName", "AuthorizedPersonPhone", "AuthorizedPersonEmail", "AuthorizedPersonTckn", "Status" ))
+                .ColumnAutoWidth(true)
+                .RowAlternationEnabled(true)
+                .ShowColumnLines(true)
+                .ShowBorders(true)
+                .ShowRowLines(true)
+                .StateStoring(s => s.Enabled(true).Type(StateStoringType.LocalStorage).StorageKey("CategoryVM-storage" + DateTime.Today))
+                .Columns(c => {
+
+                    c.AddFor(x => x.Id).DataField("id");
+                    c.AddFor(x => x.Slug).DataField("slug");
+                    c.AddFor(x => x.Name).DataField("name");
+                    c.AddFor(x => x.Description).DataField("description");
+
+                    c.Add().HeaderCellTemplate("<i class='fa fa-bolt'></i>").AllowFiltering(false).AllowSorting(false).ShowInColumnChooser(false).FormItem(f => f.Visible(false))
+                        .CellTemplate(@<text> @await Html.PartialAsync("Partials/_ActionButtons") </text>).Width(200);
+                })
+                .ColumnChooser(cc => cc.Enabled(true).EmptyPanelText(tr.Get("EmptyRecord")).Mode(GridColumnChooserMode.Select))
+                .Pager(a => a.Visible(true).ShowPageSizeSelector(true).ShowInfo(true))
+                .Paging(paging => paging.PageSize(20))
+                .Pager(pager =>
+                {
+                    pager.ShowPageSizeSelector(true);
+                    pager.AllowedPageSizes(new[] { 5, 10, 20,50,100 });
+                    pager.ShowInfo(true);
+                })
+                .FilterRow(f => f.Visible(true))
+                .AllowColumnReordering(true)
+                .NoDataText(tr.Get("EmptyRecord"))
+                .Scrolling(Scrolling => Scrolling.ShowScrollbar(ShowScrollbarMode.Always))
+                .OnToolbarPreparing(@<text> @await Html.PartialAsync("Partials/_AddButton")</text>)
+                )
+
+            </div>
+        </div>
+    </div>
+</div>

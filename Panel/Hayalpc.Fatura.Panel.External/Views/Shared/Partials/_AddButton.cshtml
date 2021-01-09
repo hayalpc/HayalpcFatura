@@ -1,0 +1,15 @@
+﻿<script>
+    function toolbar_preparing(e) {
+        var dataGrid = e.component;
+        e.toolbarOptions.items.unshift({location: "before",template: function () { return "@ViewBag.Title";}});
+        @{
+            if (session.HasPermission("Add"))
+            {
+                @Html.Raw("e.toolbarOptions.items.unshift({ location: 'after', template: function() { return '<div data-toggle=\"tooltip\" data-placement=\"left\" title=\"" + @tr.Get("New") +"\" class=\"btn dx-button dx-button-success dx-button-mode-contained dx-button-has-icon\"><a href=\"/" + RequestHelper.Controller + "/add\"><i class=\"dx-icon dx-icon-add\"></i></a></div>'; } });");
+            }else if(RequestHelper.Controller == "merchantpayment" && session.HasPermission("calculate"))
+            {
+                @Html.Raw("e.toolbarOptions.items.unshift({ location: 'after', template: function() { return '<div data-toggle=\"tooltip\" data-placement=\"left\" title=\"" + @tr.Get("Calculate") +"\" class=\"btn dx-button dx-button-default dx-button-mode-contained dx-button-has-icon\"><a href=\"/" + RequestHelper.Controller + "/calculate\"><i class=\"dx-icon dx-icon-datafield\"></i></a></div>'; } });");
+            }
+        }
+    }
+</script>

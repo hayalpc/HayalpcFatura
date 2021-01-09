@@ -1,0 +1,295 @@
+﻿@model ServiceVM
+@{
+    var isUpdate = Model != null && Model.Id > 0;
+    if (!isUpdate)
+    {
+        Model.PrivateKey = Guid.NewGuid().ToString("N");
+    }
+    var refundTime = new List<SelectListItem>();
+    refundTime.Add(new SelectListItem { Text = "6 Saat", Value = "6" });
+    refundTime.Add(new SelectListItem { Text = "12 Saat", Value = "12" });
+    refundTime.Add(new SelectListItem { Text = "1 Gün", Value = "24" });
+    refundTime.Add(new SelectListItem { Text = "3 Gün", Value = "72" });
+    refundTime.Add(new SelectListItem { Text = "5 Gün", Value = "120" });
+    refundTime.Add(new SelectListItem { Text = "1 Hafta", Value = "168" });
+    refundTime.Add(new SelectListItem { Text = "2 Hafta", Value = "360" });
+    refundTime.Add(new SelectListItem { Text = "3 Hafta", Value = "504" });
+    refundTime.Add(new SelectListItem { Text = "1 Ay", Value = "720" });
+    refundTime.Add(new SelectListItem { Text = "2 Ay", Value = "1440" });
+    refundTime.Add(new SelectListItem { Text = "3 Ay", Value = "2160" });
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new
+{
+    @id = "modelForm",
+    @class = "form-horizontal",
+    role = "form",
+    enctype = "multipart/form-data",
+    autocomplete = "off"
+}))
+{
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-sm-6">
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">@tr.Get("GeneralInformation")</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Status, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            <select asp-for="Status" class="form-control" asp-items="@(Html.GetEnumSelectList(typeof(Status)))">
+                                <option value="">@tr.Get("PleasePickOne")</option>
+                            </select>
+                            <span asp-validation-for="Status"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.MerchantId, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(m => m.MerchantId, Enumerable.Empty<SelectListItem>(), tr.Get("PleasePickOne"), new { @class = "form-control select2 loadAjax", data_controller = "/merchant", data_default = Model.MerchantId })
+
+                            @Html.ValidationMessageFor(m => m.MerchantId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.CategoryId, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(m => m.CategoryId, Enumerable.Empty<SelectListItem>(), tr.Get("PleasePickOne"), new { @class = "form-control select2 loadAjax", data_controller = "/category", data_default = Model.CategoryId })
+
+                            @Html.ValidationMessageFor(m => m.CategoryId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Name, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Name) })
+                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.WebSite, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.WebSite, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.WebSite) })
+                            @Html.ValidationMessageFor(m => m.WebSite, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.BusinessDesc, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextAreaFor(x => x.BusinessDesc, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.BusinessDesc) })
+                            @Html.ValidationMessageFor(m => m.BusinessDesc, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.PrivateKey, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.PrivateKey, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.PrivateKey) })
+                            @Html.ValidationMessageFor(m => m.PrivateKey, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.PanelFee, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            <input type="text" value="@Model.PanelFee" name="PanelFee" class="form-control decimalReverse" placeholder="@Html.DisplayNameFor(m => m.PanelFee)" />
+                            @Html.ValidationMessageFor(m => m.PanelFee, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">@tr.Get("ServiceSettings")</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Type, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(m => m.Type, Html.GetEnumSelectList(typeof(ServiceType)), tr.Get("PleasePickOne"), new { @class = "form-control", @onchange = "return dropdownOpenPanel(this)" })
+                            @Html.ValidationMessageFor(m => m.Type, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="Type Type-@((int)ServiceType.Sub)" style="@(Model.Type == ServiceType.Sub ? "" : "display:none;")">
+                        <div class="form-group row">
+                            @Html.LabelFor(m => m.SubType, null, new { @class = "col-sm-4" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(m => m.SubType, Html.GetEnumSelectList(typeof(SubscriptionType)), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.SubType, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(m => m.SmsKeyword, null, new { @class = "col-sm-4" })
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(x => x.SmsKeyword, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.SmsKeyword) })
+                                @Html.ValidationMessageFor(m => m.SmsKeyword, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.PlatformType, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(m => m.PlatformType, Html.GetClassSelectList(typeof(PlatformType)), tr.Get("PleasePickOne"), new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.PlatformType, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.IsRefundable, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.CheckBoxFor(x => x.IsRefundable, new { @class = "form-control", @onchange = "return checkboxOpenPanel(this);" })
+                            @Html.ValidationMessageFor(m => m.IsRefundable, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="IsRefundable" style="@(Model.IsRefundable == true ? "" : "display:none;")">
+
+                        <div class="form-group row">
+                            @Html.LabelFor(m => m.RefundableTime, null, new { @class = "col-sm-4" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(m => m.RefundableTime, refundTime, tr.Get("PleasePickOne"), new { @class = "form-control", @onchange = "return dropdownOpenPanel(this)" })
+                                @Html.ValidationMessageFor(m => m.RefundableTime, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">@tr.Get("NotificationAndCredential")</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.HasCredential, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.CheckBoxFor(x => x.HasCredential, new { @class = "form-control", @onchange = "return checkboxOpenPanel(this);" })
+                            @Html.ValidationMessageFor(m => m.HasCredential, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="HasCredential" style="@(Model.HasCredential == true ? "" : "display:none;")">
+
+                        <div class="form-group row">
+                            @Html.LabelFor(m => m.CredentialUrl, null, new { @class = "col-sm-4" })
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(x => x.CredentialUrl, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.CredentialUrl) })
+                                @Html.ValidationMessageFor(m => m.CredentialUrl, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.HasNotification, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.CheckBoxFor(x => x.HasNotification, new { @class = "form-control", @onchange = "return checkboxOpenPanel(this);" })
+                            @Html.ValidationMessageFor(m => m.HasNotification, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="HasNotification" style="@(Model.HasNotification == true ? "" : "display:none;")">
+                        <div class="form-group row">
+                            @Html.LabelFor(m => m.NotificationUrl, null, new { @class = "col-sm-4" })
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(x => x.NotificationUrl, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.NotificationUrl) })
+                                @Html.ValidationMessageFor(m => m.NotificationUrl, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">@tr.Get("OperatorSettings")</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.TariffId, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(m => m.TariffId, Enumerable.Empty<SelectListItem>(), tr.Get("PleasePickOne"), new { @class = "form-control select2 loadAjax", data_controller = "/tariff", data_default = Model.TariffId })
+
+                            @Html.ValidationMessageFor(m => m.TariffId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.TurkcellActive, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.CheckBoxFor(x => x.TurkcellActive, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.TurkcellActive) })
+                            @Html.ValidationMessageFor(m => m.TurkcellActive, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.TurkTelekomActive, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.CheckBoxFor(x => x.TurkTelekomActive, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.TurkTelekomActive) })
+                            @Html.ValidationMessageFor(m => m.TurkTelekomActive, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.VodafoneActive, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.CheckBoxFor(x => x.VodafoneActive, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.VodafoneActive) })
+                            @Html.ValidationMessageFor(m => m.VodafoneActive, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            @{
+                if (isUpdate)
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">@tr.Get("Documents&Files")</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                @{
+                                    if (Model.BlobFiles != null && Model.BlobFiles.Count > 0)
+                                    {
+                                        foreach (var file in Model.BlobFiles)
+                                        {
+                                            <div class="col-12">
+                                                <span>
+                                                    <a href="/blobfile/get?guid=@file.Token" target="_blank">@file.Token - @file.Name</a>
+                                                    @*<button class="btn btn-danger btn-xs"><i class="fa fa-trash-alt"></i></button>*@
+                                                </span>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span>@tr.Get("ThereIsNoDocument")</span>
+                                    }
+                                }
+                            </div>
+                            <div class="form-group row">
+                                <input type="file" name="files" multiple />
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+
+
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-footer">
+                    <a href="@RequestHelper.Referer" class="btn btn-info float-left">@tr.Get("GoBack")</a>
+                    <button type="submit" class="btn btn-primary float-right">@tr.Get("Save")</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

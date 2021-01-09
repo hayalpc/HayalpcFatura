@@ -1,0 +1,43 @@
+﻿@model TariffVM
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("General")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Id)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Id)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Name)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Name)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Description)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.Description)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("CommissionSettings")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.TurkcellCommission)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.TurkcellCommission)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.TurkcellAggCommission)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.TurkcellAggCommission)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.TurkTelekomCommission)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.TurkTelekomCommission)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.TurkTelekomAggCommission)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.TurkTelekomAggCommission)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.VodafoneCommission)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.VodafoneCommission)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.VodafoneAggCommission)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.VodafoneAggCommission)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("Partials/_DetailActionButtons", Model.Id)

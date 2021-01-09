@@ -1,0 +1,38 @@
+﻿@model TableHistoryVM
+@{
+    var links = "";
+    var classes = "dropdown-item text-lg";
+
+    if (RequestHelper.Controller == "tablehistory")
+    {
+        if (session.HasPermission("approve") && Model.CreateUserId != session.User.Id && !session.User.IsMerchant)
+        {
+            if ((Model.Status == TableHistoryStatus.New && session.User.UserRoles.Where(x => x.RoleId == Model.RoleId1).Any()) ||
+                (Model.Status == TableHistoryStatus.Step1 && session.User.UserRoles.Where(x => x.RoleId == Model.RoleId2).Any()))
+            {
+                links += $"<a class='{classes}' onclick='return AreYouSure();' href='/{RequestHelper.Controller}/approve/{Model.Id}'> <i class='fa fa-check'></i> {tr.Get("Approve")}</a>";
+            }
+        }
+        if (session.HasPermission("reject") && (Model.Status == TableHistoryStatus.New || Model.Status == TableHistoryStatus.Step1 || Model.Status == TableHistoryStatus.Step2))
+        {
+            if ((Model.Status == TableHistoryStatus.New && session.User.UserRoles.Where(x => x.RoleId == Model.RoleId1).Any()) ||
+                (Model.Status == TableHistoryStatus.Step1 && session.User.UserRoles.Where(x => x.RoleId == Model.RoleId2).Any()) ||
+                Model.CreateUserId == session.User.Id ||
+                Model.MerchantId == session.User.MerchantId)
+            {
+                links += $"<a class='{classes}' onclick='return AreYouSure();' href='/{RequestHelper.Controller}/reject/{Model.Id}'> <i class='fa fa-trash-restore'></i> {tr.Get("Reject")}</a>";
+            }
+        }
+    }
+
+    links += $"<a class='{classes}' href='{RequestHelper.Referer}'><i class='fa fa-undo'></i> {tr.Get("GoBack")}</a>";
+
+    <div id="hover-btn" class="btn-group dropup dropleft float-right dropdown" style="position: fixed; right: 14px; bottom: 48px;">
+        <button type="button" class="btn bg-info dropdown-toggle *rounded-circle remove-before" data-toggle="dropdown" data-hover="dropdown">
+            <i class="fa fa-cogs fa-2x"></i> @*tr.Get("Actions")*@
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            @Html.Raw(links)
+        </div>
+    </div>
+}

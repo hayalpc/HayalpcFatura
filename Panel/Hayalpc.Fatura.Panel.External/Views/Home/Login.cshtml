@@ -1,0 +1,82 @@
+﻿@model LoginRequest
+@{
+    ViewData["Title"] = tr.Get("Login");
+
+    Layout = "_Naked";
+    var code = ViewData["login.code"];
+    if (code!= null && !string.IsNullOrWhiteSpace(code.ToString()))
+    {
+        var msg = tr.Get("PleaseLogin");
+        if(code.ToString() == "newSession")
+        {
+            msg = tr.Get("LoginNewSession");
+            //}else if(code == "")
+            //{
+        }
+        session.SetInfoMessage(msg);
+    }
+}
+
+<div class="login-box">
+    <div class="login-logo">
+        <a href="/"><img src="/assets/img/logo/logo.png" class="img-fluid px-5"/></a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="card">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">@tr.Get("LoginToContinue")</p>
+            @await Html.PartialAsync("_Messages")
+            <form method="post" id="loginForm">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" asp-for="Email" placeholder="@tr.Get("Email")">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" asp-for="Password" placeholder="@tr.Get("Password")">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-asterisk"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="icheck-primary">
+                            <input type="checkbox" name="rememberMe" id="remember" asp-for="RememberMe">
+                            <label for="remember">
+                                @tr.Get("RememberMe")
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">@tr.Get("SignIn")</button>
+                    </div>
+                </div>
+            </form>
+            <p class="mb-1">
+                <a href="/forgot-password">@tr.Get("ForgotPassword")</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        setTimeout(function () {
+            //$("#loginForm").submit();
+        }, 100);
+    });
+</script>

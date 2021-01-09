@@ -1,0 +1,65 @@
+﻿@{
+    if (session.HasPermission("detail"))
+    {
+        <a data-toggle="tooltip" data-placement="top" title="@tr.Get("Detail")" class='m-1 btn btn-default btn-sm' href='/@RequestHelper.Controller/detail/[%= data.id %]'> <i class='fa fa-eye'></i></a>
+    }
+
+    if (session.HasPermission("update"))
+    {
+        <a data-toggle="tooltip" data-placement="top" title="@tr.Get("Update")" class='m-1 btn btn-primary btn-sm' href='/@RequestHelper.Controller/update/[%= data.id %]'> <i class='fa fa-edit'></i> </a>
+    }
+
+    if (session.HasPermission("delete"))
+    {
+        <a data-toggle="tooltip" data-placement="top" title="@tr.Get("Delete")" class='m-1 btn btn-danger btn-sm' onclick='return AreYouSure();' href='/@RequestHelper.Controller/delete/[%= data.id %]'> <i class='fa fa-trash-alt'></i> </a>
+    }
+
+
+    if (session.HasPermission("update") && RequestHelper.Controller == "role")
+    {
+        <a data-toggle="tooltip" data-placement="top" title="@tr.Get("Permissions")" class='m-1 btn btn-info btn-sm' href='/@RequestHelper.Controller/permissions/[%= data.id %]'> <i class='fa fa-list'></i> </a>
+    }
+
+
+    if (RequestHelper.Controller == "user")
+    {
+        if (session.HasPermission("resetpassword"))
+        {
+            <a data-toggle="tooltip" data-placement="top" title="@tr.Get("ResetPassword")" class='m-1 btn btn-info btn-sm' onclick='return AreYouSure();' href='/@RequestHelper.Controller/resetpassword/[%= data.id %]'> <i class='fa fa-lock-open'></i></a>
+        }
+        if (session.HasPermission("logout"))
+        {
+            <a data-toggle="tooltip" data-placement="top" title="@tr.Get("Lotout")" class='m-1 btn btn-danger btn-sm' onclick='return AreYouSure();' href='/@RequestHelper.Controller/logout/[%= data.id %]'> <i class='fa fa-sign-out-alt'></i></a>
+        }
+    }
+
+
+    if (session.HasPermission("reNotify") && (RequestHelper.Controller == "subscription" || RequestHelper.Controller == "transaction"))
+    {
+        <a data-toggle="tooltip" data-placement="top" title="@tr.Get("ReNotify")" class='m-1 btn btn-info btn-sm' onclick='return AreYouSure();' href='/@RequestHelper.Controller/reNotify/[%= data.id %]'> <i class='fa fa-recycle'></i></a>
+    }
+    if (session.HasPermission("Refund") && RequestHelper.Controller == "transaction")
+    {
+        <text>
+            [%if(data.canRefund){%]
+            <a data-toggle="tooltip" data-placement="top" title="@tr.Get("Refund")" class='m-1 btn btn-danger btn-sm' onclick='return AreYouSure();' href='/@RequestHelper.Controller/refund/[%= data.id %]'> <i class='fa fa-upload'></i> </a>
+            [%}%]
+        </text>
+    }
+    if (session.HasPermission("Cancel") && RequestHelper.Controller == "subscription")
+    {
+        <text>
+            [%if(data.canCancel){%]
+            <a data-toggle="tooltip" data-placement="top" title="@tr.Get("Cancel")" class='m-1 btn btn-danger btn-sm' onclick='return AreYouSure();' href='/@RequestHelper.Controller/cancel/[%= data.id %]'> <i class='fa fa-times'></i> </a>
+            [%}%]
+        </text>
+    }
+    if (session.HasPermission("Resend") && RequestHelper.Controller == "sms")
+    {
+        <text>
+            [%if(data.canResend){%]
+            <a data-toggle="tooltip" data-placement="top" title="@tr.Get("Resend")" class='m-1 btn btn-primary btn-sm' onclick='return AreYouSure();' href='/@RequestHelper.Controller/Resend/[%= data.id %]'> <i class='fa fa-share'></i> </a>
+            [%}%]
+        </text>
+    }
+}

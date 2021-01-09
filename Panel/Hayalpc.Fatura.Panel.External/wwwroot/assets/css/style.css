@@ -1,0 +1,17 @@
+﻿.user-navbar {
+    height: 25px;
+    margin-right: 5px;
+}
+
+.remove-before::before {
+    display: none !important;
+}
+
+#hover-btn > .dropdown-menu {
+    top: 3px !important;
+    margin: 0 !important;
+    border: 0;
+}
+.btn.dx-button {
+    padding: 0.375rem .5rem;
+}

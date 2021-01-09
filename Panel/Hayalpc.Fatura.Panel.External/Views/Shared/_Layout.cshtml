@@ -1,0 +1,91 @@
+﻿@using Microsoft.AspNetCore.Localization
+@{ var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var lanLogo = requestCulture.RequestCulture.UICulture.Name == "tr" ? "tr" : "us"; }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewData["Title"] | @AppConfigHelper.AppName</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="/assets/plugins/fontawesome-free/css/all.min.css">
+
+    <link rel="stylesheet" href="/assets/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/assets/css/theme.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <link href="/assets/plugins/devextreme/css/dx.common.css" rel="stylesheet" />
+    <link href="/assets/plugins/devextreme/css/dx.light.css" rel="stylesheet" />
+
+    <!-- flag-icon-css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.3.0/css/flag-icon.min.css">
+
+    <script src="/assets/plugins/jquery/jquery.min.js"></script>
+    <script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/assets/plugins/devextreme/js/dx.all.js"></script>
+    <script src="/assets/plugins/devextreme/js/dx.aspnet.mvc.js"></script>
+    <script src="/assets/plugins/devextreme/js/dx.aspnet.data.js"></script>
+
+    @RenderSection("Styles", required: false)
+
+    <script>
+        DevExpress.localization.locale("tr");
+        DevExpress.config({ defaultCurrency: 'TRY' });
+    </script>
+</head>
+<body class="hold-transition sidebar-mini *layout-navbar-fixed text-sm">
+    <div class="wrapper">
+        <nav class="main-header navbar navbar-expand text-sm navbar-dark navbar-info ">
+            @await Html.PartialAsync("_SearchForm")
+            @await Html.PartialAsync("_RightNavbar")
+        </nav>
+        <aside class="main-sidebar elevation-4 sidebar-dark-teal">
+            <a href="/" class="brand-link navbar-info ">
+
+                <img src="/assets/img/logo/logo_02_1.png"
+                     alt="ParaPandas"
+                     class="brand-image"
+                     style="opacity: .8">
+                <span class="brand-text font-weight-light">
+                    &nbsp;
+                </span>
+            </a>
+            @await Html.PartialAsync("_Sidebar")
+        </aside>
+
+        <div class="content-wrapper">
+            @await Html.PartialAsync("_Breadcrumb")
+            <section class="content">
+                <div class="container-fluid">
+                    @await Html.PartialAsync("_Messages")
+
+                    @RenderBody()
+                </div>
+            </section>
+        </div>
+        @await Html.PartialAsync("_Footer")
+    </div>
+
+    <script src="/assets/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="/assets/plugins/jquery-validation/additional-methods.min.js"></script>
+    <script src="/assets/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="/assets/plugins/jquery-mask/jquery.mask.min.js"></script>
+    <script src="/assets/plugins/select2/js/select2.full.min.js"></script>
+
+    <script src="/assets/plugins/babel-polyfill/polyfill.min.js"></script>
+    <script src="/assets/plugins/exceljs/exceljs.min.js"></script>
+    <script src="/assets/plugins/file-saver/file-saver.min.js"></script>
+
+    <script src="/assets/js/theme.min.js"></script>
+    <script src="/assets/js/app.js"></script>
+
+    @RenderSection("Scripts", required: false)
+    @RenderSection("Scripts2", required: false)
+
+</body>
+</html>

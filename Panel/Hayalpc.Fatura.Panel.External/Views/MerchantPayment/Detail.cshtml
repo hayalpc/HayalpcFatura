@@ -1,0 +1,257 @@
+﻿@model MerchantPaymentVM
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("General")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Id)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Id)</dd>
+                    <dt class="col-sm-4">@tr.Get("MerchantName")</dt>
+                    <dd class="col-sm-8">@session.UserData.MerchantList.Where(x => x.Value == Model.MerchantId.ToString()).FirstOrDefault().Text</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Status)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Status)</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("Amounts")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">@Html.DisplayNameFor(x => x.TotalAmount)</dt>
+                    <dd class="col-sm-3">@Html.DisplayFor(x => x.TotalAmount)</dd>
+                    <dt class="col-sm-3">@Html.DisplayNameFor(x => x.OperatorAmount)</dt>
+                    <dd class="col-sm-3">@Html.DisplayFor(x => x.OperatorAmount)</dd>
+                    <dt class="col-sm-3">@Html.DisplayNameFor(x => x.AggregatorAmount)</dt>
+                    <dd class="col-sm-3">@Html.DisplayFor(x => x.AggregatorAmount)</dd>
+                    <dt class="col-sm-3">@Html.DisplayNameFor(x => x.ShareAmount)</dt>
+                    <dd class="col-sm-3">@Html.DisplayFor(x => x.ShareAmount)</dd>
+                    <dt class="col-sm-3">@Html.DisplayNameFor(x => x.RefundAmount)</dt>
+                    <dd class="col-sm-3">@Html.DisplayFor(x => x.RefundAmount)</dd>
+                    <dt class="col-sm-3">@Html.DisplayNameFor(x => x.ExtraFee)</dt>
+                    <dd class="col-sm-3">@Html.DisplayFor(x => x.ExtraFee)</dd>
+
+                </dl>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("Creation")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">@Html.DisplayNameFor(x => x.CreateTime)</dt>
+                    <dd class="col-sm-3">@Html.DisplayFor(x => x.CreateTime)</dd>
+                    <dt class="col-sm-3">@Html.DisplayNameFor(x => x.CreateUserId)</dt>
+                    <dd class="col-sm-3">@Html.DisplayFor(x => x.CreateUserId)</dd>
+                    <dt class="col-sm-3">@Html.DisplayNameFor(x => x.UpdateTime)</dt>
+                    <dd class="col-sm-3">@Html.DisplayFor(x => x.UpdateTime)</dd>
+                    <dt class="col-sm-3">@Html.DisplayNameFor(x => x.UpdateUserId)</dt>
+                    <dd class="col-sm-3">@Html.DisplayFor(x => x.UpdateUserId)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">@tr.Get("ServisAllocation")</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="chart-responsive">
+                                    <canvas id="pieChart" height="200"></canvas>
+                                </div>
+                                <!-- ./chart-responsive -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-4">
+                                <ul class="chart-legend clearfix">
+                                    <li> Servis 1</li>
+                                    <li> Servis 2</li>
+                                    <li> Servis 3</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">@tr.Get("OperatorAllocation")</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="chart-responsive">
+                                    <canvas id="pieChart2" height="200"></canvas>
+                                </div>
+                                <!-- ./chart-responsive -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-4">
+                                <ul class="chart-legend clearfix">
+                                    <li> Operator 1</li>
+                                    <li> Operator 2</li>
+                                    <li> Operator 3</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h3 class="card-title">@tr.Get("MontlyAllocation")</h3>
+                    <h3 class="card-title"><b>@Model.TotalAmount ₺</b></h3>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <div class="position-relative mb-4">
+                    <canvas id="sales-chart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+@await Html.PartialAsync("Partials/_DetailActionButtons", Model.Id)
+
+@section Scripts {
+    <script src="/assets/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+    <script src="/assets/plugins/raphael/raphael.min.js"></script>
+    <!-- ChartJS -->
+    <script src="/assets/plugins/chart.js/Chart.min.js"></script>
+
+    <script>
+        var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+        var pieData = {
+            labels: [
+                'Üye İşyeri 1',
+                'Üye İşyeri 2',
+                'Üye İşyeri 3'
+            ],
+            datasets: [
+                {
+                    data: [700, 500, 400],
+                    backgroundColor: ['#f56954', '#00a65a', '#f39c12'],
+                }
+            ]
+        }
+        var pieOptions = {
+            legend: {
+                display: false
+            }
+        }
+        //Create pie or douhnut chart
+        // You can switch between pie and douhnut using the method below.
+        var pieChart = new Chart(pieChartCanvas, {
+            type: 'doughnut',
+            data: pieData,
+            options: pieOptions
+        });
+
+
+        var pieChartCanvas = $('#pieChart2').get(0).getContext('2d')
+        var pieData = {
+            labels: [
+                'Servis 1',
+                'Servis 2',
+                'Servis 3'
+            ],
+            datasets: [
+                {
+                    data: [600, 800, 200],
+                    backgroundColor: ['#00c0ef', '#3c8dbc', '#d2d6de'],
+                }
+            ]
+        }
+        var pieOptions = {
+            legend: {
+                display: false
+            }
+        }
+        //Create pie or douhnut chart
+        // You can switch between pie and douhnut using the method below.
+        var pieChart = new Chart(pieChartCanvas, {
+            type: 'doughnut',
+            data: pieData,
+            options: pieOptions
+        });
+
+        var ticksStyle = {
+            fontColor: '#495057',
+            fontStyle: 'bold'
+        }
+        var mode = 'index'
+        var intersect = true
+        var $salesChart = $('#sales-chart')
+        var salesChart = new Chart($salesChart, {
+            type: 'bar',
+            data: {
+                labels: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Haziran', 'Temmmuz'],
+                datasets: [
+                    {
+                        backgroundColor: '#007bff',
+                        data: [10000, 13000, 18000, 7500, 5000, 2500, 1500]
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    mode: mode,
+                    intersect: intersect
+                },
+                hover: {
+                    mode: mode,
+                    intersect: intersect
+                },
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        display: false,
+                        gridLines: {
+                            display: true,
+                            lineWidth: '4px',
+                            color: 'rgba(0, 0, 0, .2)',
+                            zeroLineColor: 'transparent'
+                        },
+                        ticks: $.extend({
+                            beginAtZero: true,
+                            callback: function (value, index, values) {
+                                if (value >= 1000) {
+                                    value /= 1000
+                                    value += 'k'
+                                }
+                                return '₺' + value
+                            }
+                        }, ticksStyle)
+                    }],
+                    xAxes: [{
+                        display: true,
+                        gridLines: {
+                            display: false
+                        },
+                        ticks: ticksStyle
+                    }]
+                }
+            }
+        })
+
+    </script>
+}

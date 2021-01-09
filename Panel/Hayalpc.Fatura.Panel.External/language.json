@@ -1,0 +1,420 @@
+{
+  "languageData": [
+    {
+      "key": "Table Definitions",
+      "text": "Table Definitions"
+    },
+    {
+      "key": "NotFound",
+      "text": "NotFound"
+    },
+    {
+      "key": "InvalidUsernameOrPassword",
+      "text": "InvalidUsernameOrPassword"
+    },
+    {
+      "key": "Login",
+      "text": "Login"
+    },
+    {
+      "key": "LoginToContinue",
+      "text": "LoginToContinue"
+    },
+    {
+      "key": "Email",
+      "text": "Email"
+    },
+    {
+      "key": "Password",
+      "text": "Password"
+    },
+    {
+      "key": "RememberMe",
+      "text": "RememberMe"
+    },
+    {
+      "key": "SignIn",
+      "text": "SignIn"
+    },
+    {
+      "key": "ForgotPassword",
+      "text": "ForgotPassword"
+    },
+    {
+      "key": "AppName",
+      "text": "AppName"
+    },
+    {
+      "key": "Merchants",
+      "text": "Merchants"
+    },
+    {
+      "key": "Update",
+      "text": "Update"
+    },
+    {
+      "key": "Detail",
+      "text": "Detail"
+    },
+    {
+      "key": "EmptyRecord",
+      "text": "EmptyRecord"
+    },
+    {
+      "key": "New",
+      "text": "New"
+    },
+    {
+      "key": "SeeAllNotifications",
+      "text": "SeeAllNotifications"
+    },
+    {
+      "key": "Profile",
+      "text": "Profile"
+    },
+    {
+      "key": "Logout",
+      "text": "Logout"
+    },
+    {
+      "key": "Services",
+      "text": "Services"
+    },
+    {
+      "key": "Transactions",
+      "text": "Transactions"
+    },
+    {
+      "key": "Subscriptions",
+      "text": "Subscriptions"
+    },
+    {
+      "key": "Smses",
+      "text": "Smses"
+    },
+    {
+      "key": "Approval Requests",
+      "text": "Approval Requests"
+    },
+    {
+      "key": "TransactionDetail",
+      "text": "TransactionDetail"
+    },
+    {
+      "key": "SubscriptionDetail",
+      "text": "SubscriptionDetail"
+    },
+    {
+      "key": "UpdateRequestSuccess",
+      "text": "UpdateRequestSuccess"
+    },
+    {
+      "key": "Values",
+      "text": "Values"
+    },
+    {
+      "key": "Approve",
+      "text": "Approve"
+    },
+    {
+      "key": "Reject",
+      "text": "Reject"
+    },
+    {
+      "key": "ApproveSuccess",
+      "text": "ApproveSuccess"
+    },
+    {
+      "key": "RejectSuccess",
+      "text": "RejectSuccess"
+    },
+    {
+      "key": "Lotout",
+      "text": "Lotout"
+    },
+    {
+      "key": "PleaseLogin",
+      "text": "PleaseLogin"
+    },
+    {
+      "key": "UserAdd",
+      "text": "UserAdd"
+    },
+    {
+      "key": "RoleAdd",
+      "text": "RoleAdd"
+    },
+    {
+      "key": "TabledefinitionAdd",
+      "text": "TabledefinitionAdd"
+    },
+    {
+      "key": "TabledefinitionDetail",
+      "text": "TabledefinitionDetail"
+    },
+    {
+      "key": "Resetpassword",
+      "text": "Resetpassword"
+    },
+    {
+      "key": "ForgotPasswordSuccess",
+      "text": "ForgotPasswordSuccess"
+    },
+    {
+      "key": "CreatePasswordTitle",
+      "text": "CreatePasswordTitle"
+    },
+    {
+      "key": "PasswordConfirm",
+      "text": "PasswordConfirm"
+    },
+    {
+      "key": "CreateNewPassword",
+      "text": "CreateNewPassword"
+    },
+    {
+      "key": "CreatePasswordSuccess",
+      "text": "CreatePasswordSuccess"
+    },
+    {
+      "key": "InvalidResetPassword",
+      "text": "InvalidResetPassword"
+    },
+    {
+      "key": "LoginNewSession",
+      "text": "LoginNewSession"
+    },
+    {
+      "key": "GetError",
+      "text": "GetError"
+    },
+    {
+      "key": "Enum.Renewal",
+      "text": "Enum.Renewal"
+    },
+    {
+      "key": "Enum.API",
+      "text": "Enum.API"
+    },
+    {
+      "key": "Enum.CP",
+      "text": "Enum.CP"
+    },
+    {
+      "key": "Enum.Landing",
+      "text": "Enum.Landing"
+    },
+    {
+      "key": "Enum.SMS",
+      "text": "Enum.SMS"
+    },
+    {
+      "key": "Categories",
+      "text": "Categories"
+    },
+    {
+      "key": "Categorys",
+      "text": "Categorys"
+    },
+    {
+      "key": "CategoryAdd",
+      "text": "CategoryAdd"
+    },
+    {
+      "key": "PleaseFixErrors",
+      "text": "PleaseFixErrors"
+    },
+    {
+      "key": "ResetPasswordSendSuccess",
+      "text": "ResetPasswordSendSuccess"
+    },
+    {
+      "key": "Documentations&Files",
+      "text": "Documentations&Files"
+    },
+    {
+      "key": "Documents&Files",
+      "text": "Documents&Files"
+    },
+    {
+      "key": "ThereIsNoDocument",
+      "text": "ThereIsNoDocument"
+    },
+    {
+      "key": "HasWaitingApprove",
+      "text": "HasWaitingApprove"
+    },
+    {
+      "key": "Homes",
+      "text": "Homes"
+    },
+    {
+      "key": "İndex",
+      "text": "İndex"
+    },
+    {
+      "key": "Tariffs",
+      "text": "Tariffs"
+    },
+    {
+      "key": "TariffAdd",
+      "text": "TariffAdd"
+    },
+    {
+      "key": "TariffUpdate",
+      "text": "TariffUpdate"
+    },
+    {
+      "key": "CommissionSettings",
+      "text": "CommissionSettings"
+    },
+    {
+      "key": "Charging",
+      "text": "Charging"
+    },
+    {
+      "key": "Refund",
+      "text": "Refund"
+    },
+    {
+      "key": "ReNotify",
+      "text": "ReNotify"
+    },
+    {
+      "key": "Cancel",
+      "text": "Cancel"
+    },
+    {
+      "key": "ServiceName",
+      "text": "ServiceName"
+    },
+    {
+      "key": "CategoryDetail",
+      "text": "CategoryDetail"
+    },
+    {
+      "key": "CategoryUpdate",
+      "text": "CategoryUpdate"
+    },
+    {
+      "key": "CarrierName",
+      "text": "CarrierName"
+    },
+    {
+      "key": "SmsDetail",
+      "text": "SmsDetail"
+    },
+    {
+      "key": "SMS",
+      "text": "SMS"
+    },
+    {
+      "key": "mo",
+      "text": "mo"
+    },
+    {
+      "key": "mt",
+      "text": "mt"
+    },
+    {
+      "key": "Resend",
+      "text": "Resend"
+    },
+    {
+      "key": "User Management",
+      "text": "User Management"
+    },
+    {
+      "key": "Approval Management",
+      "text": "Approval Management"
+    },
+    {
+      "key": "User",
+      "text": "User"
+    },
+    {
+      "key": "CouldNotApprove",
+      "text": "CouldNotApprove"
+    },
+    {
+      "key": "Carrier Collections",
+      "text": "Carrier Collections"
+    },
+    {
+      "key": "Merchant Payments",
+      "text": "Merchant Payments"
+    },
+    {
+      "key": "Carriercollections",
+      "text": "Carriercollections"
+    },
+    {
+      "key": "CarriercollectionAdd",
+      "text": "CarriercollectionAdd"
+    },
+    {
+      "key": "ExcelUpload",
+      "text": "ExcelUpload"
+    },
+    {
+      "key": "SelectAFile",
+      "text": "SelectAFile"
+    },
+    {
+      "key": "CarriercollectionDetail",
+      "text": "CarriercollectionDetail"
+    },
+    {
+      "key": "Amounts",
+      "text": "Amounts"
+    },
+    {
+      "key": "MerchantAllocation",
+      "text": "MerchantAllocation"
+    },
+    {
+      "key": "ServiceAllocation",
+      "text": "ServiceAllocation"
+    },
+    {
+      "key": "MontlyAllocation",
+      "text": "MontlyAllocation"
+    },
+    {
+      "key": "Merchantpayments",
+      "text": "Merchantpayments"
+    },
+    {
+      "key": "MerchantpaymentAdd",
+      "text": "MerchantpaymentAdd"
+    },
+    {
+      "key": "Calculate",
+      "text": "Calculate"
+    },
+    {
+      "key": "MerchantSelection",
+      "text": "MerchantSelection"
+    },
+    {
+      "key": "Hesaplama isteğiniz başlatılmıştır.",
+      "text": "Hesaplama isteğiniz başlatılmıştır."
+    },
+    {
+      "key": "An error occurred while updating the entries. See the inner exception for details.",
+      "text": "An error occurred while updating the entries. See the inner exception for details."
+    },
+    {
+      "key": "MerchantpaymentDetail",
+      "text": "MerchantpaymentDetail"
+    },
+    {
+      "key": "ServisAllocation",
+      "text": "ServisAllocation"
+    },
+    {
+      "key": "OperatorAllocation",
+      "text": "OperatorAllocation"
+    }
+  ]
+}

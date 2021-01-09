@@ -1,0 +1,55 @@
+﻿<div class="row">
+    <div class="col-12">
+        <div class="card">
+
+            <div class="card-body">
+                @(Html.DevExtreme().DataGrid<SmsVM>()
+                .ID("SmsVM-gridContainer")
+                .DataSource(d => d.WebApi().Controller("Sms").LoadMethod("post").Key("id"))
+                //.DataSourceOptions(dso=>dso.Select("Id", "Name", "Type", "Email", "AuthorizedPersonName", "AuthorizedPersonPhone", "AuthorizedPersonEmail", "AuthorizedPersonTckn", "Status" ))
+                .ColumnAutoWidth(true)
+                .RowAlternationEnabled(true)
+                .ShowColumnLines(true)
+                .ShowBorders(true)
+                .ShowRowLines(true)
+                .StateStoring(s => s.Enabled(true).Type(StateStoringType.LocalStorage).StorageKey("SmsVM-storage" + DateTime.Today))
+                .Columns(c => {
+
+                    c.AddFor(x => x.Id).DataField("id").Fixed(true).SortIndex(0).SortOrder(SortOrder.Desc);
+                    c.AddFor(x => x.MerchantId).DataField("merchantId").Lookup(lookup =>lookup.DataSource(session.UserData.MerchantList).ValueExpr("Value").DisplayExpr("Text"));
+                    c.AddFor(x => x.ServiceId).DataField("serviceId").Lookup(lookup =>lookup.DataSource(session.UserData.ServiceList).ValueExpr("Value").DisplayExpr("Text"));
+                    //c.AddFor(x => x.MerchantId).DataField("merchantId").Lookup(lookup =>lookup.DataSource(d => d.WebApi().Controller("Merchant").LoadMethod("post").Key("id")).ValueExpr("id").DisplayExpr("name"));
+                    //c.AddFor(x => x.ServiceId).DataField("serviceId").Lookup(lookup =>lookup.DataSource(d => d.WebApi().Controller("Service").LoadMethod("post").Key("id")).ValueExpr("id").DisplayExpr("name"));
+                    c.AddFor(x => x.CarrierId).DataField("carrierId").Lookup(lookup => lookup.DataSource(Html.GetEnumSelectList(typeof(CarrierId))).ValueExpr("Value").DisplayExpr("Text"));
+                    c.AddFor(x => x.Msisdn).DataField("msisdn");
+                    c.AddFor(x => x.Message).DataField("message");
+                    c.AddFor(x => x.Type).DataField("type").Lookup(lookup => lookup.DataSource(Html.GetClassSelectList(typeof(SmsType))).ValueExpr("Value").DisplayExpr("Text"));
+                    c.AddFor(x => x.Status).DataField("status").Lookup(lookup => lookup.DataSource(Html.GetEnumSelectList(typeof(Status))).ValueExpr("Value").DisplayExpr("Text"));
+                    c.AddFor(x => x.CreateTime).DataField("createTime").Format("dd.MM.yyyy, HH:mm:ss").DataType(GridColumnDataType.DateTime).FormItem(f => f.Visible(false));
+                    c.AddFor(x => x.SendDate).DataField("sendDate").Format("dd.MM.yyyy, HH:mm:ss").DataType(GridColumnDataType.DateTime).FormItem(f => f.Visible(false));
+
+                    c.Add().HeaderCellTemplate("<i class='fa fa-bolt'></i>").AllowFiltering(false).AllowSorting(false).ShowInColumnChooser(false).FormItem(f => f.Visible(false))
+                            .CellTemplate(@<text> @await Html.PartialAsync("Partials/_ActionButtons") </text>);
+                })
+                .ColumnChooser(cc => cc.Enabled(true).EmptyPanelText(tr.Get("EmptyRecord")).Mode(GridColumnChooserMode.Select))
+                .Pager(a => a.Visible(true).ShowPageSizeSelector(true).ShowInfo(true))
+                .Paging(paging => paging.PageSize(20))
+                .Pager(pager =>
+                {
+                    pager.ShowPageSizeSelector(true);
+                    pager.AllowedPageSizes(new[] { 5, 10, 20,50,100 });
+                    pager.ShowInfo(true);
+                })
+                .RemoteOperations(true)
+                .FilterRow(f => f.Visible(true))
+                .AllowColumnReordering(true)
+                .NoDataText(tr.Get("EmptyRecord"))
+                .Scrolling(Scrolling => Scrolling.ShowScrollbar(ShowScrollbarMode.Always))
+                .OnToolbarPreparing(@<text>@await Html.PartialAsync("Partials/_AddButton")</text>)
+                .OnExporting(@<text>@await Html.PartialAsync("Partials/_ExportButtons")</text>)
+                )
+
+            </div>
+        </div>
+    </div>
+</div>

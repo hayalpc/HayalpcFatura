@@ -1,0 +1,80 @@
+﻿@model long
+@{
+    var links = "";
+    var classes = "dropdown-item text-lg";
+
+    if (session.HasPermission("update"))
+    {
+        links += $"<a class='{classes}' href='/{RequestHelper.Controller}/update/{Model}'> <i class='fa fa-edit'></i> {tr.Get("Update")}</a>";
+    }
+    if (RequestHelper.Controller == "user")
+    {
+        if (session.HasPermission("resetpassword"))
+        {
+            links += $"<a class='{classes}' onclick='return AreYouSure();' href='/{RequestHelper.Controller}/resetpassword/{Model}'> <i class='fa fa-lock-open'></i> {tr.Get("ResetPassword")}</a>";
+        }
+        if (session.HasPermission("logout"))
+        {
+            links += $"<a class='{classes}' onclick='return AreYouSure();' href='/{RequestHelper.Controller}/logout/{Model}'> <i class='fa fa-sign-out-alt'></i> {tr.Get("Logout")}</a>";
+        }
+    }
+
+    if (RequestHelper.Controller == "role")
+    {
+        if (session.HasPermission("update"))
+        {
+            links += $"<a class='{classes}' href='/{RequestHelper.Controller}/permissions/{Model}'> <i class='fa fa-list'></i> {tr.Get("Permissions")}</a>";
+        }
+    }
+
+    if (RequestHelper.Controller == "tablehistory")
+    {
+        if (session.HasPermission("approve") && (ViewBag.TableHistory.Status == TableHistoryStatus.New || ViewBag.TableHistory.Status == TableHistoryStatus.Step1 || ViewBag.TableHistory.Status == TableHistoryStatus.Step1))
+        {
+            links += $"<a class='{classes}' href='/{RequestHelper.Controller}/approve/{Model}'> <i class='fa fa-list'></i> {tr.Get("Approve")}</a>";
+            links += $"<a class='{classes}' href='/{RequestHelper.Controller}/reject/{Model}'> <i class='fa fa-list'></i> {tr.Get("Reject")}</a>";
+        }
+    }
+
+    if (RequestHelper.Controller == "sms" && ViewBag.Sms != null)
+    {
+        if (session.HasPermission("Resend") && ViewBag.Sms.CanResend)
+        {
+            links += $"<a class='{classes}' onclick='return AreYouSure();' href='/{RequestHelper.Controller}/Resend/{Model}'> <i class='fa fa-share'></i> {tr.Get("Resend")}</a>";
+        }
+    }
+
+    if (RequestHelper.Controller == "transaction" && ViewBag.Transaction != null)
+    {
+        if (session.HasPermission("Refund") && ViewBag.Transaction.CanRefund)
+        {
+            links += $"<a class='{classes} text-danger' onclick='return AreYouSure();' href='/{RequestHelper.Controller}/refund/{Model}'> <i class='fa fa-upload'></i> {tr.Get("Refund")}</a>";
+        }
+        if (session.HasPermission("reNotify"))
+        {
+            links += $"<a class='{classes}' onclick='return AreYouSure();' href='/{RequestHelper.Controller}/reNotify/{Model}'> <i class='fa fa-recycle'></i> {tr.Get("ReNotify")}</a>";
+        }
+    }
+
+    if (RequestHelper.Controller == "subscription" && ViewBag.Subscription != null)
+    {
+        if (session.HasPermission("Cancel") && ViewBag.Subscription.CanCancel)
+        {
+            links += $"<a class='{classes} label-danger' onclick='return AreYouSure();' href='/{RequestHelper.Controller}/cancel/{Model}'> <i class='fa fa-times'></i> {tr.Get("Cancel")}</a>";
+        }
+        if (session.HasPermission("reNotify"))
+        {
+            links += $"<a class='{classes}' onclick='return AreYouSure();' href='/{RequestHelper.Controller}/reNotify/{Model}'> <i class='fa fa-recycle'></i> {tr.Get("ReNotify")}</a>";
+        }
+    }
+    links += $"<a class='{classes}' href='{RequestHelper.Referer}'><i class='fa fa-undo'></i> {tr.Get("GoBack")}</a>";
+
+    <div id="hover-btn" class="btn-group dropup dropleft float-right dropdown" style="position: fixed; right: 14px; bottom: 48px;">
+        <button type="button" class="btn bg-info dropdown-toggle *rounded-circle remove-before" data-toggle="dropdown" data-hover="dropdown">
+            <i class="fa fa-cogs fa-2x"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            @Html.Raw(links)
+        </div>
+    </div>
+}

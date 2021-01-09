@@ -1,0 +1,53 @@
+﻿<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                @(Html.DevExtreme().DataGrid<ServiceVM>()
+                .ID("ServiceVM-gridContainer")
+                .DataSource(d => d.WebApi().Controller("Service").LoadMethod("post").Key("id"))
+                //.DataSourceOptions(dso=>dso.Select("Id", "Name", "Type", "Email", "AuthorizedPersonName", "AuthorizedPersonPhone", "AuthorizedPersonEmail", "AuthorizedPersonTckn", "Status" ))
+                .ColumnAutoWidth(true)
+                .RowAlternationEnabled(true)
+                .ShowColumnLines(true)
+                .ShowBorders(true)
+                .ShowRowLines(true)
+                .Columns(c => {
+
+                    c.AddFor(x => x.Id).DataField("id");
+                    c.AddFor(x => x.MerchantId).DataField("merchantId").Lookup(lookup =>lookup.DataSource(session.UserData.MerchantList).ValueExpr("Value").DisplayExpr("Text"));
+                    c.AddFor(x => x.Name).DataField("name");
+                    c.AddFor(x => x.Type).DataField("type").Lookup(lookup => lookup.DataSource(Html.GetEnumSelectList(typeof(ServiceType))).ValueExpr("Value").DisplayExpr("Text"));
+                    c.AddFor(x => x.SubType).DataField("subType").Visible(false);
+                    c.AddFor(x => x.CategoryId).DataField("categoryId").Lookup(lookup =>lookup.DataSource(d => d.WebApi().Controller("Category").LoadMethod("post").Key("id")).ValueExpr("id").DisplayExpr("name"));
+                    c.AddFor(x => x.PlatformType).DataField("platformType");
+                    c.AddFor(x => x.SmsKeyword).DataField("smsKeyword").Visible(false);
+                    c.AddFor(x => x.WebSite).DataField("webSite").Visible(false);
+                    c.AddFor(x => x.Status).DataField("status").Lookup(lookup => lookup.DataSource(Html.GetEnumSelectList(typeof(Status))).ValueExpr("Value").DisplayExpr("Text"));
+
+                    c.Add().HeaderCellTemplate("<i class='fa fa-bolt'></i>").AllowFiltering(false).AllowSorting(false).ShowInColumnChooser(false).FormItem(f => f.Visible(false))
+                        .CellTemplate(@<text> @await Html.PartialAsync("Partials/_ActionButtons") </text>);
+                })
+                .ColumnChooser(cc => cc.Enabled(true).EmptyPanelText(tr.Get("EmptyRecord")).Mode(GridColumnChooserMode.Select))
+                .Pager(a => a.Visible(true).ShowPageSizeSelector(true).ShowInfo(true))
+                .Paging(paging => paging.PageSize(20))
+                .Pager(pager =>
+                {
+                    pager.ShowPageSizeSelector(true);
+                    pager.AllowedPageSizes(new[] { 5, 10, 20,50,100 });
+                    pager.ShowInfo(true);
+                })
+                .FilterRow(f => f.Visible(true))
+                .AllowColumnReordering(true)
+                .NoDataText(tr.Get("EmptyRecord"))
+                .Scrolling(Scrolling => Scrolling.ShowScrollbar(ShowScrollbarMode.Always))
+                .OnToolbarPreparing(@<text> @await Html.PartialAsync("Partials/_AddButton")</text>)
+                .Export(e => e.Enabled(true))
+                .OnExporting(@<text>@await Html.PartialAsync("Partials/_ExportButtons")</text>)
+                .Selection(s => s.Mode(SelectionMode.Multiple).SelectAllMode(SelectAllMode.Page).AllowSelectAll(true).ShowCheckBoxesMode(GridSelectionShowCheckBoxesMode.Always))
+                .ColumnChooser(cc => cc.Enabled(true).EmptyPanelText(tr.Get("EmptyRecord")).Mode(GridColumnChooserMode.Select))
+                )
+
+            </div>
+        </div>
+    </div>
+</div>

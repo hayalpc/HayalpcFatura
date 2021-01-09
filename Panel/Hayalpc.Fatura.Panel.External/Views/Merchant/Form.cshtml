@@ -1,0 +1,282 @@
+﻿@model MerchantVM
+@{
+    var isUpdate = Model != null && Model.Id > 0;
+    if (!isUpdate)
+    {
+        Model.PrivateKey = Guid.NewGuid().ToString("N");
+    }
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new
+{
+    @id = "modelForm",
+    @class = "form-horizontal",
+    role = "form",
+    enctype = "multipart/form-data",
+    autocomplete = "off"
+}))
+{
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-sm-6">
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">@tr.Get("GeneralInformation")</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label asp-for="Status" class="col-sm-4"></label>
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(m => m.Status, Html.GetEnumSelectList(typeof(Status)), tr.Get("PleasePickOne"), new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Type" class="col-sm-4"></label>
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(m => m.Type, Html.GetEnumSelectList(typeof(MerchantType)), tr.Get("PleasePickOne"), new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Type, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Name, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Name) })
+                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.ActivityArea, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.ActivityArea, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.ActivityArea) })
+                            @Html.ValidationMessageFor(m => m.ActivityArea, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.CommercialTitle, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.CommercialTitle, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.CommercialTitle) })
+                            @Html.ValidationMessageFor(m => m.CommercialTitle, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.CommercialRegistryNo, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.CommercialRegistryNo, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.CommercialRegistryNo) })
+                            @Html.ValidationMessageFor(m => m.CommercialRegistryNo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.BusinessDesc, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.BusinessDesc, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.BusinessDesc) })
+                            @Html.ValidationMessageFor(m => m.BusinessDesc, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.WebSite, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.WebSite, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.WebSite) })
+                            @Html.ValidationMessageFor(m => m.WebSite, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Email, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.Email, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Email) })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.PrivateKey, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.PrivateKey, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.PrivateKey) })
+                            @Html.ValidationMessageFor(m => m.PrivateKey, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">@tr.Get("AddressInformation")</h3>
+                </div>
+                <div class="card-body">
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.CountryId, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(m => m.CountryId, Enumerable.Empty<SelectListItem>(), tr.Get("PleasePickOne"), new { @class = "form-control select2 loadAjax", data_controller = "/parameters/country", data_default = Model.CountryId, @onchange = "return loadCity(this.value);" })
+                            @Html.ValidationMessageFor(m => m.CountryId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.CityId, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(m => m.CityId, Enumerable.Empty<SelectListItem>(), tr.Get("PleasePickOne"), new { @class = "form-control select2", @onchange = "return loadDistrict(this.value);", data_default = Model.CityId })
+                            @Html.ValidationMessageFor(m => m.CityId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.DistrictId, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(m => m.DistrictId, Enumerable.Empty<SelectListItem>(), tr.Get("PleasePickOne"), new { @class = "form-control select2", data_default = Model.DistrictId })
+                            @Html.ValidationMessageFor(m => m.DistrictId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.PostalCode, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.PostalCode, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.PostalCode) })
+                            @Html.ValidationMessageFor(m => m.PostalCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Address, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextAreaFor(x => x.Address, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Address) })
+                            @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">@tr.Get("ContactInformation")</h3>
+                </div>
+                <div class="card-body">
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.AuthorizedPersonName, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.AuthorizedPersonName, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.AuthorizedPersonName) })
+                            @Html.ValidationMessageFor(m => m.AuthorizedPersonName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.AuthorizedPersonPhone, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.AuthorizedPersonPhone, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.AuthorizedPersonPhone) })
+                            @Html.ValidationMessageFor(m => m.AuthorizedPersonPhone, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.AuthorizedPersonEmail, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.AuthorizedPersonEmail, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.AuthorizedPersonEmail) })
+                            @Html.ValidationMessageFor(m => m.AuthorizedPersonEmail, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.AuthorizedPersonTckn, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.AuthorizedPersonTckn, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.AuthorizedPersonTckn) })
+                            @Html.ValidationMessageFor(m => m.AuthorizedPersonTckn, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">@tr.Get("AccountingInformation")</h3>
+                </div>
+                <div class="card-body">
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.TaxNo, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.TaxNo, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.TaxNo) })
+                            @Html.ValidationMessageFor(m => m.TaxNo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.TaxOffice, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.TaxOffice, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.TaxOffice) })
+                            @Html.ValidationMessageFor(m => m.TaxOffice, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.AccountName, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.AccountName, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.AccountName) })
+                            @Html.ValidationMessageFor(m => m.AccountName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Iban, null, new { @class = "col-sm-4" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.Iban, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Iban) })
+                            @Html.ValidationMessageFor(m => m.Iban, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @{
+                if (isUpdate)
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">@tr.Get("Documents&Files")</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                @{
+                                    if (Model.BlobFiles != null && Model.BlobFiles.Count > 0)
+                                    {
+                                        foreach (var file in Model.BlobFiles)
+                                        {
+                                            <div class="col-12">
+                                                <span>
+                                                    <a href="/blobfile/get?guid=@file.Token" target="_blank">@file.Token - @file.Name</a>
+                                                    @*<button class="btn btn-danger btn-xs"><i class="fa fa-trash-alt"></i></button>*@
+                                                </span>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span>@tr.Get("ThereIsNoDocument")</span>
+                                    }
+                                }
+                            </div>
+                            <div class="form-group row">
+                                <input type="file" name="files" multiple />
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-footer">
+                    <a href="@RequestHelper.Referer" class="btn btn-info float-left">@tr.Get("GoBack")</a>
+                    <button type="submit" class="btn btn-primary float-right">@tr.Get("Save")</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $(function () {
+        loadCity("@Model.CountryId");
+        loadDistrict("@Model.CityId");
+    });
+</script>

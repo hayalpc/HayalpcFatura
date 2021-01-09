@@ -1,0 +1,17 @@
+﻿<script>
+    function gridExporting(e) {
+        var workbook = new ExcelJS.Workbook();
+        var worksheet = workbook.addWorksheet('@(RequestHelper.Controller + "_" + DateTime.Now.Day)');
+        DevExpress.excelExporter.exportDataGrid({
+            component: e.component,
+            worksheet: worksheet,
+            selectedRowsOnly: true,
+            autoFilterEnabled: true
+        }).then(function () {
+            workbook.xlsx.writeBuffer().then(function (buffer) {
+                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), '@(RequestHelper.Controller + "_" + DateTime.Now.Day).xlsx');
+            });
+        });
+        e.cancel = true;
+    }
+</script>

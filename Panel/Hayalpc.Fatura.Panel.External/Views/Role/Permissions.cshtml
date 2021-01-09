@@ -1,0 +1,251 @@
+﻿@model RoleVM
+@{
+    var menuIcon = "fa fa-stream";
+    var unMenuIcon = "fa fa-lock";
+}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get(RequestHelper.Controller.Ucfirst() + "s")</h3>
+
+                <div class="card-tools">
+                    @if (session.HasPermission("Add"))
+                    {<button class="btn btn-tool" onclick="return openNewRolePermissionModel();"> <i class="fas fa-plus"></i> @tr.Get("New") </button>}
+                </div>
+
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <ul id="jssTree">
+                    <li class="jstree-open" id="jsTree">
+                        <ul>
+                            <li class="jstree-open">
+                                @Model.Name
+                                <ul>
+                                    @{
+                                        var list1 = Model.RolePermissions.Where(x => x.RolePermissionId == 0).OrderBy(x => x.Order).ToList();
+                                        foreach (var parent1 in list1)
+                                        {
+                                            var list2 = Model.RolePermissions.Where(x => x.RolePermissionId == parent1.Id).OrderBy(x => x.Order).ToList();
+                                            if (list2.Count > 0)
+                                            {
+                                                <li class="jstree-open" data-jstree='{"icon":"@(parent1.IsMenu ? parent1.Icon : unMenuIcon)","id":"@parent1.Id"}'>
+                                                    @parent1.Name
+                                                    <ul>
+                                                        @{
+                                                            foreach (var parent2 in list2)
+                                                            {
+                                                                var list3 = Model.RolePermissions.Where(x => x.RolePermissionId == parent2.Id).OrderBy(x => x.Order).ToList();
+                                                                if (list3.Count > 0)
+                                                                {
+                                                                    <li class="jstree-open @parent2.Id" data-jstree='{"icon":"@(parent2.IsMenu ? parent2.Icon : unMenuIcon)","id":"@parent2.Id"}'>
+                                                                        @parent2.Name @("(" + parent2.Controller + "/" + parent2.Action + ")")
+                                                                        <ul>
+                                                                            @{
+                                                                                foreach (var parent3 in list3)
+                                                                                {
+                                                                                    <li data-jstree='{"icon":"@(parent3.IsMenu ? menuIcon : unMenuIcon)","id":"@parent3.Id"}'>@parent3.Name @("(" + parent3.Controller + "/" + parent3.Action + ")")</li>
+                                                                                }
+                                                                            }
+                                                                        </ul>
+                                                                    </li>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <li data-jstree='{"icon":"fa fa-lock","id":"@parent2.Id"}'>
+                                                                        @parent2.Name @("(" + parent2.Controller + "/" + parent2.Action + ")")
+                                                                    </li>
+                                                                }
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li data-jstree='{"icon":"fa fa-lock","id":"@parent1.Id"}'>@parent1.Name @("(" + parent1.Controller + "/" + parent1.Action + ")")</li>
+                                            }
+                                        }
+                                    }
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-footer">
+                <a href="@RequestHelper.Referer" class="btn btn-info float-left">@tr.Get("GoBack")</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-lg">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Role Permission</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="rolePermissionForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" name="Id" id="rp_Id" />
+                        <input type="hidden" name="Type" id="Type" />
+                        <div class="col-sm-12 role-parent">
+                            <div class="form-group">
+                                <label class="control-label">RolePermissionId</label>
+                                <select type="text" name="RolePermissionId" id="rp_RolePermissionId" class="form-control">
+                                    <option selected value="0">@tr.Get("PleasePickOne")</option>
+                                    @{
+                                        var listx1 = Model.RolePermissions.Where(x => x.IsMenu == true).OrderBy(x => x.Order).ToList();
+                                        foreach (var parent1 in listx1)
+                                        {
+                                            <option value="@parent1.Id">@parent1.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Name</label>
+                                <input type="text" name="Name" id="rp_Name" value="" placeholder="Name" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Description</label>
+                                <input type="text" name="Description" id="rp_Description" value="" placeholder="Description" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Icon</label>
+                                <input type="text" name="Icon" id="rp_Icon" value="" placeholder="Icon" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Order</label>
+                                <input type="number" name="Order" min="0" max="100" id="rp_Order" placeholder="Order" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Controller</label>
+                                <input type="text" name="Controller" id="rp_Controller" value="" placeholder="Controller" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Action</label>
+                                <input type="text" name="Action" id="rp_Action" value="" placeholder="Action" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">IsMenu</label>
+                            <input type="checkbox" name="IsMenu" id="rp_IsMenu" value="true" class="form-control" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@tr.Get("Close")</button>
+                    <button type="button" class="btn btn-danger role-action" onclick="return deleteRolePermissionForm();"><i class="fa fa-trash-alt"></i> @tr.Get("Delete")</button>
+                    <button type="button" onclick="return sendRolePermissionForm();" class="btn btn-primary"><i class="fa fa-save"></i> @tr.Get("Save")</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+@section Styles{
+    <link rel="stylesheet" href="/assets/plugins/jstree/themes/default/style.min.css">
+}
+@section Scripts {
+    <script src="/assets/plugins/jstree/jstree.min.js"></script>
+
+    <script>
+        var permissions = (JSON.parse('@Json.Serialize((Model.RolePermissions))'));
+        var selected = false;
+        $(function () {
+            $('#jsTree').jstree({
+                'sort': function (a, b) {
+                    return false;
+                },
+                "plugins": [
+                    "dnd","state", "types"
+                ]
+            }).on('select_node.jstree', function (e, data) {
+                if (selected) {
+                    var permission = permissions.find(x => x.id == data.node.state.id);
+                    if (permission != undefined) {
+                        $(".role-parent").hide();
+                        $(".role-action").show();
+
+                        $("#Type").val("update");
+                        $("#rp_Id").val(permission.id);
+                        $("#rp_Name").val(permission.name);
+                        $("#rp_Icon").val(permission.icon);
+                        $("#rp_Order").val(permission.order);
+                        $("#rp_Controller").val(permission.controller);
+                        $("#rp_Action").val(permission.action);
+                        $("#rp_Description").val(permission.description);
+                        $("#rp_IsMenu").prop("checked", permission.isMenu);
+                        $("#modal-lg").modal();
+                    }
+                }
+                selected = true;
+            });
+        });
+
+        function openNewRolePermissionModel() {
+            $(".role-parent").show();
+            $(".role-action").hide();
+
+            $("#Type").val("new");
+
+            $("#rp_Id").val("");
+            $("#rp_Name").val("");
+            $("#rp_Icon").val("");
+            $("#rp_Order").val(0);
+            $("#rp_Controller").val("");
+            $("#rp_Action").val("");
+            $("#rp_Description").val("");
+            $("#rp_IsMenu").prop("checked",false);
+            $("#modal-lg").modal();
+        }
+
+        function sendRolePermissionForm() {
+            if (confirm("@tr.Get("AreYouSure")")) {
+                var fields = $("#rolePermissionForm").serializeArray();
+                $.post('?roleId=@Model.Id', fields)
+                    .done(function (d) {
+                        window.location.reload();
+                    })
+                    .fail(function () {
+                        window.location.reload();
+                    });
+            } else {
+                $("#modal-lg").modal("hide");
+            }
+        }
+
+        function deleteRolePermissionForm() {
+            $("#Type").val("delete");
+            sendRolePermissionForm();
+        }
+    </script>
+}

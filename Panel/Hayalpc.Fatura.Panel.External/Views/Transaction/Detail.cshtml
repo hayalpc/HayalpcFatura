@@ -1,0 +1,63 @@
+﻿@model TransactionVM
+@{ 
+    ViewBag.Transaction = Model;
+}
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("General")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Id)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.Id)</dd>
+                    <dt class="col-sm-4">@tr.Get("MerchantName")</dt><dd class="col-sm-8">@session.UserData.MerchantList.Where(x=>x.Value==Model.MerchantId.ToString()).FirstOrDefault().Text</dd>
+                    <dt class="col-sm-4">@tr.Get("ServiceName")</dt><dd class="col-sm-8">@session.UserData.ServiceList.Where(x=>x.Value==Model.ServiceId.ToString()).FirstOrDefault().Text</dd>
+                    <dt class="col-sm-4">@tr.Get("CarrierName")</dt><dd class="col-sm-8">@session.UserData.CarrierList.Where(x=>x.Value==Model.CarrierId.ToString()).FirstOrDefault().Text</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Msisdn)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.Msisdn)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Channel)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.Channel)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.UserIp)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.UserIp)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.TxId)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.TxId)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Item)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.Item)</dd>
+                 
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("Charging")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Amount)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.Amount)</dd>
+                <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CreateTime)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.CreateTime)</dd>
+                <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Status)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.Status)</dd>
+                @{
+                    if (Model.Status == TransactionStatus.CHARGED)
+                    {
+                        <dt class="col-sm-4">@Html.DisplayNameFor(x => x.ChargeDate)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.ChargeDate)</dd>
+                    }
+                    if (Model.Status == TransactionStatus.REFUNDED)
+                    {
+                        <dt class="col-sm-4">@Html.DisplayNameFor(x => x.RefundDate)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.RefundDate)</dd>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(x => x.RefundReason)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.RefundReason)</dd>
+                    }
+                    if (Model.Status != TransactionStatus.NEW && Model.Status != TransactionStatus.CHARGED && Model.Status != TransactionStatus.REFUNDED)
+                    {
+                        <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Error)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.Error)</dd>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(x => x.ErrDesc)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.ErrDesc)</dd>
+                    }
+                }
+                <dt class="col-sm-4">@Html.DisplayNameFor(x => x.MerchantOrder)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.MerchantOrder)</dd>
+                <dt class="col-sm-4">@Html.DisplayNameFor(x => x.OperatorTransId)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.OperatorTransId)</dd>
+                <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Value1)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.Value1)</dd>
+                <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Value2)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.Value2)</dd>
+                <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Value3)</dt><dd class="col-sm-8">@Html.DisplayFor(x => x.Value3)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("Partials/_DetailActionButtons", Model.Id)

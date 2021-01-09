@@ -1,0 +1,121 @@
+﻿@model ServiceVM
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("General")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Id)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Id)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.MerchantId)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.MerchantId)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Name)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Name)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.BusinessDesc)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.BusinessDesc)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.WebSite)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.WebSite)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.PrivateKey)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.PrivateKey)</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("Settings")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Type)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Type)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.SubType)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.SubType)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.PlatformType)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.PlatformType)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.SmsKeyword)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.SmsKeyword)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.IsRefundable)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.IsRefundable)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.RefundableTime)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.RefundableTime)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("NotificationAndCredential")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CredentialUrl)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.CredentialUrl)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.NotificationUrl)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.NotificationUrl)</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("OperatorSettings")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.TariffId)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.TariffId)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.TurkcellActive)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.NotificationUrl)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.TurkTelekomActive)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.NotificationUrl)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.VodafoneActive)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.NotificationUrl)</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("Documents&Files")</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group row">
+                    @{
+                        if (Model.BlobFiles != null && Model.BlobFiles.Count > 0)
+                        {
+                            foreach (var file in Model.BlobFiles)
+                            {
+                                <div class="col-12">
+                                    <span><a href="/blobfile/get?guid=@file.Token" target="_blank">@file.Token - @file.Name</a></span>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <span>@tr.Get("ThereIsNoDocument")</span>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("Creation")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CreateTime)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.CreateTime)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CreateUserId)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.CreateUserId)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.UpdateTime)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.UpdateTime)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.UpdateUserId)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.UpdateUserId)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("Partials/_DetailActionButtons", Model.Id) 

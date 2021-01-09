@@ -1,0 +1,82 @@
+﻿<div class="sidebar">
+    <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column nav-flat nav-compact nav-child-indent nav-legacy" data-widget="treeview" role="menu" data-accordion="false">
+
+            <li class="nav-item">
+                <a href="/" class="nav-link">
+                    <i class="nav-icon fas fa-home"></i>
+                    <p>
+                        @tr.Get("Homepage")
+                    </p>
+                </a>
+            </li>
+            <cache vary-by="@session.SessionId">
+                @{ var mainMenus = session.Permissions.Where(x => x.RolePermissionId == 0 && x.IsMenu == true).OrderBy(x => x.Order).ToList();
+                    foreach (var mainMenu in mainMenus)
+                    {
+                        var subMenus = session.Permissions.Where(x => x.RolePermissionId == mainMenu.Id && x.IsMenu == true).OrderBy(x => x.Order).ToList();
+                        if (subMenus.Count > 0)
+                        {
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon @mainMenu.Icon"></i>
+                                    <p>
+                                        @tr.Get(mainMenu.Name)
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                @{ foreach (var subMenu in subMenus)
+                                    {
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="/@(subMenu.Controller.ToLower() + "/" + subMenu.Action.ToLower())" data-controller="@(subMenu.Controller.ToLower())" class="nav-link">
+                                                    <i class="@subMenu.Icon nav-icon"></i>
+                                                    <p>@tr.Get(subMenu.Name)</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    }
+                                }
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/@(mainMenu.Controller.ToLower() + "/" + mainMenu.Action.ToLower())" data-controller="@(mainMenu.Controller.ToLower())" class="nav-link">
+                                    <i class="nav-icon @mainMenu.Icon"></i>
+                                    <p>
+                                        @tr.Get(mainMenu.Name)
+                                    </p>
+                                </a>
+                            </li>
+                        }
+                    }
+                }
+
+            </cache>
+        </ul>
+    </nav>
+</div>
+
+<script>
+        $(function () {
+            var selectedLink = $("a.nav-link[href='@RequestHelper.Path']");
+            if (selectedLink != undefined && selectedLink.length > 0) {
+                selectedLink.addClass("active");
+                if (selectedLink.parent().parent().parent().hasClass("has-treeview")) {
+                    selectedLink.parent().parent().parent().addClass("menu-open");
+                    selectedLink.parent().parent().parent().children().first().addClass("active")
+                }
+            } else {
+                var subMenu = $("*[data-controller='@RequestHelper.Controller'");
+                if (subMenu != undefined && subMenu.length > 0) {
+                    subMenu.addClass("active");
+                    if (subMenu.parent().parent().parent().hasClass("has-treeview")) {
+                        subMenu.parent().parent().parent().addClass("menu-open");
+                        subMenu.parent().parent().parent().children().first().addClass("active")
+                    }
+                }
+            }
+
+        });
+</script>

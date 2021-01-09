@@ -1,0 +1,157 @@
+﻿@model UserVM
+@{
+    ViewData["Title"] = "Profile";
+    var user = session.User;
+    if (string.IsNullOrEmpty(Model.Name))
+    {
+        Model.Name = session.User.Name;
+        Model.Surname = session.User.Surname;
+        Model.Phone = session.User.Phone;
+        Model.Title = session.User.Title;
+        Model.Email = session.User.Email;
+        Model.LastLoginDate = session.User.LastLoginDate;
+        Model.LastPasswordChangeDate = session.User.LastPasswordChangeDate;
+    }
+}
+
+<div class="row">
+    <div class="col-md-3">
+
+        <!-- Profile Image -->
+        <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+                <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle"
+                         src="/avatar.jpg"
+                         alt="User profile picture">
+                </div>
+
+                <h3 class="profile-username text-center">@user.FullName</h3>
+                <hr>
+                @{
+                    if (user.IsMerchant)
+                    {
+                        <strong>@tr.Get("MerchantName")</strong>
+                        <p class="text-muted">
+                            @user.Merchant.Name
+                        </p>
+                        <hr>
+                    }
+                }
+                <strong>@tr.Get("UserTitle")</strong>
+                <p class="text-muted">
+                    @user.Title
+                </p>
+                <hr>
+                <strong>@tr.Get("Email")</strong>
+                <p class="text-muted">
+                    @user.Email
+                </p>
+                <hr>
+                <strong>@tr.Get("Phone")</strong>
+                <p class="text-muted">
+                    @user.Phone
+                </p>
+                <hr>
+                <strong>@tr.Get("UserType")</strong>
+                <p class="text-muted">
+                    @user.Type
+                </p>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+    </div>
+    <!-- /.col -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header p-2">
+                <h3 class="card-title">@tr.Get("Profile")</h3>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new
+                {
+                    @id = "modelForm",
+                    @class = "form-horizontal",
+                    role = "form",
+                    enctype = "multipart/form-data",
+                    autocomplete = "off"
+                }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Name, null, new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Surname, null, new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(x => x.Surname, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Title, null, new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Email, null, new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.DisplayFor(x => x.Email, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Password, null, new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-lg">@tr.Get("ChangePassword")</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Phone, null, new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(x => x.Phone, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.LastLoginDate, null, new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.DisplayFor(x => x.LastLoginDate, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.LastPasswordChangeDate, null, new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.DisplayFor(x => x.LastPasswordChangeDate, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <div class="offset-sm-2 col-sm-10">
+                            <button type="submit" class="btn btn-primary float-right">@tr.Get("Save")</button>
+                        </div>
+                    </div>
+                }
+            </div><!-- /.card-body -->
+        </div>
+        <!-- /.nav-tabs-custom -->
+    </div>
+    <!-- /.col -->
+</div>
+<!-- /.row -->
+@await Html.PartialAsync("ResetPassword",Model.ChangePasswordVM)

@@ -1,0 +1,53 @@
+﻿@{ 
+    var userBulletins = session.User.Bulletins.OrderByDescending(x=>x.Id).ToList(); 
+
+    if (userBulletins.Count > 0)
+    {
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)">
+                <i class="far fa-comments"></i>
+                <span class="badge badge-danger navbar-badge">@userBulletins.Count</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                @foreach (var bulletin in userBulletins)
+                {
+                    <a href="/account/bulletin" class="dropdown-item">
+                        <div class="media">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    @bulletin.Title
+                                    @if (bulletin.Type == UserBulletinType.Info)
+                                    {
+                                        <span class="float-right text-sm text-info"><i class="fas fa-star"></i></span>
+                                    }
+                                    else if (bulletin.Type == UserBulletinType.Warning) 
+                                    { 
+                                        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="float-right text-sm"><i class="fas fa-star"></i></span>
+                                    }
+                                </h3>
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> @bulletin.GetTimeDiff()</p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                }
+                <a href="/account/bulletin" class="dropdown-item dropdown-footer">@tr.Get("SeeAllNotifications")</a>
+            </div>
+        </li> 
+    }
+    else
+    {
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)">
+                <i class="far fa-comments"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                <a href="/account/bulletin" class="dropdown-item dropdown-footer">@tr.Get("SeeAllNotifications")</a>
+            </div>
+        </li> 
+    } 
+}

@@ -1,0 +1,35 @@
+﻿<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewData["Title"]</h1>
+            </div>
+            @if (RequestHelper.Controller == "home" && RequestHelper.Action.ToLowerInvariant() == "index")
+            {
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item active">@tr.Get("Homepage")</li>
+                    </ol>
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/">@tr.Get("Homepage")</a></li>
+                        @if (RequestHelper.Action.ToLowerInvariant() == "index")
+                        {
+                            <li class="breadcrumb-item active">@tr.Get(RequestHelper.Controller.Ucfirst() + "s")</li>
+
+                        }
+                        else
+                        {
+                            <li class="breadcrumb-item"><a href="/@RequestHelper.Controller">@tr.Get(RequestHelper.Controller.Ucfirst() + "s")</a></li>
+                            <li class="breadcrumb-item active">@tr.Get(RequestHelper.Action.Ucfirst())</li>
+                        }
+                    </ol>
+                </div>
+            }
+        </div>
+    </div>
+</section>

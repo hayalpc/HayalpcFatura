@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Localization
+@{ 
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var lanLogo = requestCulture.RequestCulture.UICulture.Name == "tr" ? "tr" : "us"; 
+}
+
+<ul class="navbar-nav ml-auto">
+
+    <!-- Notifications Dropdown Menu -->
+    @await Html.PartialAsync("_Bulletin")
+
+    <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+            <i class="flag-icon flag-icon-@lanLogo"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right p-0" style="left: inherit; right: 0px;">
+            <a href="javascript:void(0)" onclick="return changeLanguage(this);" data-lan="tr" class="dropdown-item @(lanLogo == "tr" ? "active" : "")">
+                <i class="flag-icon flag-icon-tr mr-2"></i> Türkçe
+            </a>
+            <a href="javascript:void(0)" onclick="return changeLanguage(this);" data-lan="en" class="dropdown-item @(lanLogo == "us" ? "active" : "")">
+                <i class="flag-icon flag-icon-us mr-2"></i> English
+            </a>
+        </div>
+    </li>
+
+    <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+            <img src="/avatar.jpg" class="img-circle user-navbar"> @session.User.FullName
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <span class="dropdown-header">
+                <img src="/avatar.jpg" style="width:160px;height:160px;" class="img-circle"><br />
+                <span>@session.User.FullName</span>
+            </span>
+
+            <a href="/account/profile" class="dropdown-item">
+                <i class="fas fa-user mr-2"></i> @tr.Get("Profile")
+            </a>
+            <div class="dropdown-divider"></div>
+
+            @*<a href="/account/settings" class="dropdown-item">
+                    <i class="fas fa-cogs mr-2"></i> @tr.Get("Settings")
+                </a>
+                <div class="dropdown-divider"></div>*@
+
+            <a href="/logout" class="dropdown-item">
+                <i class="fa fa-sign-out-alt mr-2"></i> @tr.Get("Logout")
+            </a>
+            <div class="dropdown-divider"></div>
+        </div>
+    </li>
+</ul>

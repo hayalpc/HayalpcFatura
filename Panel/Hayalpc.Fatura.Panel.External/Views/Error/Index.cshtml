@@ -1,0 +1,52 @@
+﻿@model ErrorVM
+
+@{
+    if (!session.IsAuthenticated)
+    {
+        Layout = "_Naked";
+    }
+}
+
+<style>
+    .login-box, .register-box {
+        width: 50%;
+    }
+</style>
+<div class="text-center @(session.IsAuthenticated == true ? "" :  "login-box")">
+    @{
+        if (!session.IsAuthenticated)
+        {
+            <img src="/assets/img/logo/logo.png" class="mb-4" style="width:250px;" />
+        }
+    }
+    <div class="card">
+        <div class="card-body login-card-body text-center">
+
+            <h3 class="text-danger">@Model.Title</h3>
+
+            @if (Model.ShowRequestId)
+            {
+                <p>
+                    <strong>Request ID:</strong> <code>@Model.RequestId</code>
+                </p>
+                if (!session.IsAuthenticated)
+                {
+                    <p class="mt-3 mb-1">
+                        <a href="/login">@tr.Get("Login")</a>
+                    </p>
+                }
+                else
+                {
+                    <p class="mt-3 mb-1">
+                        <a href="/">@tr.Get("Homepage")</a>
+                    </p>
+                    <p class="mt-3 mb-1">
+                        <a href="@RequestHelper.Referer">@tr.Get("GoBack")</a>
+                    </p>
+                }
+            }
+
+        </div>
+        <!-- /.login-card-body -->
+    </div>
+</div>

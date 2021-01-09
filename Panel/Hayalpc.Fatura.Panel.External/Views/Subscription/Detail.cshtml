@@ -1,0 +1,80 @@
+﻿@model SubscriptionVM
+@{
+    ViewBag.Subscription = Model;
+}
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("General")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Id)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Id)</dd>
+                    <dt class="col-sm-4">@tr.Get("MerchantName")</dt>
+                    <dd class="col-sm-8">@session.UserData.MerchantList.Where(x => x.Value == Model.MerchantId.ToString()).FirstOrDefault().Text</dd>
+                    <dt class="col-sm-4">@tr.Get("ServiceName")</dt>
+                    <dd class="col-sm-8">@session.UserData.ServiceList.Where(x => x.Value == Model.ServiceId.ToString()).FirstOrDefault().Text</dd>
+                    <dt class="col-sm-4">@tr.Get("CarrierName")</dt>
+                    <dd class="col-sm-8">@session.UserData.CarrierList.Where(x => x.Value == Model.ServiceId.ToString()).FirstOrDefault().Text</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Msisdn)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Msisdn)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Channel)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Channel)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Item)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Item)</dd>
+
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@tr.Get("Subscription")</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.HireAmount)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.HireAmount)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CreateTime)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.CreateTime)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.Status)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.Status)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.MerchantOrder)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.MerchantOrder)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.SubsType)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.SubsType)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(x => x.SubsDate)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(x => x.SubsDate)</dd>
+                    @{
+                        if (Model.Status == SubscriptionStatus.ACTIVE || Model.Status == SubscriptionStatus.RETRY)
+                        {
+                            <dt class="col-sm-4">@Html.DisplayNameFor(x => x.RenewalDate)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(x => x.RenewalDate)</dd>
+                            <dt class="col-sm-4">@Html.DisplayNameFor(x => x.RenewalCount)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(x => x.RenewalCount)</dd>
+                        }
+                        if (Model.Status == SubscriptionStatus.CANCEL)
+                        {
+                            <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CancelDate)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(x => x.CancelDate)</dd>
+                            <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CancelReason)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(x => x.CancelReason)</dd>
+                        }
+                        if (Model.Status == SubscriptionStatus.CANCEL)
+                        {
+                            <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CancelDate)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(x => x.CancelDate)</dd>
+                            <dt class="col-sm-4">@Html.DisplayNameFor(x => x.CancelReason)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(x => x.CancelReason)</dd>
+                        }
+
+                    }
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("Partials/_DetailActionButtons", Model.Id)

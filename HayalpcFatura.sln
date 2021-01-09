@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Panel", "Panel", "{C6EE5715-AEAE-4D79-9B48-8ED239F94EA2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hayalpc.Fatura.Panel.External", "Panel\Hayalpc.Fatura.Panel.External\Hayalpc.Fatura.Panel.External.csproj", "{89035378-3D65-40EB-A3F6-B959CD0C7788}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hayalpc.Fatura.Panel.Internal", "Panel\Hayalpc.Fatura.Panel.Internal\Hayalpc.Fatura.Panel.Internal.csproj", "{0BB41B1F-B8E4-4970-8444-5C156C909317}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vezne", "Vezne", "{FE07134C-ADF2-4CD6-8D5E-CD63E99B3F2C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MigrationTool", "MigrationTool\MigrationTool.csproj", "{7BA900F3-6924-4792-9A06-0CEE01ECCD31}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hayalpc.Fatura.Data", "Data\Hayalpc.Fatura.Data.csproj", "{23C3E0BE-B28E-4D6A-9DF0-D334D31BCF83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoreApi", "CoreApi", "{D7652F07-BC84-4541-A4D6-B441C3F907B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hayalpc.Fatura.CoreApi", "CoreApi\Hayalpc.Fatura.CoreApi\Hayalpc.Fatura.CoreApi.csproj", "{CBF8CA01-8E29-4025-B3BA-CD63150CDEA8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{89035378-3D65-40EB-A3F6-B959CD0C7788}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89035378-3D65-40EB-A3F6-B959CD0C7788}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89035378-3D65-40EB-A3F6-B959CD0C7788}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89035378-3D65-40EB-A3F6-B959CD0C7788}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BB41B1F-B8E4-4970-8444-5C156C909317}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BB41B1F-B8E4-4970-8444-5C156C909317}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BB41B1F-B8E4-4970-8444-5C156C909317}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BB41B1F-B8E4-4970-8444-5C156C909317}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BA900F3-6924-4792-9A06-0CEE01ECCD31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BA900F3-6924-4792-9A06-0CEE01ECCD31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BA900F3-6924-4792-9A06-0CEE01ECCD31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BA900F3-6924-4792-9A06-0CEE01ECCD31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23C3E0BE-B28E-4D6A-9DF0-D334D31BCF83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23C3E0BE-B28E-4D6A-9DF0-D334D31BCF83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23C3E0BE-B28E-4D6A-9DF0-D334D31BCF83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23C3E0BE-B28E-4D6A-9DF0-D334D31BCF83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBF8CA01-8E29-4025-B3BA-CD63150CDEA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBF8CA01-8E29-4025-B3BA-CD63150CDEA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBF8CA01-8E29-4025-B3BA-CD63150CDEA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBF8CA01-8E29-4025-B3BA-CD63150CDEA8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{89035378-3D65-40EB-A3F6-B959CD0C7788} = {C6EE5715-AEAE-4D79-9B48-8ED239F94EA2}
+		{0BB41B1F-B8E4-4970-8444-5C156C909317} = {C6EE5715-AEAE-4D79-9B48-8ED239F94EA2}
+		{CBF8CA01-8E29-4025-B3BA-CD63150CDEA8} = {D7652F07-BC84-4541-A4D6-B441C3F907B0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3140A057-2FBE-4CD5-96D6-A3517D85FA8B}
+	EndGlobalSection
+EndGlobal
