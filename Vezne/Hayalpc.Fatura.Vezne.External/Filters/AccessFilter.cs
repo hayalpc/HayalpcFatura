@@ -1,0 +1,148 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Hayalpc.Library.Common.Helpers.Interfaces;
+using Hayalpc.Library.Common.Helpers;
+using System.Linq;
+using System.Net;
+using Hayalpc.Library.Common.Extensions;
+using Hayalpc.Library.Log;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using System.IO;
+using System;
+
+namespace Hayalpc.Fatura.Vezne.External.Filters
+{
+    public class AccessFilter : IActionFilter
+    {
+        private readonly ISessionHelper sessionHelper;
+        private readonly IHttpClientHelper clientHelper;
+        private readonly IHpLogger logger;
+
+        public AccessFilter(ISessionHelper sessionHelper, IHttpClientHelper clientHelper, IHpLogger logger)
+        {
+            this.sessionHelper = sessionHelper;
+            this.clientHelper = clientHelper;
+            this.logger = logger;
+        }
+
+        public void OnActionExecuted(ActionExecutedContext context)
+        {
+            if (context.HttpContext.Request.Path != "/api/User/Validate")
+            {
+                var obj = new
+                {
+                    Type = "OnActionExecuted",
+                    RequestHelper.SessionId,
+                    context.HttpContext.TraceIdentifier,
+                    context.HttpContext.Response.StatusCode,
+                };
+                logger.Info(obj);
+            }
+        }
+
+        public void OnActionExecuting(ActionExecutingContext context)
+        {
+            dynamic info = context.ActionDescriptor;
+
+            RequestHelper.Host = context.HttpContext.Request.Host.Value.ToLowerInvariant();
+            RequestHelper.RemoteIp = RequestHelper.GetRealIp(context.HttpContext);
+
+            RequestHelper.Controller = ((string)info.ControllerName).ToLowerInvariant();
+            RequestHelper.Action = ((string)info.ActionName).ToLowerInvariant();
+            RequestHelper.Path = context.HttpContext.Request.Path.ToString().ToLowerInvariant();
+            RequestHelper.Referer = context.HttpContext.Request.Headers["Referer"].ToString();
+            RequestHelper.UserAgent = context.HttpContext.Request.Headers["User-Agent"].ToString();
+            RequestHelper.SessionId = context.HttpContext.Session.Id;
+
+            if (!context.Filters.Any(x => x.GetType() == typeof(Microsoft.AspNetCore.Mvc.Authorization.AllowAnonymousFilter)))
+            {
+                if (sessionHelper.IsAuthenticated)
+                {
+                    RequestHelper.User = sessionHelper.User;
+                    RequestHelper.UserId = sessionHelper.User.Id;
+                    RequestHelper.MerchantId = sessionHelper.User.MerchantId ?? 0;
+                    if (sessionHelper.Permissions.Count > 0)
+                    {
+                        if (context.HttpContext.Request.Path != "/")
+                        {
+                            var path = context.HttpContext.Request.Path.ToString().Substring(1, context.HttpContext.Request.Path.ToString().Length - 1).Split("/");
+
+                            if (path.Length > 1 && !sessionHelper.HasPermission(path[1], path[0]))
+                            {
+                                if (path.Length > 2 && long.TryParse(path[2], out long xxx))
+                                    RequestHelper.ModelId = path[2];
+                                context.Result = new RedirectResult("/error/403");
+                                return;
+                            }
+                            else if (path.Length == 1 && !sessionHelper.HasPermission("", path[0]))
+                            {
+                                context.Result = new RedirectResult("/error/403");
+                                return;
+                            }
+                        }
+                        if (RequestHelper.Action == "index" && context.HttpContext.Request.Method == "POST")
+                        {
+                            //continue;
+                        }
+                        else
+                        {
+                            var result = clientHelper.UserValidate(AppConfigHelper.ApiUrl, "user/validate");
+                            if (result.StatusCode == HttpStatusCode.OK)
+                                return;
+                            else if (result.StatusCode == HttpStatusCode.Unauthorized)
+                                context.Result = new RedirectResult("/logout?code=newSession");
+                            else
+                                context.Result = new RedirectResult("/logout?code=invalidSession");
+                        }
+                    }
+                    else
+                        context.Result = new RedirectResult("/logout?code=forbiddenSession");
+                }
+                else
+                    context.Result = new RedirectResult("/logout" + (context.HttpContext.Request.Path != "/" ? "?RedirectUrl=" + context.HttpContext.Request.Path : ""));
+            }
+
+            //var RequestBody = ReadBodyAsString(context.HttpContext.Request);
+            var headerStr = context.HttpContext.Request.Headers.Aggregate("", (current, header) => current + $"{header.Key}: {header.Value}{Environment.NewLine}");
+            var obj = new
+            {
+                Type = "OnActionExecuting",
+                Url = context.HttpContext.Request.GetDisplayUrl(),
+                RequestHelper.SessionId,
+                context.HttpContext.TraceIdentifier,
+                context.HttpContext.Request.Path,
+                RequestHelper.Referer,
+                RequestHelper.UserAgent,
+                context.HttpContext.Request.Method,
+                RequestHelper.RemoteIp,
+                RequestHelper.RemotePort,
+                RequestHelper.MerchantId,
+                RequestHelper.UserId,
+                Header = headerStr
+                //RequestBody,
+            };
+            logger.Info(obj);
+
+        }
+
+        private string ReadBodyAsString(HttpRequest request)
+        {
+            var initialBody = request.Body;
+            try
+            {
+                request.EnableBuffering();
+                using (StreamReader reader = new StreamReader(request.Body))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+            finally
+            {
+                request.Body = initialBody;
+            }
+        }
+
+        
+    }
+}

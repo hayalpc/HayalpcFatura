@@ -99,8 +99,11 @@ namespace Hayalpc.Fatura.Panel.External.Extensions
                 };
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
+#if DEBUG
             services.AddRazorPages().AddRazorRuntimeCompilationIfDebug(Env);
+#else
+            services.AddRazorPages();
+#endif
         }
     }
 }

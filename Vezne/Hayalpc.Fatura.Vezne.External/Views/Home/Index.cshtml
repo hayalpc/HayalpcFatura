@@ -1,0 +1,311 @@
+﻿@{
+    ViewData["Title"] = "Fatura Ödeme";
+}
+<style>
+    #getInvoices:disabled {
+        color: #6c757d !important;
+    }
+
+    .grecaptcha-badge {
+        visibility: hidden;
+    }
+
+    .data-msg, #invoices {
+        display: none;
+    }
+
+    .institute_load {
+        display: none;
+    }
+
+        .institute_load.active {
+            display: block;
+        }
+</style>
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">PandaFatura</h1>
+    <p class="lead">Faturalarınızı PandaFatura ile güvenle ödeyebilirsiniz.</p>
+</div>
+
+<div class="row mb-3 text-center">
+    <div class="col-sm-12">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 fw-normal">
+                    @{ if (session.Get("Authenticated") == "1")
+                        {
+                            <span>Fatura Ödeme</span>
+                        }
+                        else
+                        {
+                            <span>Doğrulama</span>
+                        }
+                    }
+                </h4>
+            </div>
+            <div class="card-body">
+                @{
+                    @await Html.PartialAsync("_Messages");
+
+                    if (session.Get("Authenticated") == "1")
+                    {
+                        <div class="row">
+                            <div class="col-sm-6 offset-sm-3">
+                                <div class="form-group">
+                                    <select class="form-control" id="category">
+                                        <option value="">Kategori Seçiniz</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control" id="institute" disabled>
+                                        <option value="">Kurum Seçiniz</option>
+                                    </select>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="subscriberNo" disabled placeholder="Abone Bilgisi">
+                                    <div class="input-group-append">
+                                        <button id="getInvoices" class="btn btn-outline-secondary btn-info text-white" type="button" disabled><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <span id="subscriberError" class="text-danger" style="display:none;">Girdğiniz bilgi kurum ile uyuşmamaktadır!</span>
+                                    <span id="subscriberSuccess" class="text-success" style="display:none;">Kurum bilgisi uygundur.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <table id="invoices" class="table table-hover table-bordered table-striped table-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Seç</th>
+                                    <th>Kurum</th>
+                                    <th>Fatura No</th>
+                                    <th>Fatura Tarihi</th>
+                                    <th>Fatura Sahibi</th>
+                                    <th>Tutar</th>
+                                    <th>Gecikme</th>
+                                    <th>İşlem Ücreti</th>
+                                    <th>Toplam Tutar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="data-msg data-loading">
+                                    <td colspan="9">
+                                        <i class="fa fa-sync fa-spin fa-3x"></i><br /><br />Faturalar yükleniyor...
+                                    </td>
+                                </tr>
+                                <tr class="data-msg data-empty">
+                                    <td colspan="9">
+                                        Gösterilecek fatura bulunamadı!
+                                    </td>
+                                </tr>
+                                <tr class="data-msg data-error">
+                                    <td colspan="9">
+                                        Bir hata oluştu. Lütfen daha sonra tekrar deneyiniz!
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="7" class="text-right">Toplam</td>
+                                    <td>0 ₺</td>
+                                    <td><button class="btn btn-success btn-sm btn-block" disabled>Öde</button></td>
+                                    </tr>
+                            </tfoot>
+                        </table>
+
+                        @section scripts {
+                            <script src="/assets/plugins/jquery-mask/jquery.mask.min.js"></script>
+                            <script>
+                                $(function () {
+                                    var categories = [
+                                        { id: 1, name: "Su" },
+                                        { id: 2, name: "Elektrik" }
+                                    ];
+
+                                    var institutes = [
+                                        { id: 1, category: 1, name: "İSKİ", code: "iski", placeholder: "Abonman No - ÖRN: 0001-1111", type: "mask", validationText: "0000-0000", reverse: true },
+                                        { id: 2, category: 1, name: "Sucu", code: "sucu", placeholder: "Abone No - ÖRN: AAA 000-S0S", type: "mask", validationText: "AAA 000-S0S" },
+                                        { id: 3, category: 2, name: "AYEDAŞ", code: "ayedas", placeholder: "Sözleşme No - ÖRN: AAA 000-S0S", type: "mask", validationText: "AAA 000-S0S" },
+                                        { id: 4, category: 2, name: "Elektrikçi", code: "elektrikci", placeholder: "Tesisat No - ÖRN: 000000", type: "mask", validationText: "000000", reverse: true }
+                                    ];
+
+                                    if (categories.length > 0) {
+                                        $("#category").html('<option value="">Kategori Seçiniz</option>');
+                                        $.each(categories, function (i, d) {
+                                            $("#category").append('<option value="' + d.id + '">' + d.name + '</option>');
+                                        });
+                                    }
+
+                                    $("#category").on("change", changeCategory);
+                                    $("#institute").on("change", changeInstitute);
+                                    $("#getInvoices").on("click", getInvoices);
+
+                                    function changeCategory() {
+                                        var cat = $(this).val();
+                                        if (cat > 0) {
+                                            instituteList = institutes.filter(x => x.category == cat);
+                                            if (instituteList.length > 0) {
+                                                $("#institute").prop('disabled', false);
+                                                $("#institute").html('<option value="">Kurum Seçiniz</option>');
+                                                $.each(instituteList, function (i, d) {
+                                                    $("#institute").append('<option value="' + d.id + '">' + d.name + '</option>');
+                                                })
+                                            } else {
+                                                $("#institute").prop('disabled', true);
+                                            }
+                                        } else {
+                                            $("#institute").prop('disabled', true);
+                                        }
+                                        $("#subscriberError").hide();
+                                        $("#subscriberSuccess").hide();
+                                        $("#subscriberNo").prop('disabled', true);
+                                        $("#getInvoices").prop('disabled', true);
+                                        $(".invoices").remove();
+                                        $("#invoices").hide();
+                                    }
+
+                                    function changeInstitute() {
+                                        var ins = $(this).val();
+                                        if (ins > 0) {
+                                            institute = institutes.find(x => x.id == ins);
+                                            if (institute != undefined) {
+                                                applyInstituePattern(institute);
+                                                $("#subscriberNo").prop('disabled', false);
+                                            } else {
+                                                $("#subscriberNo").prop('disabled', true);
+                                            }
+                                        } else {
+                                            $("#subscriberNo").prop('disabled', true);
+                                        }
+                                        $("#subscriberError").hide();
+                                        $("#subscriberSuccess").hide();
+                                        $("#getInvoices").prop('disabled', true);
+                                        $(".invoices").remove();
+                                        $("#invoices").hide();
+                                    }
+
+                                    function applyInstituePattern(institute) {
+                                        $("#subscriberNo").unmask();
+                                        var options = {
+                                            onComplete: completeInstituePattern,
+                                            onInvalid: invalidInstituePattern,
+                                            reverse: institute.reverse,
+                                            clearIfNotMatch: institute.clearIfNotMatch,
+                                            placeholder: institute.placeholder
+                                        };
+
+                                        switch (institute.type) {
+                                            case "mask":
+                                                $("#subscriberNo").mask(institute.validationText, options);
+                                                break;
+                                        }
+                                    }
+
+                                    function completeInstituePattern(cep) {
+                                        console.log("runned completeInstituePattern");
+
+                                        $(".invoices").remove();
+                                        $("#invoices").hide();
+
+                                        $("#subscriberSuccess").hide();
+                                        $("#subscriberError").hide();
+                                        $("#getInvoices").prop('disabled', false);
+                                    }
+
+                                    function invalidInstituePattern(val, e, f, invalid, options) {
+                                        console.log("runned invalidInstituePattern");
+
+                                        $(".invoices").remove();
+                                        $("#invoices").hide();
+
+                                        $("#subscriberSuccess").hide();
+                                        $("#subscriberError").show();
+                                        $("#getInvoices").prop('disabled', false);
+                                        $("#invoices").hide();
+                                    }
+
+                                    function getInvoices() {
+                                        console.log("runned getInvoices");
+                                        $(".invoices").remove();
+                                        $("#invoices").show();
+
+                                        $(".data-msg").hide();
+                                        $(".data-loading").show();
+
+                                        $.post("/invoice/search", { instituteId: $("#institute").val(), subscriberNo: $("#subscriberNo").val() }, function (data) {
+                                            $(".data-msg").hide();
+                                            if (data.isSuccess) {
+                                                if (data.invoiceCount > 0) {
+                                                    var template = '' +
+                                                        '<tr class="invoices {{tableClass}}">' +
+                                                        '<td><input type="checkbox"></td>' +
+                                                        '<td>{{instutionName}}</td>' +
+                                                        '<td>{{invoiceNo}}</td>' +
+                                                        '<td>{{invoiceDate}}</td>' +
+                                                        '<td>{{invoiceOwner}}</td>' +
+                                                        '<td>{{amount}} ₺</td>' +
+                                                        '<td>{{delayAmount}} ₺</td>' +
+                                                        '<td>{{fee}} ₺</td>' +
+                                                        '<td>{{totalAmount}} ₺</td>' +
+                                                        '</tr>';
+                                                    $.each(data.invoices, function (i, d) {
+                                                        var invoiceHtml = template.replace("{{instutionName}}", d.instutionName)
+                                                            .replace("{{invoiceNo}}", d.invoiceNo)
+                                                            .replace("{{invoiceDate}}", d.invoiceDate)
+                                                            .replace("{{invoiceOwner}}", d.invoiceOwner)
+                                                            .replace("{{amount}}", d.amount)
+                                                            .replace("{{delayAmount}}", d.delayAmount)
+                                                            .replace("{{fee}}", d.fee)
+                                                            .replace("{{totalAmount}}", d.totalAmount)
+                                                            .replace("{{tableClass}}", d.delayAmount > 0 ? "table-danger" : (d.invoiceDate < "table-warning" ? "" : ""));
+                                                        $("#invoices").append(invoiceHtml);
+                                                    });
+                                                } else {
+                                                    $(".data-empty").show();
+                                                }
+                                            } else {
+                                                $(".data-error").show();
+                                            }
+                                        }).fail(function () {
+                                            $(".data-msg").hide();
+                                            $(".data-error").show();
+                                        });
+                                    }
+                                    /*
+                                    $(".data-loading").show();
+                                    $(".data-empty").show();
+                                    $(".data-error").show();
+                                    */
+                                });
+                            </script>
+                        }
+                    }
+                    else
+                    {
+                        <span><i class="fa fa-sync fa-spin fa-3x"></i></span>
+                        <br />
+                        <br />
+                        <p>Doğrulama yapılıyor. Lütfen bekleyiniz</p>
+                        <form method="post" id="submit-form">
+                            @Html.AntiForgeryToken()
+                            <div id="html_element"></div>
+                            <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+                            <script type="text/javascript">
+                                function onloadCallback () {
+                                    grecaptcha.render('html_element', {'sitekey': '@AppConfigHelper.GoogleKey','size': 'invisible'});
+                                    grecaptcha.execute();
+                                    setTimeout(() => document.getElementById("submit-form").submit(), 5000);
+                                }
+
+                            </script>
+                        </form>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

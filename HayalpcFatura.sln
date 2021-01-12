@@ -19,6 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoreApi", "CoreApi", "{D765
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hayalpc.Fatura.CoreApi", "CoreApi\Hayalpc.Fatura.CoreApi\Hayalpc.Fatura.CoreApi.csproj", "{CBF8CA01-8E29-4025-B3BA-CD63150CDEA8}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hayalpc.Fatura.Vezne.External", "Vezne\Hayalpc.Fatura.Vezne.External\Hayalpc.Fatura.Vezne.External.csproj", "{633FC3A8-A8C6-4930-9813-B1B756CE427F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hayalpc.Fatura.Common", "Common\Hayalpc.Fatura.Common.csproj", "{9FD0F83B-D5A2-49D6-A40E-F67F5747673F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{CBF8CA01-8E29-4025-B3BA-CD63150CDEA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBF8CA01-8E29-4025-B3BA-CD63150CDEA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBF8CA01-8E29-4025-B3BA-CD63150CDEA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{633FC3A8-A8C6-4930-9813-B1B756CE427F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{633FC3A8-A8C6-4930-9813-B1B756CE427F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{633FC3A8-A8C6-4930-9813-B1B756CE427F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{633FC3A8-A8C6-4930-9813-B1B756CE427F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FD0F83B-D5A2-49D6-A40E-F67F5747673F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FD0F83B-D5A2-49D6-A40E-F67F5747673F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FD0F83B-D5A2-49D6-A40E-F67F5747673F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FD0F83B-D5A2-49D6-A40E-F67F5747673F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +65,7 @@ Global
 		{89035378-3D65-40EB-A3F6-B959CD0C7788} = {C6EE5715-AEAE-4D79-9B48-8ED239F94EA2}
 		{0BB41B1F-B8E4-4970-8444-5C156C909317} = {C6EE5715-AEAE-4D79-9B48-8ED239F94EA2}
 		{CBF8CA01-8E29-4025-B3BA-CD63150CDEA8} = {D7652F07-BC84-4541-A4D6-B441C3F907B0}
+		{633FC3A8-A8C6-4930-9813-B1B756CE427F} = {FE07134C-ADF2-4CD6-8D5E-CD63E99B3F2C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3140A057-2FBE-4CD5-96D6-A3517D85FA8B}
