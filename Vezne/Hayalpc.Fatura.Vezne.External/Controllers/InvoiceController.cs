@@ -30,7 +30,6 @@ namespace Hayalpc.Fatura.Vezne.External.Controllers
         [HttpPost]
         public SearchInvoiceResponse Search([FromForm]SearchInvoice searchInvoice)
         {
-            Thread.Sleep(3000);
             var response = new SearchInvoiceResponse();
             if (session.Get("Authenticated") == "1")
             {
@@ -77,6 +76,14 @@ namespace Hayalpc.Fatura.Vezne.External.Controllers
                 response.ResultCode = 401;
                 response.ResultDescription = "NotAuthenticated";
             }
+            return response;
+        }
+
+        [HttpPost]
+        public PaymentInvoiceResponse Payment(PaymentInvoice paymentInvoice)
+        {
+            var response = new PaymentInvoiceResponse{ Status = 500, Message = "Hata" };
+
             return response;
         }
     }

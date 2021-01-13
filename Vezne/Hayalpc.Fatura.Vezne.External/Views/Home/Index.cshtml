@@ -110,9 +110,9 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="7" class="text-right">Toplam</td>
-                                    <td>0 ₺</td>
-                                    <td><button class="btn btn-success btn-sm btn-block" disabled>Öde</button></td>
-                                    </tr>
+                                    <td id="totalAmount">0 ₺</td>
+                                    <td><button id="payButton" class="btn btn-success btn-sm btn-block" disabled>Öde</button></td>
+                                </tr>
                             </tfoot>
                         </table>
 
@@ -132,18 +132,24 @@
                                         { id: 4, category: 2, name: "Elektrikçi", code: "elektrikci", placeholder: "Tesisat No - ÖRN: 000000", type: "mask", validationText: "000000", reverse: true }
                                     ];
 
-                                    if (categories.length > 0) {
-                                        $("#category").html('<option value="">Kategori Seçiniz</option>');
-                                        $.each(categories, function (i, d) {
-                                            $("#category").append('<option value="' + d.id + '">' + d.name + '</option>');
-                                        });
-                                    }
-
                                     $("#category").on("change", changeCategory);
                                     $("#institute").on("change", changeInstitute);
                                     $("#getInvoices").on("click", getInvoices);
+                                    $("body").on("click", ".selectInvoice", selectInvoice);
+                                    $("body").on("click", "#payButton", payInvoice);
+
+                                    if (categories.length > 0) {
+                                        $("#category").html('<option value="">Kategori Seçiniz</option>');
+                                        $.each(categories, function (i, d) {
+                                            $("#category").append('<option selected value="' + d.id + '">' + d.name + '</option>');
+                                        });
+
+                                        $("#category").trigger("change");
+                                    }
 
                                     function changeCategory() {
+                                        console.log("runned changeCategory");
+
                                         var cat = $(this).val();
                                         if (cat > 0) {
                                             instituteList = institutes.filter(x => x.category == cat);
@@ -152,7 +158,7 @@
                                                 $("#institute").html('<option value="">Kurum Seçiniz</option>');
                                                 $.each(instituteList, function (i, d) {
                                                     $("#institute").append('<option value="' + d.id + '">' + d.name + '</option>');
-                                                })
+                                                });
                                             } else {
                                                 $("#institute").prop('disabled', true);
                                             }
@@ -168,6 +174,8 @@
                                     }
 
                                     function changeInstitute() {
+                                        console.log("runned changeInstitute");
+
                                         var ins = $(this).val();
                                         if (ins > 0) {
                                             institute = institutes.find(x => x.id == ins);
@@ -188,6 +196,8 @@
                                     }
 
                                     function applyInstituePattern(institute) {
+                                        console.log("runned applyInstituePattern");
+
                                         $("#subscriberNo").unmask();
                                         var options = {
                                             onComplete: completeInstituePattern,
@@ -241,7 +251,7 @@
                                                 if (data.invoiceCount > 0) {
                                                     var template = '' +
                                                         '<tr class="invoices {{tableClass}}">' +
-                                                        '<td><input type="checkbox"></td>' +
+                                                        '<td><input class="selectInvoice" type="checkbox" data-instution-name="{{instutionName}}" data-invoice-no="{{invoiceNo}}" data-invoice-date="{{invoiceDate}}" data-invoice-owner="{{invoiceOwner}}" data-amount="{{amount}}" data-delay-amount="{{delayAmount}}" data-fee="{{fee}}" data-total-amount="{{totalAmount}}"></td>' +
                                                         '<td>{{instutionName}}</td>' +
                                                         '<td>{{invoiceNo}}</td>' +
                                                         '<td>{{invoiceDate}}</td>' +
@@ -252,15 +262,15 @@
                                                         '<td>{{totalAmount}} ₺</td>' +
                                                         '</tr>';
                                                     $.each(data.invoices, function (i, d) {
-                                                        var invoiceHtml = template.replace("{{instutionName}}", d.instutionName)
-                                                            .replace("{{invoiceNo}}", d.invoiceNo)
-                                                            .replace("{{invoiceDate}}", d.invoiceDate)
-                                                            .replace("{{invoiceOwner}}", d.invoiceOwner)
-                                                            .replace("{{amount}}", d.amount)
-                                                            .replace("{{delayAmount}}", d.delayAmount)
-                                                            .replace("{{fee}}", d.fee)
-                                                            .replace("{{totalAmount}}", d.totalAmount)
-                                                            .replace("{{tableClass}}", d.delayAmount > 0 ? "table-danger" : (d.invoiceDate < "table-warning" ? "" : ""));
+                                                        var invoiceHtml = template.replaceAll("{{instutionName}}", d.instutionName)
+                                                            .replaceAll("{{invoiceNo}}", d.invoiceNo)
+                                                            .replaceAll("{{invoiceDate}}", d.invoiceDate)
+                                                            .replaceAll("{{invoiceOwner}}", d.invoiceOwner)
+                                                            .replaceAll("{{amount}}", d.amount)
+                                                            .replaceAll("{{delayAmount}}", d.delayAmount)
+                                                            .replaceAll("{{fee}}", d.fee)
+                                                            .replaceAll("{{totalAmount}}", d.totalAmount)
+                                                            .replaceAll("{{tableClass}}", d.delayAmount > 0 ? "table-danger" : (d.invoiceDate < "table-warning" ? "" : ""));
                                                         $("#invoices").append(invoiceHtml);
                                                     });
                                                 } else {
@@ -274,11 +284,50 @@
                                             $(".data-error").show();
                                         });
                                     }
-                                    /*
-                                    $(".data-loading").show();
-                                    $(".data-empty").show();
-                                    $(".data-error").show();
-                                    */
+
+                                    function selectInvoice() {
+                                        console.log("runned selectInvoice");
+
+                                        var inputs = $(".selectInvoice:checked");
+                                        if (inputs.length > 0) {
+                                            var toplamTutar = 0;
+                                            $.each(inputs, function (i, element) {
+                                                if ($(this).attr('type') == "checkbox" && $(this).prop('checked') == true) {
+                                                    toplamTutar = toplamTutar + parseFloat($(this).data("total-amount"));
+                                                }
+                                            });
+                                            if (toplamTutar > 0) {
+                                                $("#totalAmount").html(toplamTutar + " ₺");
+                                                $("#payButton").attr("disabled", false);
+                                            } else {
+                                                $("#totalAmount").html("0 ₺");
+                                                $("#payButton").attr("disabled", true);
+                                            }
+                                        } else {
+                                            $("#totalAmount").html("0 ₺");
+                                            $("#payButton").attr("disabled", true);
+                                        }
+                                    }
+
+                                    function payInvoice() {
+                                        var inputs = $(".selectInvoice:checked");
+                                        if (inputs.length > 0) {
+                                            var postData = {
+                                                invoices:[]
+                                            };
+                                            $.each(inputs, function (i, element) {
+                                                postData.invoices.push($(this).data("invoice-no"));
+                                            });
+                                            $.post("/invoice/payment", postData, function (data) {
+                                                console.log(data);
+                                            }).fail(function (err) {
+                                                console.log(err);
+                                                alert("Bir hata oluştu! Detay: " + err.statusText);
+                                            });
+                                        } else {
+                                            alert("Ödeme için fatura seçiniz!");
+                                        }
+                                    }
                                 });
                             </script>
                         }
