@@ -2,10 +2,9 @@
 
 namespace Hayalpc.Fatura.Vezne.External.Models
 {
-    public class PaymentInvoiceResponse
+    public class PaymentInvoiceResponse : BaseResponse
     {
-        public int Status { get; set; }
-        public string Message { get; set; }
+        public long PaymentId { get; set; }
         public List<PaymentMethod> PaymentMethods { get; set; }
     }
 }

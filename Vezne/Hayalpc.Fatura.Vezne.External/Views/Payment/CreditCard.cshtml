@@ -1,0 +1,114 @@
+﻿@model PaymentMethod
+
+<div class="method-box creditcard-box" style="display:none;">
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <label for="couponCode">Kart Sahibi</label>
+                <input type="text" id="nameSurname" class="form-control form-control-sm" required name="nameSurname" placeholder="Kart Sahibi" autocomplete="cc-name" />
+            </div>
+            <div class="form-group">
+                <label for="cardNumber">Kart Numarası</label>
+                <input type="tel"
+                       class="form-control form-control-sm"
+                       name="cardNumber"
+                       id="cardNumber"
+                       placeholder="Kart Numarası"
+                       autocomplete="cc-number"
+                       required autofocus />
+            </div>
+        </div>
+
+        <div class="col-7 col-md-7">
+            <div class="form-group">
+                <label for="cardExpiry">Son Kul. Tarihi</label>
+                <input type="tel"
+                       class="form-control form-control-sm"
+                       name="cardExpiry"
+                       id="cardExpiry"
+                       placeholder="MM / YY"
+                       autocomplete="cc-exp"
+                       required />
+            </div>
+        </div>
+        <div class="col-5 col-md-5 pull-right">
+            <div class="form-group">
+                <label for="cardCVC">CV Kodu</label>
+                <input type="tel" class="form-control form-control-sm"
+                       name="cardCVC"
+                       id="cardCvc"
+                       placeholder="CVC"
+                       autocomplete="cc-csc"
+                       required />
+            </div>
+        </div>
+
+        <div class="col-12">
+            <button class="btn btn-success btn-block" id="credit-card-submit" disabled type="button">Fatura Öde</button>
+        </div>
+    </div>
+    <div class="row" style="display:none;">
+        <div class="col-xs-12">
+            <p class="payment-errors"></p>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            $("#cardNumber").unmask();
+            $("#cardExpiry").unmask();
+            $("#cardCvc").unmask();
+            $("#nameSurname").unmask();
+            $("#credit-card-submit").unbind("click");
+
+            $("#cardNumber").mask("0000 0000 0000 0000", { onComplete: cardComplete }).on("keyup", cardComplete);
+            $("#cardExpiry").mask("00/00", { onComplete: cardComplete }).on("keyup", cardComplete);
+            $("#cardCvc").mask("000", { onComplete: cardComplete }).on("keyup", cardComplete);
+            $("#nameSurname").on("keyup", cardComplete);
+            $("#credit-card-submit").click(cardFormSubmit);
+
+            function cardComplete() {
+                var cardNo = $("#cardNumber").val().replaceAll(" ", "");
+                if (cardNo.length == 16 && $("#cardExpiry").val().length == 5 && $("#cardCvc").val().length == 3 && $("#nameSurname").val().length > 4) {
+                    $("#credit-card-submit").attr("disabled", false);
+                    return true;
+                } else {
+                    $("#credit-card-submit").attr("disabled", true);
+                    return false;
+                }
+            }
+
+            function cardFormSubmit() {
+                console.log("runned cardFormSubmit");
+
+                if (cardComplete()) {
+                    var cardNumber = $("#cardNumber").val().replaceAll(" ", "");
+                    var cardExpiry = $("#cardExpiry").val();
+                    var cardCvc = $("#cardCvc").val();
+                    var paymentId = $("#paymentId").val();
+                    var nameSurname = $("#nameSurname").val();
+                    var postData = {
+                        cardNumber,
+                        cardExpiry,
+                        cardCvc,
+                        nameSurname,
+                        paymentMethod: "creditcard",
+                        paymentId
+                    };
+                    $.post("/payment/creditCard", postData, function (data) {
+                        if (data.resultCode == 0) {
+                            alert("Ödemeniz alınmıştır. Fatura görüntülenecektir");
+                        } else {
+                            alert("Ödemeniz alınamadı! Detay: " + data.resultDescription);
+                        }
+                    }).fail(function (err) {
+                        console.log(err);
+                        alert("Ödemeniz alınamadı! Detay: " + err.statusText);
+                    });
+                } else {
+                    alert("Bilgiler geçersizdir. Lütfen kontrol ediniz");
+                }
+            }
+        })
+    </script>
+</div>

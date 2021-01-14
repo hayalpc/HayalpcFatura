@@ -2,6 +2,7 @@
 {
     public class InvoiceDto
     {
+        public long Id { get; set; }
         public long InstutionId { get; set; }
         public string SubscriberNo { get; set; }
         public string InstutionName { get; set; }

@@ -13,8 +13,7 @@ using System.Threading.Tasks;
 namespace Hayalpc.Fatura.Vezne.External.Controllers
 {
     [Route("[controller]/[action]")]
-    [ApiController]
-    public class InvoiceController : ControllerBase
+    public class InvoiceController : Controller
     {
         private readonly IHpLogger logger;
         private readonly IHttpClientHelper clientHelper;
@@ -28,7 +27,7 @@ namespace Hayalpc.Fatura.Vezne.External.Controllers
         }
 
         [HttpPost]
-        public SearchInvoiceResponse Search([FromForm]SearchInvoice searchInvoice)
+        public SearchInvoiceResponse Search([FromForm] SearchInvoice searchInvoice)
         {
             var response = new SearchInvoiceResponse();
             if (session.Get("Authenticated") == "1")
@@ -40,6 +39,7 @@ namespace Hayalpc.Fatura.Vezne.External.Controllers
                     response.Invoices = new List<InvoiceDto>();
                     response.Invoices.Add(new InvoiceDto
                     {
+                        Id = 1,
                         InstutionId = searchInvoice.InstituteId,
                         SubscriberNo = searchInvoice.SubscriberNo,
                         InstutionName = "Test",
@@ -53,6 +53,7 @@ namespace Hayalpc.Fatura.Vezne.External.Controllers
                     });
                     response.Invoices.Add(new InvoiceDto
                     {
+                        Id = 2,
                         InstutionId = searchInvoice.InstituteId,
                         SubscriberNo = searchInvoice.SubscriberNo,
                         InstutionName = "Test",
@@ -79,12 +80,5 @@ namespace Hayalpc.Fatura.Vezne.External.Controllers
             return response;
         }
 
-        [HttpPost]
-        public PaymentInvoiceResponse Payment(PaymentInvoice paymentInvoice)
-        {
-            var response = new PaymentInvoiceResponse{ Status = 500, Message = "Hata" };
-
-            return response;
-        }
     }
 }

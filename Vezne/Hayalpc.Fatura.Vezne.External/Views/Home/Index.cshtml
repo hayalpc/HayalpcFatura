@@ -21,6 +21,73 @@
         .institute_load.active {
             display: block;
         }
+
+    .invoices td {
+        cursor: pointer;
+    }
+
+    #payment-methods {
+        width: 100%;
+        background: #f7f7f7;
+    }
+
+
+        #payment-methods .method-choose-block {
+            height: 60px;
+            border-bottom: 3px solid #dadada;
+            cursor: pointer;
+        }
+
+            #payment-methods .method-choose-block.active {
+                background: #dadada;
+            }
+
+        #payment-methods .choose {
+            width: 30%;
+            display: flex;
+            float: left;
+            text-align: center;
+            overflow: hidden;
+        }
+
+            #payment-methods .choose input {
+                float: left;
+                display: block;
+                margin-top: 25px;
+            }
+
+            #payment-methods .choose img {
+                float: left;
+                width: 60px;
+                cursor: pointer;
+                height: 60px;
+            }
+
+        #payment-methods .info {
+            width: 70%;
+            float: left;
+            height: 60px;
+            padding-left: 10px;
+            padding-top: 8px;
+        }
+
+        #payment-methods .method-choose .info span {
+            font-size: 14px;
+        }
+
+        #payment-methods .method-choose .info p {
+            font-size: 11px;
+        }
+
+    .method-choose {
+        padding-right: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .method-form {
+        border-left: 3px solid #dadada;
+        padding: 5px 15px !important;
+    }
 </style>
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
@@ -111,10 +178,14 @@
                                 <tr>
                                     <td colspan="7" class="text-right">Toplam</td>
                                     <td id="totalAmount">0 ₺</td>
-                                    <td><button id="payButton" class="btn btn-success btn-sm btn-block" disabled>Öde</button></td>
+                                    <td><button id="choosePaymentMethod" class="btn btn-success btn-sm btn-block" disabled>Devam</button></td>
                                 </tr>
                             </tfoot>
                         </table>
+
+                        <div id="payment-methods">
+
+                        </div>
 
                         @section scripts {
                             <script src="/assets/plugins/jquery-mask/jquery.mask.min.js"></script>
@@ -135,8 +206,8 @@
                                     $("#category").on("change", changeCategory);
                                     $("#institute").on("change", changeInstitute);
                                     $("#getInvoices").on("click", getInvoices);
+                                    $("body").on("click", "#choosePaymentMethod", choosePaymentMethod);
                                     $("body").on("click", ".selectInvoice", selectInvoice);
-                                    $("body").on("click", "#payButton", payInvoice);
 
                                     if (categories.length > 0) {
                                         $("#category").html('<option value="">Kategori Seçiniz</option>');
@@ -239,9 +310,16 @@
 
                                     function getInvoices() {
                                         console.log("runned getInvoices");
+
                                         $(".invoices").remove();
                                         $("#invoices").show();
 
+                                        $("#payment-methods").html("");
+
+                                        $("#totalAmount").html("0 ₺");
+                                        $("#choosePaymentMethod").attr("disabled", true);
+
+                                        $(".data-msg").hide();
                                         $(".data-msg").hide();
                                         $(".data-loading").show();
 
@@ -251,7 +329,7 @@
                                                 if (data.invoiceCount > 0) {
                                                     var template = '' +
                                                         '<tr class="invoices {{tableClass}}">' +
-                                                        '<td><input class="selectInvoice" type="checkbox" data-instution-name="{{instutionName}}" data-invoice-no="{{invoiceNo}}" data-invoice-date="{{invoiceDate}}" data-invoice-owner="{{invoiceOwner}}" data-amount="{{amount}}" data-delay-amount="{{delayAmount}}" data-fee="{{fee}}" data-total-amount="{{totalAmount}}"></td>' +
+                                                        '<td><input class="selectInvoice" type="checkbox" data-id="{{id}}" data-instution-name="{{instutionName}}" data-invoice-no="{{invoiceNo}}" data-invoice-date="{{invoiceDate}}" data-invoice-owner="{{invoiceOwner}}" data-amount="{{amount}}" data-delay-amount="{{delayAmount}}" data-fee="{{fee}}" data-total-amount="{{totalAmount}}"></td>' +
                                                         '<td>{{instutionName}}</td>' +
                                                         '<td>{{invoiceNo}}</td>' +
                                                         '<td>{{invoiceDate}}</td>' +
@@ -263,6 +341,7 @@
                                                         '</tr>';
                                                     $.each(data.invoices, function (i, d) {
                                                         var invoiceHtml = template.replaceAll("{{instutionName}}", d.instutionName)
+                                                            .replaceAll("{{id}}", d.id)
                                                             .replaceAll("{{invoiceNo}}", d.invoiceNo)
                                                             .replaceAll("{{invoiceDate}}", d.invoiceDate)
                                                             .replaceAll("{{invoiceOwner}}", d.invoiceOwner)
@@ -273,6 +352,9 @@
                                                             .replaceAll("{{tableClass}}", d.delayAmount > 0 ? "table-danger" : (d.invoiceDate < "table-warning" ? "" : ""));
                                                         $("#invoices").append(invoiceHtml);
                                                     });
+
+                                                    $(".invoices td").on("click", invoiceChoose);
+
                                                 } else {
                                                     $(".data-empty").show();
                                                 }
@@ -298,34 +380,49 @@
                                             });
                                             if (toplamTutar > 0) {
                                                 $("#totalAmount").html(toplamTutar + " ₺");
-                                                $("#payButton").attr("disabled", false);
+                                                $("#choosePaymentMethod").attr("disabled", false);
                                             } else {
                                                 $("#totalAmount").html("0 ₺");
-                                                $("#payButton").attr("disabled", true);
+                                                $("#choosePaymentMethod").attr("disabled", true);
                                             }
                                         } else {
                                             $("#totalAmount").html("0 ₺");
-                                            $("#payButton").attr("disabled", true);
+                                            $("#choosePaymentMethod").attr("disabled", true);
                                         }
                                     }
 
-                                    function payInvoice() {
+                                    function choosePaymentMethod() {
+                                        console.log("runned choosePaymentMethod");
+
                                         var inputs = $(".selectInvoice:checked");
                                         if (inputs.length > 0) {
                                             var postData = {
-                                                invoices:[]
+                                                invoices: []
                                             };
                                             $.each(inputs, function (i, element) {
-                                                postData.invoices.push($(this).data("invoice-no"));
+                                                postData.invoices.push({ invoiceNo : $(this).data("invoice-no"),id:$(this).data("id") });
                                             });
-                                            $.post("/invoice/payment", postData, function (data) {
-                                                console.log(data);
+                                            $.post("/payment/methods", postData, function (data) {
+                                                $("#choosePaymentMethod").attr("disabled", true);
+                                                $(".selectInvoice").attr("disabled", true);
+                                                $(".invoices td").off("click");
+
+                                                $("#payment-methods").html(data);
                                             }).fail(function (err) {
                                                 console.log(err);
                                                 alert("Bir hata oluştu! Detay: " + err.statusText);
                                             });
                                         } else {
                                             alert("Ödeme için fatura seçiniz!");
+                                        }
+                                    }
+
+                                    function invoiceChoose() {
+                                        console.log("runned invoiceChoose");
+
+                                        if ($(this).find(".selectInvoice").length == 0) {
+                                            $(this).parent().find(".selectInvoice").prop("checked", !$(this).parent().find(".selectInvoice").prop("checked"));
+                                            selectInvoice();
                                         }
                                     }
                                 });

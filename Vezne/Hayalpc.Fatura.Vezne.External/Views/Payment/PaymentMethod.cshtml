@@ -1,0 +1,59 @@
+﻿@model PaymentInvoiceResponse
+@{
+    Layout = null;
+}
+<div class="row">
+    <div class="col-sm-4 text-left p-4 method-choose">
+        @{
+            foreach (var method in Model.PaymentMethods)
+            {
+                <div class="method-choose-block">
+                    <div class="choose">
+                        <input type="radio" class="paymentMethod" name="paymentMethod" value="@method.Type" />
+                        <img src="@method.Logo" />
+                    </div>
+                    <div class="info">
+                        <span>@method.Name</span>
+                        <p>@method.Description</p>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div class="col-sm-8 text-left p-4 method-form">
+        <div class="method-box message-box">
+            Lütfen bir ödeme yöntemi seçiniz!
+        </div>
+        <input type="hidden" id="paymentId" value="@Model.PaymentId" />
+        @{
+            if (Model.PaymentMethods.Where(x => x.Type == "creditcard").Any())
+            {
+                @await Html.PartialAsync("CreditCard", Model.PaymentMethods.Where(x => x.Type == "creditcard").FirstOrDefault())
+            }
+        }
+    </div>
+    <script>
+        $(function () {
+            $("body").on("click", ".method-choose-block", methodChoose);
+        });
+        function methodChoose() {
+            console.log("runned methodChoose");
+
+            var el = $(this);
+            if (el.find(".paymentMethod").length == 1) {
+                var method = el.find(".paymentMethod").val();
+                if ($(".method-form").find("." + method + "-box").length == 1) {
+                    el.find(".paymentMethod").prop("checked", true);
+                    $(".method-box").hide();
+                    $(".method-form").find("." + method + "-box").show();
+                } else {
+                    $(".method-box").hide();
+                    $(".message-box").show();
+                }
+            } else {
+                $(".method-box").hide();
+                $(".message-box").show();
+            }
+        }
+    </script>
+</div>
