@@ -11,8 +11,8 @@ namespace Hayalpc.Fatura.Data.Models
     [Table("user_bulletins", Schema = "tracking")]
     public class UserBulletin : HpModel
     {
-        [Column("merchant_id")]
-        public long? MerchantId { get; set; } = 0;
+        [Column("dealer_id")]
+        public long? DealerId { get; set; } = 0;
 
         [Column("role_id")]
         public long? RoleGroupId { get; set; } = 0;

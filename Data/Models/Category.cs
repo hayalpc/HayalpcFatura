@@ -13,7 +13,11 @@ namespace Hayalpc.Fatura.Data.Models
         [Required]
         [StringLength(64)]
         [Updatable]
-        public string Slug { get; set; }
+        public string Code { get; set; }
+
+        [StringLength(256)]
+        [Updatable]
+        public string Logo { get; set; }
 
         [Required]
         [StringLength(64)]

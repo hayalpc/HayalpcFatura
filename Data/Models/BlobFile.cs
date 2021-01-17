@@ -5,16 +5,17 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using Hayalpc.Fatura;
 
 namespace Hayalpc.Fatura.Data.Models
 {
-    [Table("blob_files", Schema = "tracking")]
+    [Table("blob_files")]
     public class BlobFile : HpModel
     {
         [Column("data_id")]
         public long DataId { get; set; }
 
-        public BlobFileType Type { get; set; }
+        public Common.Enums.BlobFileType Type { get; set; }
 
         public Guid Token { get; set; }
 

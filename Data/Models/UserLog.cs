@@ -11,8 +11,8 @@ namespace Hayalpc.Fatura.Data.Models
     [Table("user_logs", Schema = "tracking")]
     public class UserLog : HpModel
     {
-        [Column("merchant_id")]
-        public long? MerchantId { get; set; } = 0;
+        [Column("dealer_id")]
+        public long? DealerId { get; set; } = 0;
         
         [Required]
         [Column("user_id")]

@@ -17,8 +17,8 @@ namespace Hayalpc.Fatura.Data.Models
         [Required]
         [Updatable]
         public Status Status { get; set; }
-        [Column("merchant_id")]
-        public long? MerchantId { get; set; }
+        [Column("dealer_id")]
+        public long? DealerId { get; set; }
         [Required]
         [StringLength(64)]
         [Updatable]
