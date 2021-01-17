@@ -1,12 +1,12 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
-using Hayalpc.Library.Common.Helpers.Interfaces;
+using Hayalpc.Fatura.Common.Helpers.Interfaces;
 using Hayalpc.Library.Common.Helpers;
 
 namespace Hayalpc.Fatura.Panel.External.Helpers
 {
-    public class HtttpClientCreator : IHtttpClientCreator
+    public class HtttpClientCreator : Library.Common.Helpers.Interfaces.IHtttpClientCreator
     {
         private readonly ISessionHelper sessionHelper;
         private readonly IHttpContextAccessor httpContextAccessor;

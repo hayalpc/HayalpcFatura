@@ -1,4 +1,5 @@
-﻿using Hayalpc.Library.Common.Enums;
+﻿using Hayalpc.Fatura.Common.Enums;
+using Hayalpc.Library.Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,8 +9,8 @@ namespace Hayalpc.Fatura.Panel.External.Models
 {
     public class TableHistoryVM : BaseVM
     {
-        [Display(Name = "VM.MerchantId")]
-        public long? MerchantId { get; set; } = 0;
+        [Display(Name = "VM.DealerId")]
+        public long? DealerId { get; set; } = 0;
 
         [Required(ErrorMessage = "RequiredField")]
         [Display(Name = "VM.TableDefinitionId")]

@@ -14,7 +14,7 @@ namespace Hayalpc.Fatura.Panel.External.Extensions
             services.AddScoped<IHpLogger, NlogImpl>();
             services.AddScoped<IHtttpClientCreator, HtttpClientCreator>();
             services.AddScoped<IHttpClientHelper, HttpClientHelper>();
-            services.AddScoped<ISessionHelper, SessionHelper>();
+            services.AddScoped<Fatura.Common.Helpers.Interfaces.ISessionHelper, Fatura.Common.Helpers.SessionHelper>();
 
             services.AddScoped<IBlobStorageHelper, AzureBlobHelper>();
 

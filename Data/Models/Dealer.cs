@@ -69,5 +69,8 @@ namespace Hayalpc.Fatura.Data.Models
         [StringLength(64)]
         public string PersonAccountName { get; set; }
 
+        [NotMapped]
+        public virtual List<BlobFile> BlobFiles { get; set; }
+
     }
 }

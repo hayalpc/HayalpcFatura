@@ -1,4 +1,4 @@
-﻿using Hayalpc.Library.Common.Enums;
+﻿using Hayalpc.Fatura.Common.Enums;
 using Hayalpc.Library.Repository;
 using System;
 using System.Collections.Generic;
@@ -26,6 +26,6 @@ namespace Hayalpc.Fatura.Data.Models
         public string Description { get; set; }
         
         [Updatable]
-        public Status Status { get; set; }
+        public Library.Common.Enums.Status Status { get; set; }
     }
 }

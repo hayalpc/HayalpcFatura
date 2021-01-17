@@ -1,4 +1,5 @@
-﻿using Hayalpc.Fatura.Data;
+﻿using Hayalpc.Fatura.Common.Enums;
+using Hayalpc.Fatura.Data;
 using Hayalpc.Fatura.Data.Models;
 using Hayalpc.Fatura.Panel.Internal.Services.Interfaces;
 using Hayalpc.Library.Common.Enums;
@@ -46,7 +47,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
                         {
                             var str = "Onayınızı bekleyen talep bulunmaktadır.";
                             var userBulletin = userRoleService.GetByRoleId(tableDefinition.RoleId2 ?? 0).Select(x => new UserBulletin {
-                                MerchantId = 0,
+                                DealerId = 0,
                                 RoleGroupId = tableDefinition.RoleId2 ?? 0,
                                 UserId = 0,
                                 ActionType = "approveRequest",
@@ -171,9 +172,9 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
 
         public override IQueryable<TableHistory> BeforeSearch(IQueryable<TableHistory> req)
         {
-            if (RequestHelper.MerchantId > 0)
+            if (Fatura.Common.Helpers.RequestHelper.DealerId > 0)
             {
-                req = req.Where(x => x.MerchantId == RequestHelper.MerchantId);
+                req = req.Where(x => x.DealerId == Fatura.Common.Helpers.RequestHelper.DealerId);
             }
             return base.BeforeSearch(req);
         }

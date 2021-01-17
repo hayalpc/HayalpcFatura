@@ -5,7 +5,7 @@
 
     if (RequestHelper.Controller == "tablehistory")
     {
-        if (session.HasPermission("approve") && Model.CreateUserId != session.User.Id && !session.User.IsMerchant)
+        if (session.HasPermission("approve") && Model.CreateUserId != session.User.Id && !session.User.IsDealer)
         {
             if ((Model.Status == TableHistoryStatus.New && session.User.UserRoles.Where(x => x.RoleId == Model.RoleId1).Any()) ||
                 (Model.Status == TableHistoryStatus.Step1 && session.User.UserRoles.Where(x => x.RoleId == Model.RoleId2).Any()))
@@ -18,7 +18,7 @@
             if ((Model.Status == TableHistoryStatus.New && session.User.UserRoles.Where(x => x.RoleId == Model.RoleId1).Any()) ||
                 (Model.Status == TableHistoryStatus.Step1 && session.User.UserRoles.Where(x => x.RoleId == Model.RoleId2).Any()) ||
                 Model.CreateUserId == session.User.Id ||
-                Model.MerchantId == session.User.MerchantId)
+                Model.DealerId == session.User.DealerId)
             {
                 links += $"<a class='{classes}' onclick='return AreYouSure();' href='/{RequestHelper.Controller}/reject/{Model.Id}'> <i class='fa fa-trash-restore'></i> {tr.Get("Reject")}</a>";
             }

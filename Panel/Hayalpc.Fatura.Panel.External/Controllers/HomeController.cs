@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Hayalpc.Library.Common.Helpers.Interfaces;
+using Hayalpc.Fatura.Common.Helpers.Interfaces;
 using Hayalpc.Library.Common.Models;
 using Hayalpc.Library.Common.Results;
 using Hayalpc.Library.Log;
@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Azure.Storage.Blobs;
 using System.IO;
-using Hayalpc.Library.Common.Helpers;
+using Hayalpc.Fatura.Common.Helpers;
 using Azure.Storage;
 using System.Security.Cryptography;
 using System.Threading;
@@ -43,53 +43,10 @@ namespace Hayalpc.Fatura.Panel.External.Controllers
 
         public IActionResult Index()
         {
-            userService.LoadBulletins();
-            userService.LoadUserData();
+            //userService.LoadBulletins();
+            //userService.LoadUserData();
             return View();
         }
-
-        [AllowAnonymous]
-        public IActionResult Test()
-        {
-
-            var key = "b14ca5898a4e413sdadasdasdad3bbce2ea2315a1916";
-
-            var str = key + " ";
-
-            var asci = EncryptionHelper.EncryptString(key,"test mesajımdır.");
-            str += asci + " ------ ";
-            str += EncryptionHelper.DecryptString(key, asci);
-            return Ok(str);
-        }
-
-        //[AllowAnonymous]
-        //public IActionResult Upload()
-        //{
-        //    var file = System.IO.File.OpenRead("language.json");
-        //    var uploadInfo = storageHelper.Upload(file, "testJson.json");
-        //    if (uploadInfo.Success)
-        //    {
-        //        return Ok();
-        //    }
-        //    else
-        //    {
-        //        return NotFound();
-        //    }
-        //}
-
-        //[AllowAnonymous]
-        //public IActionResult Download()
-        //{
-        //    var downloadInfo = storageHelper.Download("test/language.json");
-        //    if (downloadInfo.Success)
-        //    {
-        //        return File(downloadInfo.Stream, downloadInfo.ContentType, downloadInfo.FileName);
-        //    }
-        //    else
-        //    {
-        //        return NotFound();
-        //    }
-        //}
 
         [HttpGet("/login")]
         [AllowAnonymous]

@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Localization
+@using Hayalpc.Library.Common.Helpers
 @{ var requestCulture = Context.Features.Get<IRequestCultureFeature>();
     var lanLogo = requestCulture.RequestCulture.UICulture.Name == "tr" ? "tr" : "us"; }
 <!DOCTYPE html>

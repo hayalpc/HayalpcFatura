@@ -16,9 +16,9 @@ namespace Hayalpc.Fatura.Panel.External.Controllers
     [Authorize]
     public class ParametersController : Controller
     {
-        private readonly IMerchantService baseService;
+        private readonly IBaseService<BaseVM> baseService;
 
-        public ParametersController(IMerchantService baseService)
+        public ParametersController(IBaseService<BaseVM> baseService)
         {
             this.baseService = baseService;
         }

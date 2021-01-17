@@ -13,7 +13,7 @@ namespace Hayalpc.Fatura.Data.Models
     {
         [Required]
         [Updatable]
-        public UserType Type { get; set; }
+        public Fatura.Common.Enums.UserType Type { get; set; }
         [Required]
         [Updatable]
         public Status Status { get; set; }

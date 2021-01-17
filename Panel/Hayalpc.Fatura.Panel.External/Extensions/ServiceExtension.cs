@@ -23,18 +23,16 @@ namespace Hayalpc.Fatura.Panel.External.Extensions
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
-            services.AddScoped<ITransactionService, TransactionService>();
-            services.AddScoped<ISubscriptionService, SubscriptionService>();
-            services.AddScoped<IServiceService, ServiceService>();
-            services.AddScoped<IMerchantService, MerchantService>();
             services.AddScoped<ITableDefinitionService, TableDefinitionService>();
             services.AddScoped<ITableHistoryService, TableHistoryService>();
-            services.AddScoped<ISmsService, SmsService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IBlobFileService, BlobFileService>();
-            services.AddScoped<ITariffService, TariffService>();
-            services.AddScoped<ICarrierCollectionService, CarrierCollectionService>();
-            services.AddScoped<IMerchantPaymentService, MerchantPaymentService>();
+
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IInstitutionService, InstitutionService>();
+            services.AddScoped<IDealerService, DealerService>();
+            services.AddScoped<IInvoiceService, InvoiceService>();
+            services.AddScoped<IInvoicePaymentService, InvoicePaymentService>();
         }
     }
 }

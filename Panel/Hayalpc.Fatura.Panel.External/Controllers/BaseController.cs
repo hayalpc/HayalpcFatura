@@ -3,7 +3,6 @@ using Hayalpc.Library.Log;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Hayalpc.Fatura.Panel.External.Resources;
-using Hayalpc.Library.Common.DataTables;
 using System.Collections.Generic;
 using System;
 using Hayalpc.Fatura.Panel.External.Services;

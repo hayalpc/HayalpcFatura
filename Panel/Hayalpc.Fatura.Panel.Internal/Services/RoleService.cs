@@ -1,5 +1,4 @@
-﻿using Hayalpc.Library.Common.DataTables;
-using Hayalpc.Library.Common.Enums;
+﻿using Hayalpc.Library.Common.Enums;
 using Hayalpc.Library.Common.Results;
 using Hayalpc.Library.Log;
 using Hayalpc.Library.Repository.Interfaces;
@@ -52,12 +51,10 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
 
         public override IQueryable<Role> BeforeSearch(IQueryable<Role> req)
         {
-            if(RequestHelper.MerchantId > 0)
+            if(Fatura.Common.Helpers.RequestHelper.DealerId > 0)
             {
                 req = req.Where(x => 
-                    (x.Type == UserType.MerchantUser ||
-                    x.Type == UserType.MerchantAdmin ||
-                    x.Type == UserType.MerchantAccounting)
+                    (x.Type == Fatura.Common.Enums.UserType.Dealer)
                 );
             }
             return base.BeforeSearch(req);

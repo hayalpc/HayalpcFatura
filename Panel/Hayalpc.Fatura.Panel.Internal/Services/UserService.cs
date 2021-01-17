@@ -1,10 +1,6 @@
-﻿using AutoMapper;
-using Hayalpc.Library.Common;
-using Hayalpc.Library.Common.DataTables;
-using Hayalpc.Library.Common.Dtos;
+﻿using Hayalpc.Library.Common;
 using Hayalpc.Library.Common.Enums;
 using Hayalpc.Library.Common.Helpers;
-using Hayalpc.Library.Common.Helpers.Interfaces;
 using Hayalpc.Library.Common.Models;
 using Hayalpc.Library.Common.Results;
 using Hayalpc.Library.Log;
@@ -21,6 +17,8 @@ using Microsoft.Extensions.Caching.Memory;
 using Hayalpc.Library.Common.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DevExtreme.AspNet.Data;
+using Hayalpc.Fatura.Panel.Internal.Helpers.Interfaces;
+using Hayalpc.Fatura.Common.Dtos;
 
 namespace Hayalpc.Fatura.Panel.Internal.Services
 {
@@ -33,10 +31,9 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
         private readonly IResetPasswordService resetPasswordService;
         private readonly IMailHelper mailHelper;
 
-        private readonly IMerchantService merchantService;
-        private readonly IServiceService serviceService;
+        private readonly IDealerService dealerService;
 
-        public UserService(IUserRoleService userRole, IRolePermissionService rolePermission, IRoleService role, ITokenCreator tokenCreator, IResetPasswordService resetPasswordService, IMailHelper mailHelper, IMerchantService merchantService, IServiceService serviceService,
+        public UserService(IUserRoleService userRole, IRolePermissionService rolePermission, IRoleService role, ITokenCreator tokenCreator, IResetPasswordService resetPasswordService, IMailHelper mailHelper, IDealerService dealerService,
             IRepository<User> repository, IHpLogger logger, IHpUnitOfWork<HpDbContext> unitOfWork, IMemoryCache memoryCache) : base(repository, logger, unitOfWork, memoryCache)
         {
             this.userRole = userRole;
@@ -45,8 +42,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
             this.tokenCreator = tokenCreator;
             this.resetPasswordService = resetPasswordService;
             this.mailHelper = mailHelper;
-            this.merchantService = merchantService;
-            this.serviceService = serviceService;
+            this.dealerService = dealerService;
         }
 
         public List<UserBulletin> Bulletin()
@@ -65,14 +61,14 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
         {
             var data = new UserDataDto
             {
-                MerchantList = merchantService.Search(new DataSourceLoadOptionsBase
-                {
-                    Sort = new SortingInfo[] { new SortingInfo { Selector = "Name" } }
-                }).Data.Select(m => new SelectListItem { Text = $"{m.Name}", Value = m.Id.ToString() }).ToList(),
-                ServiceList = serviceService.Search(new DataSourceLoadOptionsBase
-                {
-                    Sort = new SortingInfo[] { new SortingInfo { Selector = "Name" } }
-                }).Data.Select(m => new SelectListItem { Text = $"{m.Name}", Value = m.Id.ToString() }).ToList(),
+                //MerchantList = dealerService.Search(new DataSourceLoadOptionsBase
+                //{
+                //    Sort = new SortingInfo[] { new SortingInfo { Selector = "Name" } }
+                //}).Data.Select(m => new SelectListItem { Text = $"{m.Name}", Value = m.Id.ToString() }).ToList(),
+                //ServiceList = serviceService.Search(new DataSourceLoadOptionsBase
+                //{
+                //    Sort = new SortingInfo[] { new SortingInfo { Selector = "Name" } }
+                //}).Data.Select(m => new SelectListItem { Text = $"{m.Name}", Value = m.Id.ToString() }).ToList(),
             };
             return new SuccessDataResult<UserDataDto>(data);
         }
@@ -95,7 +91,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
                 var session = new SessionModel();
                 var userDto = user.Convert<UserDto>();
 
-                userDto.UserRoles = userRole.GetByUserId(user.Id).Convert<List<UserRoleDto>>();
+                userDto.UserRoles = userRole.GetByUserId(user.Id).Convert<List<Hayalpc.Library.Common.Dtos.UserRoleDto>>();
 
                 session.JwtToken = tokenCreator.CreateToken(request, userDto);
 
@@ -133,7 +129,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
                         }
                     }
                 }
-                session.Permissions = userPermissions.Convert<List<RolePermissionDto>>();
+                session.Permissions = userPermissions.Convert<List<Hayalpc.Library.Common.Dtos.RolePermissionDto>>();
 
                 user.LastSessionId = request.SessionId;
                 user.LastLoginDate = DateTime.Now;
@@ -152,7 +148,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
                     {
                         var userLog = new UserLog
                         {
-                            MerchantId = user.MerchantId,
+                            DealerId = user.DealerId,
                             UserId = user.Id,
                             ActionType = "login",
                             Note = $"{RequestHelper.RemoteIp} logged the {user.Email} account at {DateTime.Now.ToString("HH:mm dd-MM-yyyy")}",
@@ -189,7 +185,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
 
                             var userBulletin = new UserBulletin
                             {
-                                MerchantId = 0,
+                                DealerId = 0,
                                 RoleGroupId = 0,
                                 UserId = user.Id,
                                 ActionType = "wrongPassword",
@@ -207,7 +203,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
 
                             var userLog = new UserLog
                             {
-                                MerchantId = user.MerchantId,
+                                DealerId = user.DealerId,
                                 UserId = user.Id,
                                 ActionType = "wrongPassword",
                                 Note = $"{RequestHelper.RemoteIp} tried to login the {user.Email} account at {DateTime.Now.ToString("HH:mm dd-MM-yyyy")}",
@@ -268,7 +264,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
                     if (resRes.IsSuccess)
                     {
                         user.RoleIds = repository.GetQuery<Role>(x => x.Type == user.Type).Select(x => x.Id).ToList();
-                        var userRoleId = repository.GetQuery<Role>(x => x.Type == UserType.User).Select(x => x.Id).FirstOrDefault();
+                        var userRoleId = repository.GetQuery<Role>(x => x.Type == Fatura.Common.Enums.UserType.User).Select(x => x.Id).FirstOrDefault();
                         if (!user.RoleIds.Contains(userRoleId))
                             user.RoleIds.Add(userRoleId);
 
@@ -277,7 +273,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
 
                         unitOfWork.CommitTransaction();
 
-                        mailHelper.SendResetPassword(user.Convert<UserDto>(), resRes.Data.Convert<ResetPasswordDto>());
+                        mailHelper.SendResetPassword(user.Convert<UserDto>(), resRes.Data.Convert<Hayalpc.Library.Common.Dtos.ResetPasswordDto>());
 
                         return new SuccessDataResult<User>(user);
                     }
@@ -317,7 +313,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
                     userRole.DeleteByUserId(user.Id);
 
                     user.RoleIds = repository.GetQuery<Role>(x => x.Type == user.Type).Select(x => x.Id).ToList();
-                    var userRoleId = repository.GetQuery<Role>(x => x.Type == UserType.User).Select(x => x.Id).FirstOrDefault();
+                    var userRoleId = repository.GetQuery<Role>(x => x.Type == Fatura.Common.Enums.UserType.User).Select(x => x.Id).FirstOrDefault();
                     if (!user.RoleIds.Contains(userRoleId))
                         user.RoleIds.Add(userRoleId);
 
@@ -349,7 +345,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
                 var resRes = resetPasswordService.Add(user);
                 if (resRes.IsSuccess)
                 {
-                    mailHelper.SendResetPassword(user.Convert<UserDto>(), resRes.Data.Convert<ResetPasswordDto>());
+                    mailHelper.SendResetPassword(user.Convert<UserDto>(), resRes.Data.Convert<Hayalpc.Library.Common.Dtos.ResetPasswordDto>());
                     return new SuccessResult();
                 }
                 else
@@ -368,7 +364,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
                 var resRes = resetPasswordService.Add(user);
                 if (resRes.IsSuccess)
                 {
-                    mailHelper.SendResetPassword(user.Convert<UserDto>(), resRes.Data.Convert<ResetPasswordDto>());
+                    mailHelper.SendResetPassword(user.Convert<UserDto>(), resRes.Data.Convert<Hayalpc.Library.Common.Dtos.ResetPasswordDto>());
                     return new SuccessResult();
                 }
                 else
@@ -431,7 +427,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
 
                             var userLog = new UserLog
                             {
-                                MerchantId = user.MerchantId,
+                                DealerId = user.DealerId,
                                 UserId = user.Id,
                                 ActionType = "passwordChange",
                                 Note = user.Password,
@@ -509,7 +505,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
 
                                 var userLog = new UserLog
                                 {
-                                    MerchantId = user.MerchantId,
+                                    DealerId = user.DealerId,
                                     UserId = user.Id,
                                     ActionType = "passwordChange",
                                     Note = user.Password,
@@ -551,9 +547,9 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
 
         public override IQueryable<User> BeforeSearch(IQueryable<User> req)
         {
-            if (RequestHelper.MerchantId > 0)
+            if (Fatura.Common.Helpers.RequestHelper.DealerId > 0)
             {
-                req = req.Where(x => x.MerchantId == RequestHelper.MerchantId);
+                req = req.Where(x => x.DealerId == Fatura.Common.Helpers.RequestHelper.DealerId);
             }
             return base.BeforeSearch(req);
         }
