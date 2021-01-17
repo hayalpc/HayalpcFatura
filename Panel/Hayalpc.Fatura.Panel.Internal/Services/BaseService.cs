@@ -1,4 +1,5 @@
 ﻿using DevExtreme.AspNet.Data;
+using Hayalpc.Fatura.Common.Enums;
 using Hayalpc.Fatura.Data;
 using Hayalpc.Fatura.Data.Models;
 using Hayalpc.Fatura.Panel.Internal.Services.Interfaces;
@@ -148,7 +149,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
                     {
                         var tableHistory = new TableHistory
                         {
-                            MerchantId = 0,
+                            DealerId = 0,
                             TableDefinitionId = tableDefinition.Id,
                             Status = tableDefinition.RoleId1 > 0 ? TableHistoryStatus.New : TableHistoryStatus.Log,
                             ActionType = ActionType.Insert,
@@ -173,7 +174,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
                                 var str = "Onayınızı bekleyen talep bulunmaktadır.";
                                 var userBulletin = GetByRoleId(tableDefinition.RoleId2 ?? 0).Select(x => new UserBulletin
                                 {
-                                    MerchantId = 0,
+                                    DealerId = 0,
                                     RoleGroupId = tableDefinition.RoleId2 ?? 0,
                                     UserId = 0,
                                     ActionType = "approveRequest",
@@ -207,7 +208,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
                     {
                         var tableHistory = new TableHistory
                         {
-                            MerchantId = 0,
+                            DealerId = 0,
                             TableDefinitionId = 0,
                             Status = TableHistoryStatus.Log,
                             ActionType = ActionType.Insert,
@@ -291,7 +292,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
                     {
                         var tableHistory = new TableHistory
                         {
-                            MerchantId = RequestHelper.MerchantId,
+                            DealerId = Fatura.Common.Helpers.RequestHelper.DealerId,
                             TableDefinitionId = tableDefinition.Id,
                             ActionType = ActionType.Update,
                             Status = tableDefinition.RoleId1 > 0 ? TableHistoryStatus.New : TableHistoryStatus.Log,
@@ -324,7 +325,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Services
                     {
                         var tableHistory = new TableHistory
                         {
-                            MerchantId = RequestHelper.MerchantId,
+                            DealerId = Fatura.Common.Helpers.RequestHelper.DealerId,
                             TableDefinitionId = 0,
                             ActionType = ActionType.Update,
                             Status = TableHistoryStatus.Log,

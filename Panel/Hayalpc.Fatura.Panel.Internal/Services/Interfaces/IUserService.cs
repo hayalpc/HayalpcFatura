@@ -1,12 +1,11 @@
-﻿using Hayalpc.Library.Common.DataTables;
-using Hayalpc.Library.Common.Models;
+﻿using Hayalpc.Library.Common.Models;
 using Hayalpc.Library.Common.Results;
 using Hayalpc.Fatura.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Hayalpc.Library.Common.Dtos;
+using Hayalpc.Fatura.Common.Dtos;
 
 namespace Hayalpc.Fatura.Panel.Internal.Services.Interfaces
 {

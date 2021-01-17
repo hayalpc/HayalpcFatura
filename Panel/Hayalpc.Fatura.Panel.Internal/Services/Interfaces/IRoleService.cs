@@ -1,5 +1,4 @@
-﻿using Hayalpc.Library.Common.DataTables;
-using Hayalpc.Library.Common.Results;
+﻿using Hayalpc.Library.Common.Results;
 using Hayalpc.Fatura.Data.Models;
 using System.Collections.Generic;
 

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Hayalpc.Library.Common.Helpers.Interfaces;
-using Hayalpc.Library.Common.Helpers;
 using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Http;
@@ -9,10 +8,10 @@ using System.IO;
 using System.Security.Claims;
 using Hayalpc.Fatura.Panel.Internal.Services.Interfaces;
 using Hayalpc.Library.Log;
-using AutoMapper;
 using Hayalpc.Library.Common.Dtos;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http.Extensions;
+using Hayalpc.Fatura.Common.Helpers;
 
 namespace Hayalpc.Fatura.Panel.Internal.Filters
 {
@@ -20,13 +19,11 @@ namespace Hayalpc.Fatura.Panel.Internal.Filters
     {
         private readonly IUserService userService;
         private readonly IHpLogger logger;
-        private readonly IMapper mapper;
 
-        public AccessFilter(IUserService userService, IHpLogger logger, IMapper mapper)
+        public AccessFilter(IUserService userService, IHpLogger logger)
         {
             this.userService = userService;
             this.logger = logger;
-            this.mapper = mapper;
         }
 
         public void OnActionExecuted(ActionExecutedContext context)
@@ -69,7 +66,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Filters
                 {
                     RequestHelper.User = user;
                     RequestHelper.UserId = RequestHelper.User.Id;
-                    RequestHelper.MerchantId = RequestHelper.User.MerchantId ?? 0;
+                    RequestHelper.DealerId = user.DealerId ?? 0;
                 }
             }
 
@@ -87,7 +84,7 @@ namespace Hayalpc.Fatura.Panel.Internal.Filters
                     context.HttpContext.Request.Method,
                     RequestHelper.RemoteIp,
                     RequestHelper.RemotePort,
-                    RequestHelper.MerchantId,
+                    RequestHelper.DealerId,
                     RequestHelper.UserId,
                     RequestBody,
                 };

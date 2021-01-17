@@ -33,7 +33,7 @@
             <div class="form-group row">
                 <label asp-for="Type" class="col-sm-4"></label>
                 <div class="col-sm-8">
-                    @Html.DropDownListFor(m => m.Type, Html.GetEnumSelectList(typeof(UserType)), tr.Get("PleasePickOne"), new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.Type, Html.GetEnumSelectList(typeof(Hayalpc.Fatura.Common.Enums.UserType)), tr.Get("PleasePickOne"), new { @class = "form-control" })
 
                     @Html.ValidationMessageFor(m => m.Type, "", new { @class = "text-danger" })
                 </div>

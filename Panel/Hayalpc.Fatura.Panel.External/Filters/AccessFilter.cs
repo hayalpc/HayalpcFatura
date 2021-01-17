@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Hayalpc.Library.Common.Helpers.Interfaces;
-using Hayalpc.Library.Common.Helpers;
+using Hayalpc.Fatura.Common.Helpers.Interfaces;
 using System.Linq;
 using System.Net;
 using Hayalpc.Library.Common.Extensions;
@@ -11,17 +10,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using System.IO;
 using System;
+using Hayalpc.Fatura.Common.Helpers;
 
 namespace Hayalpc.Fatura.Panel.External.Filters
 {
     public class AccessFilter : IActionFilter
     {
         private readonly ISessionHelper sessionHelper;
-        private readonly IHttpClientHelper clientHelper;
+        private readonly Library.Common.Helpers.Interfaces.IHttpClientHelper clientHelper;
         private readonly LocService tr;
         private readonly IHpLogger logger;
 
-        public AccessFilter(ISessionHelper sessionHelper, IHttpClientHelper clientHelper, LocService tr, IHpLogger logger)
+        public AccessFilter(ISessionHelper sessionHelper, Library.Common.Helpers.Interfaces.IHttpClientHelper clientHelper, LocService tr, IHpLogger logger)
         {
             this.sessionHelper = sessionHelper;
             this.clientHelper = clientHelper;
@@ -65,7 +65,7 @@ namespace Hayalpc.Fatura.Panel.External.Filters
                 {
                     RequestHelper.User = sessionHelper.User;
                     RequestHelper.UserId = sessionHelper.User.Id;
-                    RequestHelper.MerchantId = sessionHelper.User.MerchantId ?? 0;
+                    RequestHelper.DealerId = sessionHelper.User.DealerId ?? 0;
                     if (sessionHelper.Permissions.Count > 0)
                     {
                         if (context.HttpContext.Request.Path != "/")
@@ -119,7 +119,7 @@ namespace Hayalpc.Fatura.Panel.External.Filters
                         }
                         else
                         {
-                            var result = clientHelper.UserValidate(AppConfigHelper.ApiUrl, "user/validate");
+                            var result = clientHelper.UserValidate(Library.Common.Helpers.AppConfigHelper.ApiUrl, "user/validate");
                             if (result.StatusCode == HttpStatusCode.OK)
                                 return;
                             else if (result.StatusCode == HttpStatusCode.Unauthorized)
@@ -149,7 +149,7 @@ namespace Hayalpc.Fatura.Panel.External.Filters
                 context.HttpContext.Request.Method,
                 RequestHelper.RemoteIp,
                 RequestHelper.RemotePort,
-                RequestHelper.MerchantId,
+                RequestHelper.DealerId,
                 RequestHelper.UserId,
                 Header = headerStr
                 //RequestBody,

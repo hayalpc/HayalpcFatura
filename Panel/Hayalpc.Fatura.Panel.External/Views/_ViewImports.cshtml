@@ -5,11 +5,12 @@
 @using Hayalpc.Fatura.Panel.External.Models
 @using Hayalpc.Fatura.Panel.External.Helpers;
 @using Hayalpc.Library.Common.Models
-@using Hayalpc.Library.Common.Helpers
+@using Hayalpc.Fatura.Common.Enums
+@using Hayalpc.Fatura.Common.Helpers
 @using Hayalpc.Library.Common.Enums
 @using Hayalpc.Library.Common.Dtos
 @using Hayalpc.Library.Common.Helpers.Interfaces
 @using Hayalpc.Library.Common.Extensions
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject Hayalpc.Fatura.Panel.External.Resources.LocService tr
-@inject ISessionHelper session
+@inject Hayalpc.Fatura.Common.Helpers.Interfaces.ISessionHelper session

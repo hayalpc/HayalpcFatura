@@ -19,7 +19,7 @@
                     c.AddFor(x => x.Phone).DataField("phone");
                     c.AddFor(x => x.Title).DataField("title");
 
-                    c.AddFor(x => x.Type).DataField("type").Lookup(lookup => lookup.DataSource(Html.GetEnumSelectList(typeof(UserType))).ValueExpr("Value").DisplayExpr("Text"));
+                    c.AddFor(x => x.Type).DataField("type").Lookup(lookup => lookup.DataSource(Html.GetEnumSelectList(typeof(Hayalpc.Fatura.Common.Enums.UserType))).ValueExpr("Value").DisplayExpr("Text"));
                     c.AddFor(x => x.Status).DataField("status").Lookup(lookup => lookup.DataSource(Html.GetEnumSelectList(typeof(Status))).ValueExpr("Value").DisplayExpr("Text"));
                     c.AddFor(x => x.CreateTime).DataField("createTime").Format("dd.MM.yyyy, HH:mm:ss").DataType(GridColumnDataType.DateTime).Visible(false);
                     c.AddFor(x => x.CreateUserId).DataField("createUserId").Lookup(lookup =>lookup.DataSource(d => d.WebApi().Controller("User").LoadMethod("post").Key("id")).ValueExpr("id").DisplayExpr("fullName"));

@@ -38,7 +38,7 @@ namespace Hayalpc.Fatura.Data.Models
 
         [StringLength(256)]
         [Updatable]
-        public string CalidationText { get; set; }
+        public string ValidationText { get; set; }
 
         [Updatable]
         public bool Reverse { get; set; }

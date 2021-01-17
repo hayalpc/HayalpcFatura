@@ -15,7 +15,7 @@
                     c.AddFor(x => x.Id).DataField("id").SortIndex(0).SortOrder(SortOrder.Desc);
                     c.AddFor(x => x.Name).DataField("name");
                     c.AddFor(x => x.Description).DataField("description");
-                    c.AddFor(x => x.Type).DataField("type").Lookup(lookup => lookup.DataSource(Html.GetEnumSelectList(typeof(UserType))).ValueExpr("Value").DisplayExpr("Text"));
+                    c.AddFor(x => x.Type).DataField("type").Lookup(lookup => lookup.DataSource(Html.GetEnumSelectList(typeof(Hayalpc.Fatura.Common.Enums.UserType))).ValueExpr("Value").DisplayExpr("Text"));
                     c.AddFor(x => x.Status).DataField("status").Lookup(lookup => lookup.DataSource(Html.GetEnumSelectList(typeof(Status))).ValueExpr("Value").DisplayExpr("Text"));
                     c.AddFor(x => x.CreateTime).DataField("createTime").Format("dd.MM.yyyy, HH:mm:ss").DataType(GridColumnDataType.DateTime);
 

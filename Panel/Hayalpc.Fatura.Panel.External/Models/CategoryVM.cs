@@ -12,7 +12,11 @@ namespace Hayalpc.Fatura.Panel.External.Models
         [Required]
         [StringLength(64)]
         [Display(Name = "VM.Slug")]
-        public string Slug { get; set; }
+        public string Code { get; set; }
+
+        [StringLength(256)]
+        [Display(Name = "VM.Logo")]
+        public string Logo { get; set; }
 
         [Required]
         [StringLength(64)]

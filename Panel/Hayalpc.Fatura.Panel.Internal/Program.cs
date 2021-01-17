@@ -65,6 +65,11 @@ namespace Hayalpc.Fatura.Panel.Internal
             if (string.IsNullOrEmpty(webSettings.Urls))
             {
                 Urls = string.Join(";", GetLocalIPv4().Select(x => "http://" + x.ToString() + ":" + webSettings.Port));
+                AppConfigHelper.ApiUrl = GetLocalIPv4().Select(x => "http://" + x.ToString() + ":" + webSettings.Port).FirstOrDefault();
+            }
+            else
+            {
+                AppConfigHelper.ApiUrl = webSettings.Urls;
             }
 
             var host = new WebHostBuilder()

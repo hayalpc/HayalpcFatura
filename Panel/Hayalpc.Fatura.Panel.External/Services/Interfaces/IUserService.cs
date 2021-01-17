@@ -6,7 +6,7 @@ namespace Hayalpc.Fatura.Panel.External.Services.Interfaces
 {
     public interface IUserService : IBaseService<UserVM>
     {
-        IDataResult<SessionModel> Login(LoginRequest request);
+        IDataResult<Fatura.Common.Models.SessionModel> Login(LoginRequest request);
         void LoadBulletins();
         void LoadUserData();
     }

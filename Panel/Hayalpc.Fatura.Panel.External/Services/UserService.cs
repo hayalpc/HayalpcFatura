@@ -1,11 +1,11 @@
 ﻿using Hayalpc.Library.Common.Helpers;
-using Hayalpc.Library.Common.Helpers.Interfaces;
+using Hayalpc.Fatura.Common.Helpers.Interfaces;
 using Hayalpc.Library.Common.Models;
 using Hayalpc.Library.Common.Results;
 using Hayalpc.Library.Log;
 using Hayalpc.Fatura.Panel.External.Services.Interfaces;
 using Hayalpc.Fatura.Panel.External.Models;
-using Hayalpc.Library.Common.Dtos;
+using Hayalpc.Fatura.Common.Dtos;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ namespace Hayalpc.Fatura.Panel.External.Services
         private readonly IMemoryCache memoryCache;
         private readonly IHtmlHelper htmlHelper;
 
-        public UserService(IHttpClientHelper clientHelper, IHpLogger logger, ISessionHelper session, IMemoryCache memoryCache, IHtmlHelper htmlHelper) : base(clientHelper, logger, "user")
+        public UserService(Library.Common.Helpers.Interfaces.IHttpClientHelper clientHelper, IHpLogger logger, ISessionHelper session, IMemoryCache memoryCache, IHtmlHelper htmlHelper) : base(clientHelper, logger, "user")
         {
             this.session = session;
             this.memoryCache = memoryCache;
@@ -46,10 +46,10 @@ namespace Hayalpc.Fatura.Panel.External.Services
             });
         }
 
-        public IDataResult<SessionModel> Login(LoginRequest request)
+        public IDataResult<Fatura.Common.Models.SessionModel> Login(LoginRequest request)
         {
             request.Password = Md5Helper.Get(request.Email + ":" + request.Password);
-            var response = clientHelper.Post<LoginRequest, DataResult<SessionModel>>(AppConfigHelper.ApiUrl, "user/login", request);
+            var response = clientHelper.Post<LoginRequest, DataResult<Fatura.Common.Models.SessionModel>>(AppConfigHelper.ApiUrl, "user/login", request);
             return response;
         }
 
@@ -58,7 +58,6 @@ namespace Hayalpc.Fatura.Panel.External.Services
             if (session.UserData == null)
             {
                 var response = clientHelper.Get<DataResult<UserDataDto>>(AppConfigHelper.ApiUrl, "user/data");
-                response.Data.CarrierList = htmlHelper.GetEnumSelectList(typeof(CarrierId)).ToList();
                 session.UserData = response.Data;
             }
         }

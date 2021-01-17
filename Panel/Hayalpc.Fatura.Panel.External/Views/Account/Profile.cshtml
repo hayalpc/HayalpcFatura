@@ -29,11 +29,11 @@
                 <h3 class="profile-username text-center">@user.FullName</h3>
                 <hr>
                 @{
-                    if (user.IsMerchant)
+                    if (user.IsDealer)
                     {
-                        <strong>@tr.Get("MerchantName")</strong>
+                        <strong>@tr.Get("DealerName")</strong>
                         <p class="text-muted">
-                            @user.Merchant.Name
+                            @*@user.Dealer.Name*@
                         </p>
                         <hr>
                     }
