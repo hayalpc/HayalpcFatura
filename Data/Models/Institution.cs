@@ -25,7 +25,9 @@ namespace Hayalpc.Fatura.Data.Models
         [Updatable]
         public string Description { get; set; }
 
+        [Required]
         [Updatable]
+        [Column("category_id")]
         public long CategoryId { get; set; }
 
         [StringLength(256)]

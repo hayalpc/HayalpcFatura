@@ -13,6 +13,7 @@ namespace Hayalpc.Fatura.Data.Models
         public long UserId { get; set; }
         [Column("role_id")]
         public long RoleId { get; set; }
+
         public virtual Role Role { get; set; }
     }
 }

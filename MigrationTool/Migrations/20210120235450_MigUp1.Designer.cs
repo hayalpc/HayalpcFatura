@@ -3,15 +3,17 @@ using System;
 using Hayalpc.Fatura.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MigrationTool.Migrations
 {
     [DbContext(typeof(HpDbContext))]
-    partial class HpDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210120235450_MigUp1")]
+    partial class MigUp1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

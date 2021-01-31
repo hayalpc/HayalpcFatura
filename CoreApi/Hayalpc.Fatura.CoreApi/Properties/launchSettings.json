@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:3779",
+      "applicationUrl": "http://localhost:50070",
       "sslPort": 0
     }
   },
@@ -13,16 +13,16 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "ancmHostingModel": "OutOfProcess"
+      }
     },
     "Hayalpc.Fatura.CoreApi": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:3779"
+      "applicationUrl": "http://localhost:50070"
     }
   }
 }

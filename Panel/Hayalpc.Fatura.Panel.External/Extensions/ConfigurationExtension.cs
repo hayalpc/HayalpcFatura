@@ -66,9 +66,10 @@ namespace Hayalpc.Fatura.Panel.External.Extensions
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
+                options.Cookie.IsEssential = true;
                 options.Cookie.HttpOnly = true;
-                options.Cookie.SameSite = SameSiteMode.Lax;
-                options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 //options.Cookie.SecurePolicy = Env.IsDevelopment() ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
 
                 options.SlidingExpiration = true;

@@ -3,9 +3,9 @@
     public class InvoiceDto
     {
         public long Id { get; set; }
-        public long InstutionId { get; set; }
+        public long InstitutionId { get; set; }
         public string SubscriberNo { get; set; }
-        public string InstutionName { get; set; }
+        public string InstitutionName { get; set; }
         public string InvoiceNo { get; set; }
         public string InvoiceDate { get; set; }
         public string InvoiceOwner { get; set; }

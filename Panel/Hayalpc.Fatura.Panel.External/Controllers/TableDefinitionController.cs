@@ -1,7 +1,7 @@
 ﻿using Hayalpc.Fatura.Panel.External.Models;
 using Hayalpc.Fatura.Panel.External.Resources;
 using Hayalpc.Fatura.Panel.External.Services.Interfaces;
-using Hayalpc.Library.Common.Helpers.Interfaces;
+using Hayalpc.Fatura.Common.Helpers.Interfaces;
 using Hayalpc.Library.Log;
 
 namespace Hayalpc.Fatura.Panel.External.Controllers

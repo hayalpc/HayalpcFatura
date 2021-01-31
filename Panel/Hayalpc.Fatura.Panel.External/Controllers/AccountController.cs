@@ -1,4 +1,4 @@
-﻿using Hayalpc.Library.Common.Helpers.Interfaces;
+﻿using Hayalpc.Fatura.Common.Helpers.Interfaces;
 using Hayalpc.Library.Log;
 using Microsoft.AspNetCore.Mvc;
 using Hayalpc.Fatura.Panel.External.Resources;

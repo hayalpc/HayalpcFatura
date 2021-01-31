@@ -11,7 +11,7 @@ namespace Hayalpc.Fatura.Panel.External.Models
     {
         [Required]
         [StringLength(64)]
-        [Display(Name = "VM.Slug")]
+        [Display(Name = "VM.CategoryCode")]
         public string Code { get; set; }
 
         [StringLength(256)]

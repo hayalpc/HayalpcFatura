@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Hayalpc.Library.Common.Helpers.Interfaces;
-using Hayalpc.Library.Common.Helpers;
+using Hayalpc.Fatura.Common.Helpers.Interfaces;
 using System.Linq;
 using System.Net;
 using Hayalpc.Library.Common.Extensions;
@@ -10,16 +9,17 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using System.IO;
 using System;
+using Hayalpc.Fatura.Common.Helpers;
 
-namespace Hayalpc.Fatura.Vezne.External.Filters
+namespace Hayalpc.Fatura.Panel.External.Filters
 {
     public class AccessFilter : IActionFilter
     {
         private readonly ISessionHelper sessionHelper;
-        private readonly IHttpClientHelper clientHelper;
+        private readonly Library.Common.Helpers.Interfaces.IHttpClientHelper clientHelper;
         private readonly IHpLogger logger;
 
-        public AccessFilter(ISessionHelper sessionHelper, IHttpClientHelper clientHelper, IHpLogger logger)
+        public AccessFilter(ISessionHelper sessionHelper, Library.Common.Helpers.Interfaces.IHttpClientHelper clientHelper, IHpLogger logger)
         {
             this.sessionHelper = sessionHelper;
             this.clientHelper = clientHelper;
@@ -53,7 +53,6 @@ namespace Hayalpc.Fatura.Vezne.External.Filters
             RequestHelper.Path = context.HttpContext.Request.Path.ToString().ToLowerInvariant();
             RequestHelper.Referer = context.HttpContext.Request.Headers["Referer"].ToString();
             RequestHelper.UserAgent = context.HttpContext.Request.Headers["User-Agent"].ToString();
-            RequestHelper.SessionId = context.HttpContext.Session.Id;
 
             //var RequestBody = ReadBodyAsString(context.HttpContext.Request);
             var headerStr = context.HttpContext.Request.Headers.Aggregate("", (current, header) => current + $"{header.Key}: {header.Value}{Environment.NewLine}");
@@ -69,6 +68,8 @@ namespace Hayalpc.Fatura.Vezne.External.Filters
                 context.HttpContext.Request.Method,
                 RequestHelper.RemoteIp,
                 RequestHelper.RemotePort,
+                RequestHelper.DealerId,
+                RequestHelper.UserId,
                 Header = headerStr
                 //RequestBody,
             };

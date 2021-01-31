@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Hayalpc.Fatura.CoreApi.Extensions;
+using Hayalpc.Fatura.Data;
 
 namespace Hayalpc.Fatura.CoreApi
 {
@@ -26,6 +27,8 @@ namespace Hayalpc.Fatura.CoreApi
             services.AddConfigurations();
 
             services.AddSwagger();
+
+            services.AddDbContextManager();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,12 +45,12 @@ namespace Hayalpc.Fatura.CoreApi
 
             app.UseCors("AllowAllOrigins");
 
+            app.AddUseSwagger("API v1.0.0");
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
-            app.AddUseSwagger("API v1.0.0");
         }
     }
 }

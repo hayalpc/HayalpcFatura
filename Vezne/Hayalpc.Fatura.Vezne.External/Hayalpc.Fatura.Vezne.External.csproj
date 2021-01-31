@@ -3,9 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>46a76a8b-8201-4211-8928-aee32c5e95b7</UserSecretsId>
-    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <EnableNETAnalyzers>false</EnableNETAnalyzers>
   </PropertyGroup>
   
   <ItemGroup>
@@ -17,7 +14,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.10" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.10" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Localization.AspNetCore.TagHelpers" Version="0.6.0" />
+	  <PackageReference Include="Localization.AspNetCore.TagHelpers" Version="0.6.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; buildtransitive</IncludeAssets>
+	  </PackageReference>
   </ItemGroup>
   
   <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -15,10 +15,10 @@ namespace Hayalpc.Fatura.Panel.External.Controllers
     public class BlobFileController : Controller
     {
         private readonly IBlobFileService service;
-        private readonly ISessionHelper session;
+        private readonly Hayalpc.Fatura.Common.Helpers.Interfaces.ISessionHelper session;
         private readonly IBlobStorageHelper storageHelper;
 
-        public BlobFileController(IBlobFileService service, ISessionHelper session, IBlobStorageHelper storageHelper)
+        public BlobFileController(IBlobFileService service, Hayalpc.Fatura.Common.Helpers.Interfaces.ISessionHelper session, IBlobStorageHelper storageHelper)
         {
             this.service = service;
             this.session = session;

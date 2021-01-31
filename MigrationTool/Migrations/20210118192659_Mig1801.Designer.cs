@@ -3,15 +3,17 @@ using System;
 using Hayalpc.Fatura.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MigrationTool.Migrations
 {
     [DbContext(typeof(HpDbContext))]
-    partial class HpDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210118192659_Mig1801")]
+    partial class Mig1801
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -392,7 +394,7 @@ namespace MigrationTool.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<long>("CategoryId")
-                        .HasColumnName("category_id")
+                        .HasColumnName("category_ıd")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Code")

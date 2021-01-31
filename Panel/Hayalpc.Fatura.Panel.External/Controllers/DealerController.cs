@@ -2,7 +2,7 @@
 using Hayalpc.Fatura.Panel.External.Resources;
 using Hayalpc.Fatura.Panel.External.Services.Interfaces;
 using Hayalpc.Library.Common.Dtos;
-using Hayalpc.Library.Common.Helpers.Interfaces;
+using Hayalpc.Fatura.Common.Helpers.Interfaces;
 using Hayalpc.Library.Common.Results;
 using Hayalpc.Library.Log;
 using Microsoft.AspNetCore.Authorization;
@@ -15,9 +15,9 @@ namespace Hayalpc.Fatura.Panel.External.Controllers
 {
     public class DealerController : BaseController<DealerVM, IDealerService>
     {
-        private readonly IBlobStorageHelper storageHelper;
+        private readonly Library.Common.Helpers.Interfaces.IBlobStorageHelper storageHelper;
 
-        public DealerController(IDealerService service, LocService tr, ISessionHelper session, IHpLogger logger, IBlobStorageHelper storageHelper) : base(service, tr, session, logger)
+        public DealerController(IDealerService service, LocService tr, ISessionHelper session, IHpLogger logger, Library.Common.Helpers.Interfaces.IBlobStorageHelper storageHelper) : base(service, tr, session, logger)
         {
             this.storageHelper = storageHelper;
         }

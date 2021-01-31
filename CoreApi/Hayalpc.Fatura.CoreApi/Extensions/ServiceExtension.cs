@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Hayalpc.Fatura.CoreApi.Services;
+using Hayalpc.Fatura.CoreApi.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,8 @@ namespace Hayalpc.Fatura.CoreApi.Extensions
     {
         public static void AddServices(this IServiceCollection services)
         {
-
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IInstitutionService, InstitutionService>();
         }
     }
 }

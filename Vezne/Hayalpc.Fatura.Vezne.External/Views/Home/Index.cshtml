@@ -191,17 +191,12 @@
                             <script src="/assets/plugins/jquery-mask/jquery.mask.min.js"></script>
                             <script>
                                 $(function () {
-                                    var categories = [
-                                        { id: 1, name: "Su" },
-                                        { id: 2, name: "Elektrik" }
-                                    ];
+                                    var categories = [];
 
-                                    var institutions = [
-                                        { id: 1, category: 1, name: "İSKİ", code: "iski", placeholder: "Abonman No - ÖRN: 0001-1111", type: "mask", validationText: "0000-0000", reverse: true },
-                                        { id: 2, category: 1, name: "Sucu", code: "sucu", placeholder: "Abone No - ÖRN: AAA 000-S0S", type: "mask", validationText: "AAA 000-S0S" },
-                                        { id: 3, category: 2, name: "AYEDAŞ", code: "ayedas", placeholder: "Sözleşme No - ÖRN: AAA 000-S0S", type: "mask", validationText: "AAA 000-S0S" },
-                                        { id: 4, category: 2, name: "Elektrikçi", code: "elektrikci", placeholder: "Tesisat No - ÖRN: 000000", type: "mask", validationText: "000000", reverse: true }
-                                    ];
+                                    var institutions = [];
+
+                                    loadCategories();
+                                    loadInstitutions();
 
                                     $("#category").on("change", changeCategory);
                                     $("#institution").on("change", changeInstitution);
@@ -209,13 +204,28 @@
                                     $("body").on("click", "#choosePaymentMethod", choosePaymentMethod);
                                     $("body").on("click", ".selectInvoice", selectInvoice);
 
-                                    if (categories.length > 0) {
-                                        $("#category").html('<option value="">Kategori Seçiniz</option>');
-                                        $.each(categories, function (i, d) {
-                                            $("#category").append('<option selected value="' + d.id + '">' + d.name + '</option>');
+                                    function loadCategories() {
+                                        console.log("runned loadCategories");
+                                        $.get("/parameters/categories", function (data) {
+                                            if (data.success) {
+                                                categories = data.data;
+                                                if (categories.length > 0) {
+                                                    $("#category").html('<option value="">Kategori Seçiniz</option>');
+                                                    $.each(categories, function (i, d) {
+                                                        $("#category").append('<option value="' + d.id + '">' + d.name + '</option>');
+                                                    });
+                                                }
+                                            }
                                         });
+                                    }
 
-                                        $("#category").trigger("change");
+                                    function loadInstitutions() {
+                                        console.log("runned loadInstitutions");
+                                        $.get("/parameters/institutions", function (data) {
+                                            if (data.success) {
+                                                institutions = data.data;
+                                            }
+                                        });
                                     }
 
                                     function changeCategory() {
@@ -223,7 +233,7 @@
 
                                         var cat = $(this).val();
                                         if (cat > 0) {
-                                            institutionList = institutions.filter(x => x.category == cat);
+                                            institutionList = institutions.filter(x => x.categoryId == cat);
                                             if (institutionList.length > 0) {
                                                 $("#institution").prop('disabled', false);
                                                 $("#institution").html('<option value="">Kurum Seçiniz</option>');
@@ -245,13 +255,13 @@
                                     }
 
                                     function changeInstitution() {
-                                        console.log("runned changeinstitution");
+                                        console.log("runned changeInstitution");
 
                                         var ins = $(this).val();
                                         if (ins > 0) {
                                             institution = institutions.find(x => x.id == ins);
                                             if (institution != undefined) {
-                                                applyInstituePattern(institution);
+                                                applyInstitutionPattern(institution);
                                                 $("#subscriberNo").prop('disabled', false);
                                             } else {
                                                 $("#subscriberNo").prop('disabled', true);

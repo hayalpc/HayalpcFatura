@@ -1,7 +1,9 @@
-﻿using Hayalpc.Fatura.Vezne.External.Models;
+﻿using Hayalpc.Fatura.Common.Dtos;
+using Hayalpc.Fatura.Vezne.External.Models;
 using Hayalpc.Library.Common.Helpers;
 using Hayalpc.Library.Common.Helpers.Interfaces;
 using Hayalpc.Library.Common.Models;
+using Hayalpc.Library.Common.Results;
 using Hayalpc.Library.Log;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
