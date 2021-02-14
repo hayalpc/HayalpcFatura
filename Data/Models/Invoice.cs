@@ -28,7 +28,7 @@ namespace Hayalpc.Fatura.Data.Models
 
         [Required]
         [StringLength(128)]
-        public long CategoryName { get; set; }
+        public string CategoryName { get; set; }
         
         [Required]
         [Column("institution_id")]

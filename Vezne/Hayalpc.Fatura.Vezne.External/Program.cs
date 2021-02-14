@@ -80,9 +80,9 @@ namespace Hayalpc.Fatura.Vezne.External
                     c.TimestampFormat = "[HH:mm:ss.fff] ";
                 });
             })
-            .UseStartup<Startup>()
             .UseIIS()
             .UseIISIntegration()
+            .UseStartup<Startup>()
             .UseNLog()
             .UseUrls(Urls);
 

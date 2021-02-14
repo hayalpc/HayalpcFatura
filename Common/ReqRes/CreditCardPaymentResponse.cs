@@ -1,4 +1,4 @@
-﻿namespace Hayalpc.Fatura.Vezne.External.Models
+﻿namespace Hayalpc.Fatura.Common.ReqRes
 {
     public class CreditCardPaymentResponse : BaseResponse
     {

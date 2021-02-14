@@ -1,6 +1,9 @@
 ﻿using Hayalpc.Fatura.Common.Dtos;
+using Hayalpc.Fatura.Common.ReqRes;
 using Hayalpc.Fatura.Vezne.External.Models;
+using Hayalpc.Library.Common.Helpers;
 using Hayalpc.Library.Common.Helpers.Interfaces;
+using Hayalpc.Library.Common.Results;
 using Hayalpc.Library.Log;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,55 +32,35 @@ namespace Hayalpc.Fatura.Vezne.External.Controllers
         [HttpPost]
         public SearchInvoiceResponse Search([FromForm] SearchInvoice searchInvoice)
         {
-            var response = new SearchInvoiceResponse();
             if (session.Get("Authenticated") == "1")
             {
+                searchInvoice.UserIp = RequestHelper.RemoteIp;
+                searchInvoice.Channel = "faturaode";
+
+                ModelState.Clear();
+                TryValidateModel(searchInvoice);
+
                 if (ModelState.IsValid)
                 {
-                    response.ResultCode = 0;
-                    response.ResultDescription = "Ok";
-                    response.Invoices = new List<InvoiceDto>();
-                    response.Invoices.Add(new InvoiceDto
-                    {
-                        Id = 1,
-                        InstutionId = searchInvoice.InstituteId,
-                        SubscriberNo = searchInvoice.SubscriberNo,
-                        InstutionName = "Test",
-                        InvoiceNo = "InvoiceNo123",
-                        InvoiceDate = "InvoiceDate",
-                        InvoiceOwner = "InvoiceOwner",
-                        Amount = 10,
-                        DelayAmount = 1,
-                        Fee = 1,
-                        TotalAmount = 12
-                    });
-                    response.Invoices.Add(new InvoiceDto
-                    {
-                        Id = 2,
-                        InstutionId = searchInvoice.InstituteId,
-                        SubscriberNo = searchInvoice.SubscriberNo,
-                        InstutionName = "Test",
-                        InvoiceNo = "InvoiceNo1234",
-                        InvoiceDate = "InvoiceDate",
-                        InvoiceOwner = "InvoiceOwner",
-                        Amount = 10,
-                        DelayAmount = 1,
-                        Fee = 1,
-                        TotalAmount = 12
-                    });
+                    return clientHelper.Post<SearchInvoice, SearchInvoiceResponse>(AppConfigHelper.ApiUrl, "invoice/search", searchInvoice);
                 }
                 else
                 {
-                    response.ResultCode = 400;
-                    response.ResultDescription = "BadRequest";
+                    return new SearchInvoiceResponse
+                    {
+                        ResultCode = 400,
+                        ResultDescription = "BadRequest"
+                    };
                 }
             }
             else
             {
-                response.ResultCode = 401;
-                response.ResultDescription = "NotAuthenticated";
+                return new SearchInvoiceResponse
+                {
+                    ResultCode = 401,
+                    ResultDescription = "NotAuthenticated"
+                };
             }
-            return response;
         }
 
     }

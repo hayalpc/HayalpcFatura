@@ -14,6 +14,8 @@ namespace Hayalpc.Fatura.CoreApi.Extensions
         {
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IInstitutionService, InstitutionService>();
+            services.AddScoped<IInvoiceService, InvoiceService>();
+            services.AddScoped<IInvoicePaymentService, InvoicePaymentService>();
         }
     }
 }

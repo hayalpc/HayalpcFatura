@@ -1,7 +1,7 @@
 ﻿using Hayalpc.Fatura.Common.Dtos;
 using System.Collections.Generic;
 
-namespace Hayalpc.Fatura.Vezne.External.Models
+namespace Hayalpc.Fatura.Common.ReqRes
 {
     public class SearchInvoiceResponse : BaseResponse
     {

@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using System;
 using Microsoft.AspNetCore.Mvc;
+using Hayalpc.Fatura.Vezne.External.Filters;
 
 namespace Hayalpc.Fatura.Vezne.External.Extensions
 {
@@ -35,7 +36,7 @@ namespace Hayalpc.Fatura.Vezne.External.Extensions
             services.AddControllersWithViews(options =>
             {
                 options.EnableEndpointRouting = false;
-                //options.Filters.Add(new AccessFilterAttribute());
+                options.Filters.Add(new AccessFilterAttribute());
             })
             .AddNewtonsoftJson(options =>
             {

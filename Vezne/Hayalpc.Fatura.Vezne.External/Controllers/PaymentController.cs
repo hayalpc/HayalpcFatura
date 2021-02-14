@@ -1,7 +1,10 @@
-﻿using Hayalpc.Fatura.Vezne.External.Models;
+﻿using Hayalpc.Fatura.Common.ReqRes;
+using Hayalpc.Fatura.Vezne.External.Models;
+using Hayalpc.Library.Common.Helpers;
 using Hayalpc.Library.Common.Helpers.Interfaces;
 using Hayalpc.Library.Log;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 
 namespace Hayalpc.Fatura.Vezne.External.Controllers
@@ -37,25 +40,14 @@ namespace Hayalpc.Fatura.Vezne.External.Controllers
         public IActionResult Methods([FromForm] ChoosePaymentMethod choosePaymentMethod)
         {
             var response = new PaymentInvoiceResponse { ResultCode = 500, ResultDescription = "Hata" };
+            try
+            {
+                response = clientHelper.Post<ChoosePaymentMethod, PaymentInvoiceResponse>(AppConfigHelper.ApiUrl, "payment/methods", choosePaymentMethod);
+            }
+            catch (Exception exp)
+            {
 
-            //if(choosePaymentMethod.Invoices != null && choosePaymentMethod.Invoices.Count > 0)
-            //{
-            response.ResultCode = 0;
-            response.PaymentId = 1;
-            response.ResultDescription = "Ok";
-            response.PaymentMethods = new List<PaymentMethod>
-                {
-                    new PaymentMethod
-                    {
-                        Id=1,
-                        PaymentId=1,
-                        Name="Kredi Kartı",
-                        Description="Kredi Kartı",
-                        Type="creditcard",
-                        Logo="/assets/img/methods/creditcard.png",
-                    },
-                };
-            //}
+            }
             return View("PaymentMethod", response);
         }
     }

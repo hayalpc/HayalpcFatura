@@ -5,18 +5,21 @@
 <div class="row">
     <div class="col-sm-4 text-left p-4 method-choose">
         @{
-            foreach (var method in Model.PaymentMethods)
+            if (Model.PaymentMethods != null)
             {
-                <div class="method-choose-block">
-                    <div class="choose">
-                        <input type="radio" class="paymentMethod" name="paymentMethod" value="@method.Type" />
-                        <img src="@method.Logo" />
+                foreach (var method in Model.PaymentMethods)
+                {
+                    <div class="method-choose-block">
+                        <div class="choose">
+                            <input type="radio" class="paymentMethod" name="paymentMethod" value="@method.Type" />
+                            <img src="@method.Logo" />
+                        </div>
+                        <div class="info">
+                            <span>@method.Name</span>
+                            <p>@method.Description</p>
+                        </div>
                     </div>
-                    <div class="info">
-                        <span>@method.Name</span>
-                        <p>@method.Description</p>
-                    </div>
-                </div>
+                }
             }
         }
     </div>

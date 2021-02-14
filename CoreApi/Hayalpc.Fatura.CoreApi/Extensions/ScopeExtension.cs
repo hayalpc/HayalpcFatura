@@ -11,7 +11,7 @@ namespace Hayalpc.Fatura.CoreApi.Extensions
     {
         public static void AddScopes(this IServiceCollection services)
         {
-            //services.AddScoped<IHpLogger, NlogImpl>();
+            services.AddScoped<IHpLogger, NlogImpl>();
         }
 
     }
