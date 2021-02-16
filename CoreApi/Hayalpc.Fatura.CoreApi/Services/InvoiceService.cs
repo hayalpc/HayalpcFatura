@@ -47,5 +47,43 @@ namespace Hayalpc.Fatura.CoreApi.Services
                 return new ErrorDataResult<Invoice>(500,exp.Message);
             }
         }
+
+        public IDataResult<Invoice> Get(long invoiceId)
+        {
+            try
+            {
+                var data = repository.GetById(invoiceId);
+                if(data!= null)
+                {
+                    return new SuccessDataResult<Invoice>(data);
+                }
+                else
+                {
+                    return new ErrorDataResult<Invoice>(404, "NotFound");
+                }
+            }
+            catch (Exception exp)
+            {
+                logger.Error(exp);
+                return new ErrorDataResult<Invoice>(500, exp.Message);
+            }
+        }
+
+        public IDataResult<Invoice> Update(Invoice invoice)
+        {
+            try
+            {
+                invoice.UpdateTime = DateTime.Now;
+
+                repository.Update(invoice);
+                unitOfWork.SaveChanges();
+                return new SuccessDataResult<Invoice>(invoice);
+            }
+            catch (Exception exp)
+            {
+                logger.Error(exp);
+                return new ErrorDataResult<Invoice>(500, exp.Message);
+            }
+        }
     }
 }

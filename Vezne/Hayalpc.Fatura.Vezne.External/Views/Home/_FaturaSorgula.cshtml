@@ -1,0 +1,331 @@
+﻿<div class="row">
+    <div class="col-sm-6 offset-sm-3">
+        <div class="form-group">
+            <select class="form-control" id="category">
+                <option value="">Kategori Seçiniz</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <select class="form-control" id="institution" disabled>
+                <option value="">Kurum Seçiniz</option>
+            </select>
+        </div>
+
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="subscriberNo" disabled placeholder="Abone Bilgisi">
+            <div class="input-group-append">
+                <button id="getInvoices" class="btn btn-outline-secondary btn-info text-white" type="button" disabled><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+        <div class="mb-3">
+            <span id="subscriberError" class="text-danger" style="display:none;">Girdğiniz bilgi kurum ile uyuşmamaktadır!</span>
+            <span id="subscriberSuccess" class="text-success" style="display:none;">Kurum bilgisi uygundur.</span>
+        </div>
+    </div>
+</div>
+
+<table id="invoices" class="table table-hover table-bordered table-striped table-sm">
+    <thead class="thead-light">
+        <tr>
+            <th>Seç</th>
+            <th>Kurum</th>
+            <th>Fatura No</th>
+            <th>Fatura Tarihi</th>
+            <th>Fatura Sahibi</th>
+            <th>Tutar</th>
+            <th>Gecikme</th>
+            <th>İşlem Ücreti</th>
+            <th>Toplam Tutar</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="data-msg data-loading">
+            <td colspan="9">
+                <i class="fa fa-sync fa-spin fa-3x"></i><br /><br />Faturalar yükleniyor...
+            </td>
+        </tr>
+        <tr class="data-msg data-empty">
+            <td colspan="9">
+                Gösterilecek fatura bulunamadı!
+            </td>
+        </tr>
+        <tr class="data-msg data-error">
+            <td colspan="9">
+                Bir hata oluştu. Lütfen daha sonra tekrar deneyiniz!
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="7" class="text-right">Toplam</td>
+            <td id="totalAmount">0 ₺</td>
+            <td><button id="choosePaymentMethod" class="btn btn-success btn-sm btn-block" disabled>Devam</button></td>
+        </tr>
+    </tfoot>
+</table>
+
+<div id="payment-methods">
+
+</div>
+
+<script src="/assets/plugins/jquery-mask/jquery.mask.min.js"></script>
+<script>
+        $(function () {
+            var categories = [];
+
+            var institutions = [];
+
+            loadCategories();
+            loadInstitutions();
+
+            $("#category").on("change", changeCategory);
+            $("#institution").on("change", changeInstitution);
+            $("#getInvoices").on("click", getInvoices);
+            $("body").on("click", "#choosePaymentMethod", choosePaymentMethod);
+            $("body").on("click", ".selectInvoice", selectInvoice);
+
+            function loadCategories() {
+                console.log("runned loadCategories");
+                $.get("/parameters/categories", function (data) {
+                    if (data.success) {
+                        categories = data.data;
+                        if (categories.length > 0) {
+                            $("#category").html('<option value="">Kategori Seçiniz</option>');
+                            $.each(categories, function (i, d) {
+                                $("#category").append('<option value="' + d.id + '">' + d.name + '</option>');
+                            });
+                        }
+                    }
+                });
+            }
+
+            function loadInstitutions() {
+                console.log("runned loadInstitutions");
+                $.get("/parameters/institutions", function (data) {
+                    if (data.success) {
+                        institutions = data.data;
+                    }
+                });
+            }
+
+            function changeCategory() {
+                console.log("runned changeCategory");
+
+                var cat = $(this).val();
+                if (cat > 0) {
+                    institutionList = institutions.filter(x => x.categoryId == cat);
+                    if (institutionList.length > 0) {
+                        $("#institution").prop('disabled', false);
+                        $("#institution").html('<option value="">Kurum Seçiniz</option>');
+                        $.each(institutionList, function (i, d) {
+                            $("#institution").append('<option value="' + d.id + '">' + d.name + '</option>');
+                        });
+                    } else {
+                        $("#institution").prop('disabled', true);
+                    }
+                } else {
+                    $("#institution").prop('disabled', true);
+                }
+                $("#subscriberError").hide();
+                $("#subscriberSuccess").hide();
+                $("#subscriberNo").prop('disabled', true);
+                $("#getInvoices").prop('disabled', true);
+                $(".invoices").remove();
+                $("#invoices").hide();
+            }
+
+            function changeInstitution() {
+                console.log("runned changeInstitution");
+
+                var ins = $(this).val();
+                if (ins > 0) {
+                    institution = institutions.find(x => x.id == ins);
+                    if (institution != undefined) {
+                        applyInstitutionPattern(institution);
+                        $("#subscriberNo").prop('disabled', false);
+                    } else {
+                        $("#subscriberNo").prop('disabled', true);
+                    }
+                } else {
+                    $("#subscriberNo").prop('disabled', true);
+                }
+                $("#subscriberError").hide();
+                $("#subscriberSuccess").hide();
+                $("#getInvoices").prop('disabled', true);
+                $(".invoices").remove();
+                $("#invoices").hide();
+            }
+
+            function applyInstitutionPattern(institution) {
+                console.log("runned applyInstituePattern");
+
+                $("#subscriberNo").unmask();
+                var options = {
+                    onComplete: completeInstitutionPattern,
+                    onInvalid: invalidInstitutionPattern,
+                    reverse: institution.reverse,
+                    clearIfNotMatch: institution.clearIfNotMatch,
+                    placeholder: institution.placeholder
+                };
+
+                switch (institution.type) {
+                    case "mask":
+                        $("#subscriberNo").mask(institution.validationText, options);
+                        break;
+                }
+            }
+
+            function completeInstitutionPattern(cep) {
+                console.log("runned completeInstituePattern");
+
+                $(".invoices").remove();
+                $("#invoices").hide();
+
+                $("#subscriberSuccess").hide();
+                $("#subscriberError").hide();
+                $("#getInvoices").prop('disabled', false);
+            }
+
+            function invalidInstitutionPattern(val, e, f, invalid, options) {
+                console.log("runned invalidInstituePattern");
+
+                $(".invoices").remove();
+                $("#invoices").hide();
+
+                $("#subscriberSuccess").hide();
+                $("#subscriberError").show();
+                $("#getInvoices").prop('disabled', false);
+                $("#invoices").hide();
+            }
+
+            function getInvoices() {
+                console.log("runned getInvoices");
+
+                $(".invoices").remove();
+                $("#invoices").show();
+
+                $("#payment-methods").html("");
+
+                $("#totalAmount").html("0 ₺");
+                $("#choosePaymentMethod").attr("disabled", true);
+
+                $(".data-msg").hide();
+                $(".data-msg").hide();
+                $(".data-loading").show();
+
+                $.post("/invoice/search", { institutionId: $("#institution").val(), subscriberNo: $("#subscriberNo").val() }, function (data) {
+                    $(".data-msg").hide();
+                    if (data.isSuccess) {
+                        if (data.invoiceCount > 0) {
+                            var template = '' +
+                                '<tr class="invoices {{tableClass}}">' +
+                                '<td><input class="selectInvoice" type="checkbox" data-id="{{id}}" data-institution-name="{{institutionName}}" data-invoice-no="{{invoiceNo}}" data-invoice-date="{{invoiceDate}}" data-invoice-owner="{{invoiceOwner}}" data-amount="{{amount}}" data-delay-amount="{{delayAmount}}" data-fee="{{fee}}" data-total-amount="{{totalAmount}}"></td>' +
+                                '<td>{{institutionName}}</td>' +
+                                '<td>{{invoiceNo}}</td>' +
+                                '<td>{{invoiceDate}}</td>' +
+                                '<td>{{invoiceOwner}}</td>' +
+                                '<td>{{amount}} ₺</td>' +
+                                '<td>{{delayAmount}} ₺</td>' +
+                                '<td>{{fee}} ₺</td>' +
+                                '<td>{{totalAmount}} ₺</td>' +
+                                '</tr>';
+                            $.each(data.invoices, function (i, d) {
+                                var invoiceHtml = template.replaceAll("{{institutionName}}", d.institutionName)
+                                    .replaceAll("{{id}}", d.id)
+                                    .replaceAll("{{invoiceNo}}", d.invoiceNo)
+                                    .replaceAll("{{invoiceDate}}", d.invoiceDate)
+                                    .replaceAll("{{invoiceOwner}}", d.invoiceOwner)
+                                    .replaceAll("{{amount}}", d.amount)
+                                    .replaceAll("{{delayAmount}}", d.delayAmount)
+                                    .replaceAll("{{fee}}", d.fee)
+                                    .replaceAll("{{totalAmount}}", d.totalAmount)
+                                    .replaceAll("{{tableClass}}", d.delayAmount > 0 ? "table-danger" : (d.invoiceDate < "table-warning" ? "" : ""));
+                                $("#invoices").append(invoiceHtml);
+                            });
+
+                            $(".invoices td").on("click", invoiceChoose);
+
+                        } else {
+                            $(".data-empty").show();
+                        }
+                    } else {
+                        $(".data-error").show();
+                    }
+                }).fail(function () {
+                    $(".data-msg").hide();
+                    $(".data-error").show();
+                });
+            }
+
+            function selectInvoice() {
+                console.log("runned selectInvoice");
+
+                var inputs = $(".selectInvoice:checked");
+                if (inputs.length > 0) {
+                    var toplamTutar = 0;
+                    $.each(inputs, function (i, element) {
+                        if ($(this).attr('type') == "checkbox" && $(this).prop('checked') == true) {
+                            toplamTutar = toplamTutar + parseFloat($(this).data("total-amount"));
+                        }
+                    });
+                    if (toplamTutar > 0) {
+                        $("#totalAmount").html(toplamTutar + " ₺");
+                        $("#choosePaymentMethod").attr("disabled", false);
+                    } else {
+                        $("#totalAmount").html("0 ₺");
+                        $("#choosePaymentMethod").attr("disabled", true);
+                    }
+                } else {
+                    $("#totalAmount").html("0 ₺");
+                    $("#choosePaymentMethod").attr("disabled", true);
+                }
+            }
+
+            function choosePaymentMethod() {
+                console.log("runned choosePaymentMethod");
+
+                var inputs = $(".selectInvoice:checked");
+                if (inputs.length > 0) {
+                    $("#choosePaymentMethod").attr("disabled", true);
+                    $(".selectInvoice").attr("disabled", true);
+
+                    var postData = {
+                        invoices: [],
+                        institutionId: $("#institution").val(),
+                        subscriberNo: $("#subscriberNo").val()
+                    };
+                    $.each(inputs, function (i, element) {
+                        postData.invoices.push({
+                            invoiceNo: $(this).data("invoice-no"),
+                            id: $(this).data("id"),
+                            amount: $(this).data("amount"),
+                            delayAmount: $(this).data("delay-amount"),
+                            fee: $(this).data("fee"),
+                            totalAmount: $(this).data("total-amount")
+                        });
+                    });
+
+                    $.post("/payment/methods", postData, function (data) {
+                        $(".invoices td").off("click");
+                        $("#payment-methods").html(data);
+
+                    }).fail(function (err) {
+                        $(".selectInvoice").attr("disabled", false);
+                        $("#choosePaymentMethod").attr("disabled", false);
+                        alert("Bir hata oluştu! Detay: " + err.statusText);
+                    });
+                } else {
+                    alert("Ödeme için fatura seçiniz!");
+                }
+            }
+
+            function invoiceChoose() {
+                console.log("runned invoiceChoose");
+
+                if ($(this).find(".selectInvoice").length == 0) {
+                    $(this).parent().find(".selectInvoice").prop("checked", !$(this).parent().find(".selectInvoice").prop("checked"));
+                    selectInvoice();
+                }
+            }
+        });
+</script>

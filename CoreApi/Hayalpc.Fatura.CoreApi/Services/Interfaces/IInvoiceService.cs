@@ -10,6 +10,9 @@ namespace Hayalpc.Fatura.CoreApi.Services.Interfaces
     public interface IInvoiceService
     {
         IDataResult<Invoice> Add(Invoice invoice);
+        IDataResult<Invoice> Get(long invoiceId);
+        IDataResult<Invoice> Update(Invoice invoice);
+
 
     }
 }

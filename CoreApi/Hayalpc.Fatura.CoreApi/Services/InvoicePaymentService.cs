@@ -31,7 +31,8 @@ namespace Hayalpc.Fatura.CoreApi.Services
         {
             try
             {
-                invoice.Token = Guid.NewGuid();
+                if (invoice.Token == null)
+                    invoice.Token = Guid.NewGuid();
                 invoice.CreateTime = DateTime.Now;
                 invoice.UpdateTime = DateTime.Now;
                 invoice.CreateUserId = -1;
@@ -44,7 +45,24 @@ namespace Hayalpc.Fatura.CoreApi.Services
             catch (Exception exp)
             {
                 logger.Error(exp);
-                return new ErrorDataResult<InvoicePayment>(500,exp.Message);
+                return new ErrorDataResult<InvoicePayment>(500, exp.Message);
+            }
+        }
+
+        public IDataResult<InvoicePayment> Update(InvoicePayment invoice)
+        {
+            try
+            {
+                invoice.UpdateTime = DateTime.Now;
+
+                repository.Update(invoice);
+                unitOfWork.SaveChanges();
+                return new SuccessDataResult<InvoicePayment>(invoice);
+            }
+            catch (Exception exp)
+            {
+                logger.Error(exp);
+                return new ErrorDataResult<InvoicePayment>(500, exp.Message);
             }
         }
     }

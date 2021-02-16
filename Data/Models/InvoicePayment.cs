@@ -1,4 +1,5 @@
-﻿using Hayalpc.Library.Repository;
+﻿using Hayalpc.Fatura.Common.Enums;
+using Hayalpc.Library.Repository;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,6 +14,10 @@ namespace Hayalpc.Fatura.Data.Models
         [Required]
         [StringLength(64)]
         public Guid Token { get; set; }
+
+        [Required]
+        [Updatable]
+        public InvoicePaymentStatus Status { get; set; }
 
         [Required]
         [Column("dealer_id")]

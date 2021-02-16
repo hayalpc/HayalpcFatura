@@ -3,15 +3,17 @@ using System;
 using Hayalpc.Fatura.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MigrationTool.Migrations
 {
     [DbContext(typeof(HpDbContext))]
-    partial class HpDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210215140345_Mig15021")]
+    partial class Mig15021
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -720,10 +722,6 @@ namespace MigrationTool.Migrations
                         .HasColumnName("institution_trans_id")
                         .HasColumnType("character varying(128)")
                         .HasMaxLength(128);
-
-                    b.Property<int>("Status")
-                        .HasColumnName("status")
-                        .HasColumnType("integer");
 
                     b.Property<string>("SubscriberNo")
                         .IsRequired()

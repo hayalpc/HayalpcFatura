@@ -10,5 +10,6 @@ namespace Hayalpc.Fatura.CoreApi.Services.Interfaces
     public interface IInvoicePaymentService
     {
         IDataResult<InvoicePayment> Add(InvoicePayment invoice);
+        IDataResult<InvoicePayment> Update(InvoicePayment invoice);
     }
 }

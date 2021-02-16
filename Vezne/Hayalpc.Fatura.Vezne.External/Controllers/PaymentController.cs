@@ -24,7 +24,7 @@ namespace Hayalpc.Fatura.Vezne.External.Controllers
         }
 
         [HttpPost]
-        public CreditCardPaymentResponse CreditCard([FromForm] CreditCardPayment creditCardPayment)
+        public CreditCardPaymentResponse CreditCard([FromBody] CreditCardPayment creditCardPayment)
         {
             if (ModelState.IsValid)
             {
@@ -42,6 +42,8 @@ namespace Hayalpc.Fatura.Vezne.External.Controllers
             var response = new PaymentInvoiceResponse { ResultCode = 500, ResultDescription = "Hata" };
             try
             {
+                choosePaymentMethod.Channel = "faturaode";
+                choosePaymentMethod.UserIp = RequestHelper.RemoteIp;
                 response = clientHelper.Post<ChoosePaymentMethod, PaymentInvoiceResponse>(AppConfigHelper.ApiUrl, "payment/methods", choosePaymentMethod);
             }
             catch (Exception exp)

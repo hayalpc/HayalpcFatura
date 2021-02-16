@@ -28,8 +28,9 @@
             Lütfen bir ödeme yöntemi seçiniz!
         </div>
         <input type="hidden" id="paymentId" value="@Model.PaymentId" />
+        <input type="hidden" id="paymentToken" value="@Model.PaymentToken" />
         @{
-            if (Model.PaymentMethods.Where(x => x.Type == "creditcard").Any())
+            if (Model.PaymentMethods != null && Model.PaymentMethods.Where(x => x.Type == "creditcard").Any())
             {
                 @await Html.PartialAsync("CreditCard", Model.PaymentMethods.Where(x => x.Type == "creditcard").FirstOrDefault())
             }

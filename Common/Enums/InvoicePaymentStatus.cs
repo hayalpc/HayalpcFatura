@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Hayalpc.Fatura.Common.Enums
 {
-    public enum InvoiceStatus
+    public enum InvoicePaymentStatus
     {
         New=0,
         Active=1,
