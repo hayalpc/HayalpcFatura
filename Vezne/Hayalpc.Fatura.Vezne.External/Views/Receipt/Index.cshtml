@@ -1,0 +1,11 @@
+﻿@model ReceiptDto
+@{
+    Layout = null;
+}
+@JsonConvert.SerializeObject(Model.InvoicePayment)
+<hr />
+@JsonConvert.SerializeObject(Model.Invoices)
+<hr />
+@JsonConvert.SerializeObject(Model.Category)
+<hr />
+@JsonConvert.SerializeObject(Model.Institution)

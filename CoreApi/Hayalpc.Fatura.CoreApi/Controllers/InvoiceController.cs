@@ -56,7 +56,7 @@ namespace Hayalpc.Fatura.CoreApi.Controllers
                         Amount = Faker.NumberFaker.Number(10, 100),
                         DelayAmount = Faker.NumberFaker.Number(0, 5),
                         Fee = Faker.NumberFaker.Number(1, 5),
-                        TotalAmount = 12
+                        TotalAmount = 12,
                     };
                     inv.TotalAmount = inv.Amount + inv.DelayAmount + inv.Fee;
                     var result = service.Add(inv);

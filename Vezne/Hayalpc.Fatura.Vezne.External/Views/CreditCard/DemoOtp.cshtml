@@ -1,0 +1,201 @@
+﻿@model IDataResult<InvoicePaymentDto>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Kredi Kartı Demo 3D Sayfası - PandaFatura</title>
+
+    <!-- Bootstrap & CSS -->
+    <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
+
+    <!-- Favicons -->
+    <link rel="stylesheet" href="/assets/plugins/fontawesome-free/css/all.min.css">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <meta name="theme-color" content="#7952b3">
+
+    <script src="/assets/plugins/jquery/jquery.min.js"></script>
+    <script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/plugins/jquery-mask/jquery.mask.min.js"></script>
+
+    <style>
+        body {
+            background: #f3f3f3;
+        }
+
+        .ticket-card {
+            background: white;
+            border: 1px solid #cecece;
+            padding: 5px 5px 20px 5px;
+        }
+
+            .ticket-card .logo {
+                text-align: center;
+                padding-top: 10px;
+            }
+
+                .ticket-card .logo img {
+                    width: 150px;
+                }
+
+            .ticket-card .cover {
+                padding: 10px;
+                border-bottom: 1px solid #f3f3f3;
+                text-align: center;
+                font-weight: bold;
+            }
+
+            .ticket-card .body {
+                border-bottom: 1px solid #f3f3f3;
+            }
+
+                .ticket-card .body .block {
+                    width: 100%;
+                    font-size: 14px;
+                }
+
+                    .ticket-card .body .block .name {
+                        width: 50%;
+                        float: left;
+                        text-align: right;
+                        padding-right: 5px;
+                        font-weight: 500;
+                    }
+
+                    .ticket-card .body .block .info {
+                        width: 50%;
+                        float: right;
+                        text-align: left;
+                        padding-left: 5px;
+                    }
+
+            .ticket-card .text {
+                padding-top: 10px;
+            }
+
+                .ticket-card .text .text1 {
+                    font-size: 13px;
+                    text-align: center;
+                    width: 100%;
+                    display: block;
+                    margin-bottom: 10px;
+                }
+
+                .ticket-card .text .input1.input-error input {
+                    border:1px solid red;
+                }
+
+                .ticket-card .text .input1 {
+                    text-align: center;
+                    width: 100%;
+                    display: block;
+                }
+
+                    .ticket-card .text .input1 input {
+                        width: 130px;
+                        font-size: 15px;
+                        height: 30px;
+                        text-align: center;
+                        margin-bottom: 10px;
+                    }
+
+                .ticket-card .text .btn1, .ticket-card .text .btn2 {
+                    width: 100%;
+                    display: block;
+                    text-align: center;
+                    margin-bottom: 10px;
+                }
+
+                    .ticket-card .text .btn1 button {
+                        background: #17a2b8;
+                        border: none;
+                        color: white;
+                        padding: 5px 30px;
+                    }
+
+                    .ticket-card .text .btn2 a {
+                        color: #17a2b8;
+                        font-weight: 500;
+                        font-size: 15px;
+                        margin: 0px 20px;
+                    }
+
+        .alert {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="offset-sm-3 col-sm-6">
+                <div class="ticket-card">
+                    <div class="logo">
+                        <img src="~/assets/img/logo/logo_02.png" />
+                    </div>
+                    <div class="cover">
+                        Doğrulama Kodunu Giriniz
+                    </div>
+                    <form method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="body">
+                            <div class="block">
+                                <span class="name">İşyeri Adı:</span>
+                                <span class="info">Demo</span>
+                            </div>
+                            <div class="block">
+                                <span class="name">İşlem Tutarı:</span>
+                                <span class="info"><b>@Model.Data.Amount TRY</b></span>
+                            </div>
+                            <div class="block">
+                                <span class="name">İşlem Tarihi-Saati:</span>
+                                <span class="info">@Model.Data.CreateTime.ToString("dd.MM.yyyy - HH:mm")</span>
+                            </div>
+                            <div class="block">
+                                <span class="name">Kart Numarası:</span>
+                                <span class="info">XXXX XXXX XXXX 1111</span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="text">
+                            <span class="text1">Şifreniz <b>05XX XXX XX 00</b> nolu cep telefonunuza gönderilecektir.</span>
+                            <span class="text1">Referans no: <b>ZAUGHEMAG</b></span>
+                            <span class="text1">
+                                <b>Doğrulama Kodu</b>
+                            </span>
+                            <span class="input1 @(session.GetErrorMessage(false) != null ? "input-error":"")">
+                                <input type="password" name="otp" id="otp" required min="99999" max="1000000" maxlength="6" />
+                            </span>
+                            @await Html.PartialAsync("_Messages")
+                            <span class="text1">
+                                <b>Başarılı:</b> 000000<br />
+                                <b>Hatalı:</b> 111111<br />
+                                <b>Zaman Aşımı:</b> 222222<br />
+                            </span>
+                            <span class="btn1">
+                                <button type="submit">Onayla</button>
+                            </span>
+                            <span class="text1"><b>Kalan Süre:</b> 00:00</span>
+                            <div class="btn2">
+                                <a href="/creditCard/cancel/@Model.Data.Token">İşlemi İptal Et</a>
+                                <a href="#" onclick="return alert('Demo İşlemidir.')">Yardım</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        $('#otp').mask('000000', { placeholder: "______" });
+    })
+</script>

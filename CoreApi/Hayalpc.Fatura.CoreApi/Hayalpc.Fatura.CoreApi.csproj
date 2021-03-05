@@ -32,5 +32,13 @@
 		<Reference Include="Hayalpc.Library.Repository">
 			<HintPath>..\..\Dlls\Hayalpc.Library.Repository.dll</HintPath>
 		</Reference>
+		<Reference Include="Hayalpc.Library.NLogGelf">
+			<HintPath>..\..\Dlls\Hayalpc.Library.NLogGelf.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Update="NLog.config">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 </Project>

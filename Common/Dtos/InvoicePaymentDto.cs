@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hayalpc.Fatura.Common.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,22 +9,27 @@ namespace Hayalpc.Fatura.Common.Dtos
 {
     public class InvoicePaymentDto
     {
+        public long Id { get; set; }
+
         [Required]
         public Guid Token { get; set; }
+
+        [Required]
+        public InvoicePaymentStatus Status { get; set; }
 
         [Required]
         public long DealerId { get; set; }
 
         [Required]
         [StringLength(128)]
-        public long DealerName { get; set; }
+        public string DealerName { get; set; }
 
         [Required]
         public long CategoryId { get; set; }
 
         [Required]
         [StringLength(128)]
-        public long CategoryName { get; set; }
+        public string CategoryName { get; set; }
 
         [Required]
         public long InstitutionId { get; set; }
@@ -48,6 +54,15 @@ namespace Hayalpc.Fatura.Common.Dtos
         [Required]
         [StringLength(64)]
         public string PaymentChannel { get; set; }
+
+        [StringLength(128)]
+        public string Value1 { get; set; }
+        
+        [StringLength(128)]
+        public string Value2 { get; set; }
+        
+        [StringLength(128)]
+        public string Value3 { get; set; }
 
         [StringLength(128)]
         public string MaskedData { get; set; }
@@ -80,5 +95,10 @@ namespace Hayalpc.Fatura.Common.Dtos
 
         [StringLength(128)]
         public string RemoteOrder { get; set; }
+
+        public DateTime CreateTime { get; set; }
+        public long CreateUserId { get; set; }
+        public DateTime? UpdateTime { get; set; }
+        public long? UpdateUserId { get; set; }
     }
 }

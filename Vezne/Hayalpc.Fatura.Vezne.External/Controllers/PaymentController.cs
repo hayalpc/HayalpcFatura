@@ -1,7 +1,9 @@
-﻿using Hayalpc.Fatura.Common.ReqRes;
+﻿using Hayalpc.Fatura.Common.Dtos;
+using Hayalpc.Fatura.Common.ReqRes;
 using Hayalpc.Fatura.Vezne.External.Models;
 using Hayalpc.Library.Common.Helpers;
 using Hayalpc.Library.Common.Helpers.Interfaces;
+using Hayalpc.Library.Common.Results;
 using Hayalpc.Library.Log;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -24,11 +26,20 @@ namespace Hayalpc.Fatura.Vezne.External.Controllers
         }
 
         [HttpPost]
-        public CreditCardPaymentResponse CreditCard([FromBody] CreditCardPayment creditCardPayment)
+        public CreditCardPaymentResponse CreditCard([FromForm] CreditCardPayment creditCardPayment)
         {
             if (ModelState.IsValid)
             {
-                return new CreditCardPaymentResponse { ResultCode = 0, ResultDescription = "Ok" };
+                if (creditCardPayment.CardNumber == "1111111111111111")
+                {
+                    var invoicePaymentRes = clientHelper.Post<CreditCardPayment, Result>(AppConfigHelper.ApiUrl, $"invoicePayment/creditCardPayment", creditCardPayment);
+
+                    return new CreditCardPaymentResponse { ResultCode = 0, ResultDescription = "Ok", Url = "/creditCard/demoOtp/" + creditCardPayment.PaymentToken };
+                }
+                else
+                {
+                    return new CreditCardPaymentResponse { ResultCode = 400, ResultDescription = "InvalidCardInformation" };
+                }
             }
             else
             {
@@ -52,5 +63,8 @@ namespace Hayalpc.Fatura.Vezne.External.Controllers
             }
             return View("PaymentMethod", response);
         }
+
+       
+
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Hayalpc.Fatura.Panel.External.Filters
+namespace Hayalpc.Fatura.CoreApi.Filters
 {
     public class AccessFilterAttribute : TypeFilterAttribute
     {

@@ -2,6 +2,7 @@
 using Hayalpc.Fatura.Common.ReqRes;
 using Hayalpc.Fatura.CoreApi.Services.Interfaces;
 using Hayalpc.Fatura.Data.Models;
+using Hayalpc.Library.Common.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,6 +28,7 @@ namespace Hayalpc.Fatura.CoreApi.Controllers
             this.institutionService = institutionService;
             this.categoryService = categoryService;
         }
+
 
         [HttpPost("Methods")]
         public PaymentInvoiceResponse Methods(ChoosePaymentMethod choosePaymentMethod)

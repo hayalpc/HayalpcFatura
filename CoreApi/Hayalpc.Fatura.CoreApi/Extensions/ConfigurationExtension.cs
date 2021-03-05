@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Hayalpc.Fatura.CoreApi.Filters;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +37,7 @@ namespace Hayalpc.Fatura.CoreApi.Extensions
             services.AddControllers(options =>
             {
                 options.EnableEndpointRouting = false;
+                options.Filters.Add(new AccessFilterAttribute());
             })
             .AddNewtonsoftJson(options =>
             {

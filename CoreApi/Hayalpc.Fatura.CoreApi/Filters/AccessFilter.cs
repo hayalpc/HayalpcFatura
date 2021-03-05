@@ -11,18 +11,14 @@ using System.IO;
 using System;
 using Hayalpc.Fatura.Common.Helpers;
 
-namespace Hayalpc.Fatura.Panel.External.Filters
+namespace Hayalpc.Fatura.CoreApi.Filters
 {
     public class AccessFilter : IActionFilter
     {
-        private readonly ISessionHelper sessionHelper;
-        private readonly Library.Common.Helpers.Interfaces.IHttpClientHelper clientHelper;
         private readonly IHpLogger logger;
 
-        public AccessFilter(ISessionHelper sessionHelper, Library.Common.Helpers.Interfaces.IHttpClientHelper clientHelper, IHpLogger logger)
+        public AccessFilter(IHpLogger logger)
         {
-            this.sessionHelper = sessionHelper;
-            this.clientHelper = clientHelper;
             this.logger = logger;
         }
 

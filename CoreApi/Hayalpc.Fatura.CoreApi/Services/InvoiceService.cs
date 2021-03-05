@@ -54,13 +54,9 @@ namespace Hayalpc.Fatura.CoreApi.Services
             {
                 var data = repository.GetById(invoiceId);
                 if(data!= null)
-                {
                     return new SuccessDataResult<Invoice>(data);
-                }
                 else
-                {
                     return new ErrorDataResult<Invoice>(404, "NotFound");
-                }
             }
             catch (Exception exp)
             {

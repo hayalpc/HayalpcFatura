@@ -12,7 +12,6 @@ namespace Hayalpc.Fatura.Data.Models
     public class InvoicePayment : HpModel
     {
         [Required]
-        [StringLength(64)]
         public Guid Token { get; set; }
 
         [Required]
@@ -60,6 +59,15 @@ namespace Hayalpc.Fatura.Data.Models
         [Required]
         [StringLength(64)]
         public string PaymentChannel { get; set; }
+
+        [StringLength(128)]
+        public string Value1 { get; set; }
+
+        [StringLength(128)]
+        public string Value2 { get; set; }
+
+        [StringLength(128)]
+        public string Value3 { get; set; }
 
         [StringLength(128)]
         public string MaskedData { get; set; }

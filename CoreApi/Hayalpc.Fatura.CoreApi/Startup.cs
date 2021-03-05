@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Hayalpc.Fatura.CoreApi.Extensions;
 using Hayalpc.Fatura.Data;
+using NLog;
+using Hayalpc.Fatura.Common.Helpers;
 
 namespace Hayalpc.Fatura.CoreApi
 {
@@ -46,6 +48,13 @@ namespace Hayalpc.Fatura.CoreApi
             app.UseCors("AllowAllOrigins");
 
             app.AddUseSwagger("API v1.0.0");
+
+            app.Use((context, next) =>
+            {
+                MappedDiagnosticsLogicalContext.Set("request_ip", RequestHelper.GetRealIp(context));
+                MappedDiagnosticsLogicalContext.Set("trace_identifier", context.TraceIdentifier);
+                return next();
+            });
 
             app.UseEndpoints(endpoints =>
             {

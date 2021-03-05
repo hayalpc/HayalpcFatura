@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hayalpc.Fatura.Common.ReqRes
 {
@@ -14,5 +15,7 @@ namespace Hayalpc.Fatura.Common.ReqRes
         public string NameSurname { get; set; }
         [Required]
         public long PaymentId { get; set; }
+        [Required]
+        public Guid PaymentToken { get; set; }
     }
 }

@@ -1,0 +1,36 @@
+﻿@model InvoicePaymentDto
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <title>Ödeme Sonucu</title>
+</head>
+<body>
+    @{
+        if (Model.Status == Hayalpc.Fatura.Common.Enums.InvoicePaymentStatus.Success)
+        {
+            <span>Ödemeniz alınmıştır. Yönlendiriliyorsunuz...</span>
+        }
+        else if (Model.Status == Hayalpc.Fatura.Common.Enums.InvoicePaymentStatus.Error)
+        {
+            <span>Ödemeniz alınamadı. Yönlendiriliyorsunuz...</span>
+        }
+        else if (Model.Status == Hayalpc.Fatura.Common.Enums.InvoicePaymentStatus.Timeout)
+        {
+            <span>İşleminiz zaman aşımına uğramıştır. Yönlendiriliyorsunuz...</span>
+        }
+        else
+        {
+            <span>Geçersiz ödeme durumu. Yönlendiriliyorsunuz...</span>
+        }
+    }
+</body>
+</html>
+<script>
+
+    setTimeout(function () {
+        var parent = window.parent || window;
+        parent.location = "/receipt/@Model.Id/@Model.Token";
+    }, 2000);
+</script>
